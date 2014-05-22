@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://printf.me/about/index.html</loc>
+    <lastmod>2014-05-22T08:05:52.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://printf.me/404.html</loc>
     <lastmod>2014-05-22T07:53:35.000Z</lastmod>
   </url>
@@ -14,11 +19,6 @@
   <url>
     <loc>http://printf.me/2014/05/21/hello-world/</loc>
     <lastmod>2014-05-21T08:15:59.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://printf.me/about/index.html</loc>
-    <lastmod>2014-05-22T08:05:52.000Z</lastmod>
   </url>
   
   <url>
