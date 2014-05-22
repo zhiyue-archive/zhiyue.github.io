@@ -4,7 +4,7 @@
   <subtitle><![CDATA[把知道的说出来]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://printf.me/"/>
-  <updated>2014-05-22T06:37:34.154Z</updated>
+  <updated>2014-05-22T09:02:03.545Z</updated>
   <id>http://printf.me/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://printf.me/2014/05/21/hello-world/"/>
     <id>http://printf.me/2014/05/21/hello-world/</id>
     <published>2014-05-21T08:15:59.000Z</published>
-    <updated>2014-05-21T08:15:59.000Z</updated>
+    <updated>2014-05-22T08:51:01.000Z</updated>
     <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank">trobuleshooting</a> or you can ask me on <a href="https://github.com/tommy351/hexo/issues" target="_blank">GitHub</a>.</p>
 <h2 id="Quick_Start">Quick Start</h2>
 <h3 id="Create_a_new_post">Create a new post</h3>
@@ -48,6 +48,10 @@
 <p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank">Deployment</a></p>
 ]]></content>
     
+    
+      <category term="教程" scheme="http://printf.me/tags/%E6%95%99%E7%A8%8B/"/>
+    
+      <category term="杂货" scheme="http://printf.me/categories/%E6%9D%82%E8%B4%A7/"/>
     
   </entry>
   
