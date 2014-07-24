@@ -1,10 +1,10 @@
 
-<!DOCTYPE HTML>
+  <!DOCTYPE HTML>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   
-    <title>search | Just Do IT.</title>
+    <title>Category: hexo | Just Do IT.</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="zhiyue">
@@ -61,27 +61,72 @@
       </header>
       <div id="container">
         
-<div  id="main" class="page">
-  <div id='cse' style='width:100%;text-align:center'>正在加载搜索结果，请稍等。</div>
+
+<div class="archive-title" >
+  <h2 class="category-icon">hexo</h2>
+  
 </div>
-<script src="http://www.google.com.hk/jsapi" type="text/javascript"></script>
-<script type="text/javascript">
-google.load('search', '1', {language : 'zh-CN',style: google.loader.themes.MINIMALIST});
-google.setOnLoadCallback(function(){
-  var customSearchControl = new google.search.CustomSearchControl('016116947265450050171:xqzcp5xbiec');
-  customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
-  var options = new google.search.DrawOptions();
-  options.setAutoComplete(true);
-  customSearchControl.draw('cse', options);
-  var match = location.search.match(/q=([^&]*)(&|$)/);
-  if(match && match[1]){
-    var search = decodeURIComponent(match[1]); 
-    customSearchControl.execute(search);
-  }
-},true);
-</script>
+<div id="main" class="archive-part clearfix">
+  <div id="archive-page">
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2014/06/09/hexo-多标签/" title="hexo 多标签" itemprop="url">
+  
+
+    <time datetime="2014-06-09T08:21:56.000Z" itemprop="datePublished">6月 9 2014</time>
+
+
+    <h1 itemprop="name">hexo 多标签</h1>
+
+  </a>
+</section>
+
+
+  </div>
+</div>
 
       </div>
+      <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		
+		<a href="http://weibo.com/2372807992" target="_blank"><div class="author"></div></a>
+		
+	</div>
+	
+	
+	<section class="info">
+		<p> Someone wait for god  <br/>
+			Sometime wait for someone</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2372807992" target="_blank" class="icon-weibo" title="weibo"></a>
+		
+		
+		<a href="https://github.com/zhiyue" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		<a href="https://www.douban.com/people/47771675" target="_blank" class="icon-douban" title="豆瓣"></a>
+		
+		
+		<a href="https://plus.google.com/103838448889836440000?rel=author" target="_blank" class="icon-google_plus" title="Google+"></a>
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://zespia.tw/hexo/" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Pacman">Jacman</a> © 2014 
+		
+		<a href="http://printf.me/about" target="_blank" title="zhiyue">zhiyue</a>
+		
+		</p>
+</div>
+</footer>
       <script src="/js/jquery-2.0.3.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){ 

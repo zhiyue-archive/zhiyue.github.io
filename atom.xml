@@ -4,7 +4,7 @@
   <subtitle><![CDATA[恍惚中，时光停滞，岁月静好，宛如十年前。]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://printf.me/"/>
-  <updated>2014-05-22T13:39:21.273Z</updated>
+  <updated>2014-07-24T03:11:31.135Z</updated>
   <id>http://printf.me/</id>
   
   <author>
@@ -15,37 +15,51 @@
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[hexo 多标签]]></title>
+    <link href="http://printf.me/2014/06/09/hexo-%E5%A4%9A%E6%A0%87%E7%AD%BE/"/>
+    <id>http://printf.me/2014/06/09/hexo-多标签/</id>
+    <published>2014-06-09T08:21:56.000Z</published>
+    <updated>2014-06-09T08:28:11.000Z</updated>
+    <content type="html"><![CDATA[<p>刚开始使用hexo记录一下使用过程遇到的问题.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">使用多标签要在括号内<span class="keyword">*</span><span class="keyword">*</span>[,]<span class="keyword">*</span><span class="keyword">*</span></div><div class="line"></div><div class="line">在括号内用逗号分隔开.</div></pre></td></tr></table></figure>
+
+]]></content>
+    
+    
+      <category term="标签" scheme="http://printf.me/tags/%E6%A0%87%E7%AD%BE/"/>
+    
+      <category term="hexo" scheme="http://printf.me/tags/hexo/"/>
+    
+      <category term="备忘" scheme="http://printf.me/tags/%E5%A4%87%E5%BF%98/"/>
+    
+      <category term="hexo" scheme="http://printf.me/categories/hexo/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[Hello World]]></title>
     <link href="http://printf.me/2014/05/21/hello-world/"/>
     <id>http://printf.me/2014/05/21/hello-world/</id>
     <published>2014-05-21T08:15:59.000Z</published>
     <updated>2014-05-22T08:51:01.000Z</updated>
-    <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank">trobuleshooting</a> or you can ask me on <a href="https://github.com/tommy351/hexo/issues" target="_blank">GitHub</a>.</p>
+    <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/tommy351/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
 <h2 id="Quick_Start">Quick Start</h2>
 <h3 id="Create_a_new_post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre>$ hexo new <span class="string">"My New Post"</span>
-</pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
 
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank">Writing</a></p>
+<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
 <h3 id="Run_server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre>$ hexo server
-</pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
 
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank">Server</a></p>
+<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
 <h3 id="Generate_static_files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre>$ hexo generate
-</pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
 
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank">Generating</a></p>
+<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
 <h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre>$ hexo deploy
-</pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
 
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank">Deployment</a></p>
+<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
 ]]></content>
     
     
