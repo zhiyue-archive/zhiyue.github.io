@@ -71,9 +71,11 @@
       <a href="/2014/06/09/hexo-多标签/" title="hexo 多标签" itemprop="url">hexo 多标签</a>
   </h1>
   <p class="article-author">By
-      <a href="http://printf.me/about" title="zhiyue" target="_blank">zhiyue</a>
+       
+		<a href="https://plus.google.com/103838448889836440000?rel=author" title="zhiyue" target="_blank" itemprop="author">zhiyue</a>
+		
   <p class="article-time">
-    <time datetime="2014-06-09T08:21:56.000Z" itemprop="datePublished">发表于6月 9 2014</time>
+    <time datetime="2014-06-09T08:21:56.000Z" itemprop="datePublished"> 发表于 6月 9 2014</time>
     
   </p>
 </header>
@@ -93,6 +95,7 @@
   
 	</div>
 		<footer class="article-footer clearfix">
+<div class="article-catetags">
 
 <div class="article-categories">
   <span></span>
@@ -105,7 +108,7 @@
   <span></span> <a href="/tags/标签/">标签</a><a href="/tags/hexo/">hexo</a><a href="/tags/备忘/">备忘</a>
   </div>
 
-
+</div>
 
 
 <div class="article-share" id="share">
@@ -135,8 +138,16 @@
 	<div class="ds-thread"></div>
 </section>
 
+
 </div>  
       <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
 
 <div id="asidepart">
 <div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
@@ -160,11 +171,11 @@
 	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
-			<li><a href="/tags/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+			<li><a href="/tags/教程/" title="教程">教程<sup>1</sup></a></li>
 		
 			<li><a href="/tags/备忘/" title="备忘">备忘<sup>1</sup></a></li>
 		
-			<li><a href="/tags/教程/" title="教程">教程<sup>1</sup></a></li>
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>1</sup></a></li>
 		
 			<li><a href="/tags/标签/" title="标签">标签<sup>1</sup></a></li>
 		
@@ -176,7 +187,12 @@
 	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
-  <iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=0&isWeibo=1&isFans=0&uid=2372807992&verifier=91f284c4&dpc=1"></iframe>
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2372807992&verifier=b3593ceb&dpc=1"></iframe>
+</div>
+
+
 
   <div class="linkslist">
   <p class="asidetitle">友情链接</p>
@@ -195,9 +211,7 @@
 	
 	<div class="line">
 		<span></span>
-		
-		<a href="http://weibo.com/2372807992" target="_blank"><div class="author"></div></a>
-		
+		<div class="author"></div>
 	</div>
 	
 	
@@ -258,6 +272,8 @@ $(document).ready(function(){
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
       o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
         
     }
   });
@@ -316,14 +332,15 @@ $(document).ready(function(){
       url = $this.attr('data-url'),
       encodedUrl = encodeURIComponent(url),
       title = $this.attr('data-title'),
-      tsina = $this.attr('data-tsina');
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
   var html = [
   '<a href="#" class="overlay" id="qrcode"></a>',
   '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
-  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
   '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
-  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
   '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
   '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
   '<span title="Share to"></span>'
   ].join('');
@@ -339,6 +356,7 @@ $(document).ready(function(){
 </script>
 
 
+
 <script type="text/javascript">
   var duoshuoQuery = {short_name:"zhiyue"};
   (function() {
@@ -350,6 +368,10 @@ $(document).ready(function(){
     || document.getElementsByTagName('body')[0]).appendChild(ds);
   })();
 </script> 
+
+
+
+
 
 
 
@@ -375,6 +397,8 @@ $(document).ready(function(){
 </script>
 
 
+
+
 <script type="text/javascript">
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -385,19 +409,16 @@ ga('send', 'pageview');
 </script>
 
 
+
+
 <div id="totop">
 <a title="返回顶部"><img src="/img/scrollup.png"/></a>
 </div>
 
 <script src="/js/totop.js"></script>
 
-<script type="text/x-mathjax-config"> 
-MathJax.Hub.Config({ 
-  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]} 
-}); 
-</script>
-<script type="text/javascript"
-   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+
+
+
   </body>
 </html>
