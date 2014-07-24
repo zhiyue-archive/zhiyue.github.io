@@ -2,6 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://printf.me/hello%20world/index.html</loc>
+    <lastmod>2014-07-24T03:49:21.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://printf.me/hello%20world/mytest.html</loc>
+    <lastmod>2014-07-24T03:58:43.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://printf.me/mytest/index.html</loc>
+    <lastmod>2014-07-24T04:08:58.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://printf.me/2014/06/09/hexo-%E5%A4%9A%E6%A0%87%E7%AD%BE/</loc>
     <lastmod>2014-06-09T08:21:56.000Z</lastmod>
   </url>
