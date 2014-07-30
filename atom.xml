@@ -4,7 +4,7 @@
   <subtitle><![CDATA[恍惚中，时光停滞，岁月静好，宛如十年前。]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://printf.me/"/>
-  <updated>2014-07-29T09:41:22.035Z</updated>
+  <updated>2014-07-30T04:22:10.695Z</updated>
   <id>http://printf.me/</id>
   
   <author>
@@ -15,11 +15,88 @@
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[]]></title>
+    <link href="http://printf.me/2014/07/30/ffmpeg%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
+    <id>http://printf.me/2014/07/30/ffmpeg的使用/</id>
+    <published>2014-07-30T04:15:09.000Z</published>
+    <updated>2014-07-30T04:22:04.000Z</updated>
+    <content type="html"><![CDATA[<p>title: FFmpeg的使用<br>tags：[工具,音频,教程,音频开发]</p>
+<h2 id="categories:_音频开发">categories:  音频开发</h2>
+<p><img src="http://printf.qiniudn.com/20140616102021781.png" alt=""></p>
+<p>最近因为要音频处理的研究,音频开发，但是有一个难题就是怎么解析与提取音频的数据,于是就找到了<code>FFmpeg</code>。基本上只要做视频音频开发都离不开<code>ffmpeg</code></p>
+<h2 id="1-什么是ffmpeg">1.什么是ffmpeg</h2>
+<p>引用<a href="http://zh.wikipedia.org/wiki/FFmpeg" target="_blank" rel="external">wiki百科</a>的解析.</p>
+<blockquote>
+<p>FFmpeg是一个自由软件，可以运行音频和视频多种格式的录影、转换、流功能<a href="http://ffmpeg.org/ffmpeg.html" target="_blank" rel="external">^1</a>，包含了libavcodec ─这是一个用于多个项目中音频和视频的解码器库，以及libavformat——一个音频与视频格式转换库。</p>
+</blockquote>
+<ul>
+<li><code>ffmpeg</code>的官网地址是:<a href="https://www.ffmpeg.org/" target="_blank" rel="external">https://www.ffmpeg.org/</a></li>
+<li><p><code>ffmpeg</code>的Github项目地址是:<a href="https://github.com/FFmpeg/FFmpeg" target="_blank" rel="external">https://github.com/FFmpeg/FFmpeg</a></p>
+<h3 id="1-1_组件">1.1 组件</h3>
+<p><code>FFmpeg</code>项目由以下几部分组成：</p>
+</li>
+<li><p><code>FFmpeg</code>视频文件转换命令行工具,也支持经过实时电视卡抓取和编码成视频文件；</p>
+</li>
+<li><code>ffserver</code>基于<code>HTTP</code>、<code>RTSP</code>用于实时广播的多媒体服务器.也支持时间平移；</li>
+<li><code>ffplay</code>用 <code>SDL</code>和<code>FFmpeg</code>库开发的一个简单的媒体播放器；</li>
+<li><code>libavcodec</code>一个包含了所有<code>FFmpeg</code>音视频编解码器的库。为了保证最优性能和高可复用性，大多数编解码器从头开发的；</li>
+<li><code>libavformat</code>一个包含了所有的普通音视格式的解析器和产生器的库。<h3 id="1-2_谁在使用ffmpeg">1.2 谁在使用<code>ffmpeg</code></h3>
+</li>
+<li>使用FFMPEG作为内核视频播放器：<code>Mplayer</code>，<code>ffplay</code>，<code>射手播放器</code>，<code>暴风影音</code>，<code>KMPlayer</code>，<code>QQ影音</code>…</li>
+<li>使用FFMPEG作为内核的Directshow Filter：<code>ffdshow</code>，<code>lav filters</code>…</li>
+<li>使用FFMPEG作为内核的转码工具：<code>ffmpeg</code>，<code>格式工厂</code>…<h2 id="2-如何安装">2.如何安装</h2>
+<code>FFmpeg</code>可以在Windows、Linux还有Mac OS等多种操作系统中进行安装和使用。</li>
+</ul>
+<p>这篇文章主要介绍其在Windows下面的安装：</p>
+<ul>
+<li>下载编译好的Windows版本：<a href="http://ffmpeg.zeranoe.com/builds/（与官网同步）" target="_blank" rel="external">http://ffmpeg.zeranoe.com/builds/（与官网同步）</a><br><img src="http://printf.qiniudn.com/20140730113852.png" alt=""></li>
+<li>FFmpeg分为3个版本：<code>Static</code>、  <code>Shared</code>、 <code>Dev</code></li>
+<li>前两个版本可以直接在命令行中使用。包含了三个<code>exe</code>:<code>ffmpeg.exe</code>，<code>ffplay.exe</code>，<code>ffprobe.exe</code></li>
+<li><code>Static</code>版本中的<code>exe</code>体积较大,那是因为相关的<code>Dll</code>都已经编译进<code>exe</code>里面去了。</li>
+<li><code>Shared</code>版本中<code>exe</code>的体积相对小很多,是因为它们运行的时候还需要到相关的dll中调用相应的功能</li>
+<li><code>Dev</code>版本用于开发,里面包含了库文件<code>xxx.lib</code>以及头文件<code>xxx.h</code></li>
+</ul>
+<h2 id="3-怎么使用">3.怎么使用</h2>
+<h3 id="3-1_命令行工具的使用">3.1 命令行工具的使用</h3>
+<h4 id="3-11_ffmpeg-exe">3.11 <code>ffmpeg.exe</code></h4>
+<p>用于转码的应用程序:</p>
+<blockquote>
+<p>一个简单的转码命令 将input.avi转码成output.ts，并设置视频的码率为640kbps</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -<span class="keyword">i</span> <span class="built_in">input</span>.avi -<span class="variable">b:v</span> <span class="number">640</span><span class="keyword">k</span> output.<span class="keyword">ts</span></div></pre></td></tr></table></figure>
+
+<p>具体用法参考:   <a href="http://blog.csdn.net/leixiaohua1020/article/details/12751349" target="_blank" rel="external">ffmpeg参数中文详细解释</a><br>详细的使用说明（英文）：<a href="http://ffmpeg.org/ffmpeg.html" target="_blank" rel="external">http://ffmpeg.org/ffmpeg.html</a></p>
+<h4 id="3-12_ffplay-exe">3.12 <code>ffplay.exe</code></h4>
+<p>主要用于播放的应用程序</p>
+<blockquote>
+<p>播放test.avi</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffplay <span class="keyword">test</span>.avi</div></pre></td></tr></table></figure>
+
+<p>具体的使用方法可以参考：<a href="http://blog.csdn.net/leixiaohua1020/article/details/15186441" target="_blank" rel="external">ffplay的快捷键以及选项</a><br>详细的使用说明（英文）：<a href="http://ffmpeg.org/ffplay.html" target="_blank" rel="external">http://ffmpeg.org/ffplay.html</a></p>
+<h4 id="3-13_ffprobe-exe">3.13 <code>ffprobe.exe</code></h4>
+<p>ffprobe是用于查看文件格式的应用程序。<br>详细的使用说明（英文）：<a href="http://ffmpeg.org/ffprobe.html" target="_blank" rel="external">http://ffmpeg.org/ffprobe.html</a></p>
+<h3 id="3-2_使用ffmpeg库进行开发">3.2 使用ffmpeg库进行开发</h3>
+<h2 id="To_Be_Continue…"><strong>To Be Continue…</strong></h2>
+<p><strong>参考资料</strong> :</p>
+<ul>
+<li><a href="http://blog.csdn.net/leixiaohua1020/article/details/15811977" target="_blank" rel="external">FFMPEG视音频编解码零基础学习方法</a></li>
+<li><a href="http://yuanhuan.blog.51cto.com/3367116/1246370" target="_blank" rel="external">FFmpeg使用小记</a></li>
+<li><a href="http://ffmpeg.org/documentation.html" target="_blank" rel="external">FFmpeg官方文档</a></li>
+<li><a href="http://zh.wikihow.com/%E5%9C%A8Windows%E4%B8%8A%E5%AE%89%E8%A3%85FFmpeg%E7%A8%8B%E5%BA%8F" target="_blank" rel="external">如何在Windows上安装FFmpeg程序</a></li>
+<li><a href="http://alleni123.iteye.com/blog/2028433" target="_blank" rel="external">ffmpeg教程 (一) 基本安装</a></li>
+</ul>
+]]></content>
+    
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[快速求幂算法]]></title>
     <link href="http://printf.me/2014/07/29/%E5%BF%AB%E9%80%9F%E6%B1%82%E5%B9%82%E7%AE%97%E6%B3%95/"/>
     <id>http://printf.me/2014/07/29/快速求幂算法/</id>
     <published>2014-07-29T08:07:51.000Z</published>
-    <updated>2014-07-29T09:40:24.000Z</updated>
+    <updated>2014-07-29T10:09:42.000Z</updated>
     <content type="html"><![CDATA[<h2 id="1-快速求幂算法">1.快速求幂算法</h2>
 <p>在这篇文章我会展示怎样通过求一个数的幂的基本思路来引导我们发现一些抽象的东西比如半群和含幺半群。</p>
 <p>有一个很有名的对一个数求幂的算法,也就是说,求一个数x的n次方或者这样简单表示：<code>x^n</code>。<a href="http://en.wikipedia.org/wiki/Donald_Knuth" target="_blank" rel="external">Donald Knuth</a>在<a href="http://www-cs-faculty.stanford.edu/~uno/taocp.html" target="_blank" rel="external">TAOCP</a>的<code>4.63节 求幂值</code>中提出这个算法。</p>
@@ -45,7 +122,7 @@
 <p>第二步要提供一个函数给我们的算法，它能够作乘法或者加法。为了实现这个目的我们会传递一个担当<code>二元运算</code>的函数。例如：一个需要两个参数的函数。这个函数需要遵循以下的规则。必须满足：<code>a·（ b · c ） = (a · b ) · c</code>。还要求返回结果的类型必须和两个输入参数的类型一致。  </p>
 <p>幸运的是<code>加法</code>和<code>乘法</code>都满足<a href="http://zh.wikipedia.org/zh/%E7%BB%93%E5%90%88%E5%BE%8B" target="_blank" rel="external">结合律</a>,因此我们能够仅在一个函数中包含他们然后把它传递给我们的<code>power</code>算法。</p>
 <p>这里是这个算法新的实现：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">power2</span><span class="params">(<span class="variable">$x</span>, <span class="variable">$n</span>, <span class="variable">$id</span>, <span class="variable">$f</span>)</span> </span>{</div><div class="line">    <span class="variable">$y</span> = <span class="variable">$id</span>;</div><div class="line"></div><div class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) {</div><div class="line">        <span class="variable">$t</span> = <span class="variable">$n</span> % <span class="number">2</span>;</div><div class="line">        <span class="variable">$n</span> = floor(<span class="variable">$n</span>/<span class="number">2</span>);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (<span class="variable">$t</span> == <span class="number">1</span>) {</div><div class="line">            <span class="variable">$y</span> = <span class="variable">$f</span>(<span class="variable">$y</span>, <span class="variable">$x</span>);</div><div class="line">        }</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (<span class="variable">$n</span> == <span class="number">0</span>) {</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        }</div><div class="line"></div><div class="line">        <span class="variable">$x</span> = <span class="variable">$f</span>(<span class="variable">$x</span>, <span class="variable">$x</span>);</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="variable">$y</span>;</div><div class="line">}</div></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">power2</span><span class="params">(<span class="variable">$x</span>, <span class="variable">$n</span>, <span class="variable">$id</span>, <span class="variable">$f</span>)</span> </span>{</div><div class="line">    <span class="variable">$y</span> = <span class="variable">$id</span>;</div><div class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) {</div><div class="line">        <span class="variable">$t</span> = <span class="variable">$n</span> % <span class="number">2</span>;</div><div class="line">        <span class="variable">$n</span> = floor(<span class="variable">$n</span>/<span class="number">2</span>);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (<span class="variable">$t</span> == <span class="number">1</span>) {</div><div class="line">            <span class="variable">$y</span> = <span class="variable">$f</span>(<span class="variable">$y</span>, <span class="variable">$x</span>);</div><div class="line">        }</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (<span class="variable">$n</span> == <span class="number">0</span>) {</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        }</div><div class="line"></div><div class="line">        <span class="variable">$x</span> = <span class="variable">$f</span>(<span class="variable">$x</span>, <span class="variable">$x</span>);</div><div class="line">    }</div><div class="line">    <span class="keyword">return</span> <span class="variable">$y</span>;</div><div class="line">}</div></pre></td></tr></table></figure>
 
 <p>我们能够像这样调用它:</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="number">1024</span> == power2(<span class="number">2</span>, <span class="number">10</span>, <span class="number">1</span>, <span class="function"><span class="keyword">function</span> <span class="params">(<span class="variable">$a</span>, <span class="variable">$b</span>)</span> </span>{ <span class="keyword">return</span> <span class="variable">$a</span> * <span class="variable">$b</span>; });</div><div class="line">=&gt; <span class="keyword">true</span></div></pre></td></tr></table></figure>
