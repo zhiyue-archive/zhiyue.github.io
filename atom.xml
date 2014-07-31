@@ -4,7 +4,7 @@
   <subtitle><![CDATA[恍惚中，时光停滞，岁月静好，宛如十年前。]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://printf.me/"/>
-  <updated>2014-07-30T04:22:10.695Z</updated>
+  <updated>2014-07-31T02:11:58.950Z</updated>
   <id>http://printf.me/</id>
   
   <author>
@@ -15,19 +15,17 @@
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[]]></title>
+    <title><![CDATA[FFmpeg的使用]]></title>
     <link href="http://printf.me/2014/07/30/ffmpeg%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
     <id>http://printf.me/2014/07/30/ffmpeg的使用/</id>
     <published>2014-07-30T04:15:09.000Z</published>
-    <updated>2014-07-30T04:22:04.000Z</updated>
-    <content type="html"><![CDATA[<p>title: FFmpeg的使用<br>tags：[工具,音频,教程,音频开发]</p>
-<h2 id="categories:_音频开发">categories:  音频开发</h2>
-<p><img src="http://printf.qiniudn.com/20140616102021781.png" alt=""></p>
+    <updated>2014-07-30T04:24:02.000Z</updated>
+    <content type="html"><![CDATA[<p><img src="http://printf.qiniudn.com/20140616102021781.png" alt=""></p>
 <p>最近因为要音频处理的研究,音频开发，但是有一个难题就是怎么解析与提取音频的数据,于是就找到了<code>FFmpeg</code>。基本上只要做视频音频开发都离不开<code>ffmpeg</code></p>
 <h2 id="1-什么是ffmpeg">1.什么是ffmpeg</h2>
 <p>引用<a href="http://zh.wikipedia.org/wiki/FFmpeg" target="_blank" rel="external">wiki百科</a>的解析.</p>
 <blockquote>
-<p>FFmpeg是一个自由软件，可以运行音频和视频多种格式的录影、转换、流功能<a href="http://ffmpeg.org/ffmpeg.html" target="_blank" rel="external">^1</a>，包含了libavcodec ─这是一个用于多个项目中音频和视频的解码器库，以及libavformat——一个音频与视频格式转换库。</p>
+<p>FFmpeg是一个自由软件，可以运行音频和视频多种格式的录影、转换、流功能<a href="http://ffmpeg.org/ffmpeg.html" target="_blank" rel="external">1</a>，包含了libavcodec ─这是一个用于多个项目中音频和视频的解码器库，以及libavformat——一个音频与视频格式转换库。</p>
 </blockquote>
 <ul>
 <li><code>ffmpeg</code>的官网地址是:<a href="https://www.ffmpeg.org/" target="_blank" rel="external">https://www.ffmpeg.org/</a></li>
@@ -88,6 +86,16 @@
 </ul>
 ]]></content>
     
+    
+      <category term="工具" scheme="http://printf.me/tags/%E5%B7%A5%E5%85%B7/"/>
+    
+      <category term="音频" scheme="http://printf.me/tags/%E9%9F%B3%E9%A2%91/"/>
+    
+      <category term="教程" scheme="http://printf.me/tags/%E6%95%99%E7%A8%8B/"/>
+    
+      <category term="音频开发" scheme="http://printf.me/tags/%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91/"/>
+    
+      <category term="音频开发" scheme="http://printf.me/categories/%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91/"/>
     
   </entry>
   

@@ -4,17 +4,16 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Just Do IT.</title>
+    <title>FFmpeg的使用 | Just Do IT.</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="zhiyue">
     
-    <meta name="description" content="title: FFmpeg的使用tags：[工具,音频,教程,音频开发]
-categories:  音频开发
-
-最近因为要音频处理的研究,音频开发，但是有一个难题就是怎么解析与提取音频的数据,于是就找到了FFmpeg。基本上只要做视频音频开发都离不开ffmpeg
+    <meta name="description" content="最近因为要音频处理的研究,音频开发，但是有一个难题就是怎么解析与提取音频的数据,于是就找到了FFmpeg。基本上只要做视频音频开发都离不开ffmpeg
 1.什么是ffmpeg
-引用wiki">
+引用wiki百科的解析.
+
+FFmpeg是一个自由软件，可以运行音频和视频多种格式的录影、转换、流功能1，包含了libavc">
     
     
     
@@ -72,7 +71,7 @@ categories:  音频开发
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/07/30/ffmpeg的使用/" title="" itemprop="url"></a>
+      <a href="/2014/07/30/ffmpeg的使用/" title="FFmpeg的使用" itemprop="url">FFmpeg的使用</a>
   </h1>
   <p class="article-author">By
        
@@ -89,18 +88,16 @@ categories:  音频开发
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#categories:_音频开发"><span class="toc-number">1.</span> <span class="toc-text">categories:  音频开发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-什么是ffmpeg"><span class="toc-number">2.</span> <span class="toc-text">1.什么是ffmpeg</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1_组件"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2_谁在使用ffmpeg"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 谁在使用ffmpeg</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-如何安装"><span class="toc-number">3.</span> <span class="toc-text">2.如何安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-怎么使用"><span class="toc-number">4.</span> <span class="toc-text">3.怎么使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1_命令行工具的使用"><span class="toc-number">4.1.</span> <span class="toc-text">3.1 命令行工具的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-11_ffmpeg-exe"><span class="toc-number">4.1.1.</span> <span class="toc-text">3.11 ffmpeg.exe</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-12_ffplay-exe"><span class="toc-number">4.1.2.</span> <span class="toc-text">3.12 ffplay.exe</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-13_ffprobe-exe"><span class="toc-number">4.1.3.</span> <span class="toc-text">3.13 ffprobe.exe</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2_使用ffmpeg库进行开发"><span class="toc-number">4.2.</span> <span class="toc-text">3.2 使用ffmpeg库进行开发</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#To_Be_Continue…"><span class="toc-number">5.</span> <span class="toc-text">To Be Continue…</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-什么是ffmpeg"><span class="toc-number">1.</span> <span class="toc-text">1.什么是ffmpeg</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1_组件"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2_谁在使用ffmpeg"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 谁在使用ffmpeg</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-如何安装"><span class="toc-number">2.</span> <span class="toc-text">2.如何安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-怎么使用"><span class="toc-number">3.</span> <span class="toc-text">3.怎么使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1_命令行工具的使用"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 命令行工具的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-11_ffmpeg-exe"><span class="toc-number">3.1.1.</span> <span class="toc-text">3.11 ffmpeg.exe</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-12_ffplay-exe"><span class="toc-number">3.1.2.</span> <span class="toc-text">3.12 ffplay.exe</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-13_ffprobe-exe"><span class="toc-number">3.1.3.</span> <span class="toc-text">3.13 ffprobe.exe</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2_使用ffmpeg库进行开发"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 使用ffmpeg库进行开发</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#To_Be_Continue…"><span class="toc-number">4.</span> <span class="toc-text">To Be Continue…</span></a></li></ol>
 		
 		</div>
 		
-		<p>title: FFmpeg的使用<br>tags：[工具,音频,教程,音频开发]</p>
-<h2 id="categories:_音频开发">categories:  音频开发</h2>
-<p><img src="http://printf.qiniudn.com/20140616102021781.png" alt=""></p>
+		<p><img src="http://printf.qiniudn.com/20140616102021781.png" alt=""></p>
 <p>最近因为要音频处理的研究,音频开发，但是有一个难题就是怎么解析与提取音频的数据,于是就找到了<code>FFmpeg</code>。基本上只要做视频音频开发都离不开<code>ffmpeg</code></p>
 <h2 id="1-什么是ffmpeg">1.什么是ffmpeg</h2>
 <p>引用<a href="http://zh.wikipedia.org/wiki/FFmpeg" target="_blank" rel="external">wiki百科</a>的解析.</p>
 <blockquote>
-<p>FFmpeg是一个自由软件，可以运行音频和视频多种格式的录影、转换、流功能<a href="http://ffmpeg.org/ffmpeg.html" target="_blank" rel="external">^1</a>，包含了libavcodec ─这是一个用于多个项目中音频和视频的解码器库，以及libavformat——一个音频与视频格式转换库。</p>
+<p>FFmpeg是一个自由软件，可以运行音频和视频多种格式的录影、转换、流功能<a href="http://ffmpeg.org/ffmpeg.html" target="_blank" rel="external">1</a>，包含了libavcodec ─这是一个用于多个项目中音频和视频的解码器库，以及libavformat——一个音频与视频格式转换库。</p>
 </blockquote>
 <ul>
 <li><code>ffmpeg</code>的官网地址是:<a href="https://www.ffmpeg.org/" target="_blank" rel="external">https://www.ffmpeg.org/</a></li>
@@ -164,13 +161,23 @@ categories:  音频开发
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/音频开发/">音频开发</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/工具/">工具</a><a href="/tags/音频/">音频</a><a href="/tags/教程/">教程</a><a href="/tags/音频开发/">音频开发</a>
+  </div>
 
 </div>
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://printf.me/2014/07/30/ffmpeg的使用/" data-title="Just Do IT." data-tsina="2372807992" class="share clearfix">
+  <div data-url="http://printf.me/2014/07/30/ffmpeg的使用/" data-title="FFmpeg的使用 | Just Do IT." data-tsina="2372807992" class="share clearfix">
   </div>
 
 </div>
@@ -208,7 +215,7 @@ categories:  音频开发
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#categories:_音频开发"><span class="toc-number">1.</span> <span class="toc-text">categories:  音频开发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-什么是ffmpeg"><span class="toc-number">2.</span> <span class="toc-text">1.什么是ffmpeg</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1_组件"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2_谁在使用ffmpeg"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 谁在使用ffmpeg</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-如何安装"><span class="toc-number">3.</span> <span class="toc-text">2.如何安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-怎么使用"><span class="toc-number">4.</span> <span class="toc-text">3.怎么使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1_命令行工具的使用"><span class="toc-number">4.1.</span> <span class="toc-text">3.1 命令行工具的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-11_ffmpeg-exe"><span class="toc-number">4.1.1.</span> <span class="toc-text">3.11 ffmpeg.exe</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-12_ffplay-exe"><span class="toc-number">4.1.2.</span> <span class="toc-text">3.12 ffplay.exe</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-13_ffprobe-exe"><span class="toc-number">4.1.3.</span> <span class="toc-text">3.13 ffprobe.exe</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2_使用ffmpeg库进行开发"><span class="toc-number">4.2.</span> <span class="toc-text">3.2 使用ffmpeg库进行开发</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#To_Be_Continue…"><span class="toc-number">5.</span> <span class="toc-text">To Be Continue…</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-什么是ffmpeg"><span class="toc-number">1.</span> <span class="toc-text">1.什么是ffmpeg</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1_组件"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2_谁在使用ffmpeg"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 谁在使用ffmpeg</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-如何安装"><span class="toc-number">2.</span> <span class="toc-text">2.如何安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-怎么使用"><span class="toc-number">3.</span> <span class="toc-text">3.怎么使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1_命令行工具的使用"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 命令行工具的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-11_ffmpeg-exe"><span class="toc-number">3.1.1.</span> <span class="toc-text">3.11 ffmpeg.exe</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-12_ffplay-exe"><span class="toc-number">3.1.2.</span> <span class="toc-text">3.12 ffplay.exe</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-13_ffprobe-exe"><span class="toc-number">3.1.3.</span> <span class="toc-text">3.13 ffprobe.exe</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2_使用ffmpeg库进行开发"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 使用ffmpeg库进行开发</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#To_Be_Continue…"><span class="toc-number">4.</span> <span class="toc-text">To Be Continue…</span></a></li></ol>
  
   </div>
 
@@ -227,6 +234,8 @@ categories:  音频开发
 		
 			<li><a href="/categories/翻译/" title="翻译">翻译<sup>1</sup></a></li>
 		
+			<li><a href="/categories/音频开发/" title="音频开发">音频开发<sup>1</sup></a></li>
+		
 		</ul>
 </div>
 
@@ -235,6 +244,8 @@ categories:  音频开发
 <div class="tagslist">
 	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
+		
+			<li><a href="/tags/教程/" title="教程">教程<sup>2</sup></a></li>
 		
 			<li><a href="/tags/翻译/" title="翻译">翻译<sup>1</sup></a></li>
 		
@@ -246,7 +257,11 @@ categories:  音频开发
 		
 			<li><a href="/tags/标签/" title="标签">标签<sup>1</sup></a></li>
 		
-			<li><a href="/tags/教程/" title="教程">教程<sup>1</sup></a></li>
+			<li><a href="/tags/音频开发/" title="音频开发">音频开发<sup>1</sup></a></li>
+		
+			<li><a href="/tags/音频/" title="音频">音频<sup>1</sup></a></li>
+		
+			<li><a href="/tags/工具/" title="工具">工具<sup>1</sup></a></li>
 		
 		</ul>
 </div>
