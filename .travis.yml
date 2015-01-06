@@ -7,7 +7,7 @@ node_js:
 script:
   - "npm install -g hexo"
   - "npm install"
-  - "hexo generate"
+  - "hexo generate --debug"
 after_success:
   - "git clone $DEPLOY_REPO git_deploy"
   - "rm -r git_deploy/*"
