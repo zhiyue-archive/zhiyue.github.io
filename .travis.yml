@@ -25,9 +25,11 @@ before_install:
 
 install:
 - npm install
+- npm install hexo-generator-feed 
+- npm install hexo-generator-sitemap
 
 script:
-  - "hexo generate --debug"
+  - "hexo generate "
   
 after_success:
   - "git clone $DEPLOY_REPO git_deploy"
