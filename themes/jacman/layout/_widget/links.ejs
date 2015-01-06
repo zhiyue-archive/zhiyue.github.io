@@ -1,9 +1,14 @@
 <div class="linkslist">
   <p class="asidetitle"><%= __('links') %></p>
     <ul>
-      <li><a href="http://yangjian.me" target="_blank" title="YangJian">Alimon's Blog</a></li>
-      <li><a href="http://zipperary.com/" target="_blank" title="zippera">Zippera's Blog</a></li>
-      <li><a href="http://brotherb.info/" target="_blank" title="brotherb">Spike's Blog</a></li>
-      <li><a href="http://hijiangtao.github.io/" target="_blank" title="JiangTao">Data.Blog</a></li>
+        <% for (var i in theme.links){ %>
+          <li>
+            <% if(theme.links[i].indexOf(",") > 0) { %>
+            	<a href="<%- theme.links[i].split(",")[0] %>" target="_blank" title="<%- theme.links[i].split(",")[1] %>"><%= i %></a>
+            <% }else{ %>
+            	<a href="<%- theme.links[i] %>" target="_blank" title="<%= i %>"><%= i %></a>
+            <% } %>
+          </li>
+        <% } %>
     </ul>
 </div>

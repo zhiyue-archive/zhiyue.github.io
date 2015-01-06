@@ -7,11 +7,13 @@ categories:  音频开发
 
 最近因为要音频处理的研究,音频开发，但是有一个难题就是怎么解析与提取音频的数据,于是就找到了`FFmpeg`。基本上只要做视频音频开发都离不开`ffmpeg`
 
-
+<!-- more -->
 
 ## 1.什么是ffmpeg
 引用[wiki百科](http://zh.wikipedia.org/wiki/FFmpeg)的解析.
 > FFmpeg是一个自由软件，可以运行音频和视频多种格式的录影、转换、流功能[1]，包含了libavcodec ─这是一个用于多个项目中音频和视频的解码器库，以及libavformat——一个音频与视频格式转换库。
+
+
 
 - `ffmpeg`的官网地址是:https://www.ffmpeg.org/
 - `ffmpeg`的Github项目地址是:https://github.com/FFmpeg/FFmpeg

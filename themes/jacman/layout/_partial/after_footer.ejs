@@ -1,4 +1,7 @@
 <script src="<%- config.root %>js/jquery-2.0.3.min.js"></script>
+<script src="<%- config.root %>js/jquery.imagesloaded.min.js"></script>
+<script src="<%- config.root %>js/gallery.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function(){ 
   $('.navbar').click(function(){
@@ -78,7 +81,7 @@ $(document).ready(function(){
 });
 </script>
 <% } %>
-<% if ((page.layout=='post'||page.layout=='page')&&!theme.jiathis.enable) { %>
+<% if ((page.layout=='post'||page.layout=='page'||page.layout=='photo')&&!theme.jiathis.enable) { %>
 <script type="text/javascript">
 $(document).ready(function(){ 
   var $this = $('.share'),
@@ -89,12 +92,12 @@ $(document).ready(function(){
       description = $this.attr('description');
   var html = [
   '<a href="#" class="overlay" id="qrcode"></a>',
-  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
   '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
   '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
-  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
   '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
-  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
   '<span title="Share to"></span>'
   ].join('');
   $this.append(html);
@@ -108,10 +111,10 @@ $(document).ready(function(){
 });     
 </script>
 <% } %>
-<% if (page.layout=='post'||page.layout=='page'){ %>
-<% if (theme.duoshuo.enable && page.comments){ %>
+
+<% if (theme.duoshuo_shortname){ %>
 <script type="text/javascript">
-  var duoshuoQuery = {short_name:"<%= theme.duoshuo.short_name %>"};
+  var duoshuoQuery = {short_name:"<%= theme.duoshuo_shortname %>"};
   (function() {
     var ds = document.createElement('script');
     ds.type = 'text/javascript';ds.async = true;
@@ -122,23 +125,30 @@ $(document).ready(function(){
   })();
 </script> 
 <% } %>
-<% if( (config.disqus_shortname || theme.disqus.enable) && page.comments) { %>
+<% if( (config.disqus_shortname || theme.disqus_shortname)) { %>
 <script type="text/javascript">
 <% if(config.disqus_shortname){ %>
 var disqus_shortname = '<%= config.disqus_shortname %>';
 <% }else{ %>
-var disqus_shortname = '<%= theme.disqus.short_name %>';
+var disqus_shortname = '<%= theme.disqus_shortname %>';
 <% } %>
 (function(){
   var dsq = document.createElement('script');
   dsq.type = 'text/javascript';
   dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/<% if (page.comments){ %>embed.js<% } else { %>count.js<% } %>';
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
   (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
 }());
 </script>
 <% } %>
-<% } %>
+
 
 
 <% if (page.layout=='tags'||page.layout=='categories'){ %>
@@ -160,7 +170,7 @@ $(document).ready(function(){
   }); 
 </script>
 <% } %>
-<% if ((page.layout=='post'||page.layout=='page')&&theme.fancybox){ %>
+<% if ((page.layout=='post'||page.layout=='page'||page.layout=='photo')&&theme.fancybox){ %>
 <link rel="stylesheet" href="<%- config.root %>fancybox/jquery.fancybox.css" media="screen" type="text/css">
 <script src="<%- config.root %>fancybox/jquery.fancybox.pack.js"></script>
 <script type="text/javascript">
@@ -183,15 +193,15 @@ $(document).ready(function(){
 </script>
 <% } %>
 
-<% if (theme.google_analytics.enable){ %>
-<%- partial('google_analytics') %>
-<% } %>
 
-<% if (theme.totop){ %>
+<!-- Analytics Begin -->
+<%- partial('analytics') %>
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
 <%- partial('totop') %>
-<script src="<%- config.root %>js/totop.js"></script>
-<% } %>
+<!-- Totop End -->
 
-<% if (page.mathjax){ %>
+<!-- MathJax Begin -->
 <%- partial('mathjax') %>
-<% } %>
+<!-- MathJax End -->

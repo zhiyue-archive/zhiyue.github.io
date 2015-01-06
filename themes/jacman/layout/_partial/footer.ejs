@@ -1,11 +1,11 @@
 <div id="footer" >
-	<% if(theme.author_img_enable == true){ %>
+	<% if(theme.author_img){ %>
 	<div class="line">
 		<span></span>
 		<div class="author"></div>
 	</div>
 	<% } %>
-	<% if(theme.author.intro_line1&&theme.author.intro_line2){ %>
+	<% if(theme.author.intro_line1 || theme.author.intro_line2){ %>
 	<section class="info">
 		<p> <%= theme.author.intro_line1 %> <br/>
 			<%= theme.author.intro_line2 %></p>
@@ -13,7 +13,7 @@
 	 <% } %>
 	<div class="social-font" class="clearfix">
 		<% if(theme.author.weibo){ %>
-		<a href="http://weibo.com/<%= theme.author.weibo %>" target="_blank" class="icon-weibo" title="weibo"></a>
+		<a href="http://weibo.com/<%= theme.author.weibo %>" target="_blank" class="icon-weibo" title="微博"></a>
 		<% } %>
 		<% if(theme.author.github){ %>
 		<a href="https://github.com/<%=theme.author.github %>" target="_blank" class="icon-github" title="github"></a>
@@ -27,8 +27,14 @@
 		<% if(theme.author.facebook){ %>
 		<a href="https://www.facebook.com/<%=theme.author.facebook %>" target="_blank" class="icon-facebook" title="facebook"></a>
 		<% } %>
+		<% if(theme.author.linkedin){ %>
+		<a href="https://www.linkedin.com/in/<%=theme.author.linkedin %>" target="_blank" class="icon-linkedin" title="linkedin"></a>
+		<% } %>
 		<% if(theme.author.douban){ %>
 		<a href="https://www.douban.com/people/<%=theme.author.douban %>" target="_blank" class="icon-douban" title="豆瓣"></a>
+		<% } %>
+		<% if(theme.author.zhihu){ %>
+		<a href="https://www.zhihu.com/people/<%=theme.author.zhihu %>" target="_blank" class="icon-zhihu" title="知乎"></a>
 		<% } %>
 		<% if(theme.author.google_plus){ %>
 		<a href="https://plus.google.com/<%=theme.author.google_plus %>?rel=author" target="_blank" class="icon-google_plus" title="Google+"></a>

@@ -38,7 +38,7 @@ footer.article-footer
     display block
     position relative
     &:before
-      font-size font-size
+      font-size 1.2em
       font-family font-icon-family
       text-align center
       color color-font
@@ -70,7 +70,8 @@ footer.article-footer
 
 .article-share-qrcode
   &:before
-    content "\f029"
+    font-family font-icon-diao !important
+    content "\f132"
   &:hover
     background color-qrcode
     text-shadow 0 1px darken(color-qrcode, 20%)
@@ -139,10 +140,30 @@ footer.article-footer
   opacity 1
   visibility visible
 
+//comments-count
+.comments-count
+  color lighten(color-gray,20%)
+  margin-top 0.3em
+  padding 0.5em 0
+  float right
+  span
+    &:before
+      font-family font-icon-family
+      font-smoothing()
+      content "\f075"
+
+.comments-count-link
+  padding 0.5em
+  margin 0 0.3em
+  &:hover
+    color color-white !important
+    background color-blue
+
+
 //tags&categories
 .article-catetags
   @media mini
-    width 60%
+    //width 60%
 .article-tags,.article-categories
   padding 0.5em 0
   float left
@@ -152,7 +173,6 @@ footer.article-footer
 
 .article-tags
   color lighten(color-gray,20%) 
-  margin-left 3em
   @media phonemax
     margin-left 0
   span
@@ -178,6 +198,7 @@ footer.article-footer
 .article-categories
   color lighten(color-gray,20%)
   margin-top 0.3em
+  margin-right 3em
   span
     &:before
       font-family font-icon-family
@@ -278,6 +299,7 @@ section.comment
       list-style-type none
   .toc-child 
     padding-left 1.5em
+    padding-top 0
 
 #toc.toc-aside
   display none
