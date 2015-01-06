@@ -88,7 +88,7 @@ duoshuo:
   short_name: zhiyue   ## duoshuo short name.
   
 disqus:
-  enable: true  ## disqus.com
+  enable: false  ## disqus.com
   short_name: zhiyue   ##e.g. wuchong   for disqus short name.  
 
 
