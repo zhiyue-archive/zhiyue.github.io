@@ -1,4 +1,5 @@
 title: Hello World
+date: 2014-05-09 16:21:56
 tags:  教程 
 categories:  杂货 
 ---
