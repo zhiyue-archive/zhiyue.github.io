@@ -4,6 +4,8 @@ tags: [工具,音频,教程,音频开发]
 categories:  音频开发
 ---
 
+<img src="http://printf.qiniudn.com/20140616102021781.png" class="img-topic" />
+
 ![](http://printf.qiniudn.com/20140616102021781.png)
 
 最近因为要音频处理的研究,音频开发，但是有一个难题就是怎么解析与提取音频的数据,于是就找到了`FFmpeg`。基本上只要做视频音频开发都离不开`ffmpeg`
