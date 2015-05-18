@@ -102,4 +102,4 @@ deploy:
   type: git
   message: update
   repo: https://github.com/zhiyue/zhiyue.github.io.git
-  branch: gh-pages
+  branch: master
