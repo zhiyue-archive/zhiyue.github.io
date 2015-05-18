@@ -36,9 +36,6 @@ script:
   
 after_success:
   - "git clone $DEPLOY_REPO git_deploy"
-  - "cd git_deploy"
-  - "git checkout gh-pages"
-  - "cd .."
   - "rm -r git_deploy/*"
   - "cp -r public/* git_deploy"
   - "cd git_deploy"
