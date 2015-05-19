@@ -95,6 +95,7 @@ feed:
 	path: atom.xml
 	limit: 20
 
+skip_render: Demo/*
 
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
