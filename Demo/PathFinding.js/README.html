@@ -1,0 +1,81 @@
+<h1 id="PathFinding-js">PathFinding.js</h1><h4 id="A_comprehensive_path-finding_library_in_javascript-">A comprehensive path-finding library in javascript.</h4><h2 id="Introduction">Introduction</h2><p>The aim of this project is to provide a path-finding library that can be easily incorporated into web games. It may run on Node.js or the browser.</p>
+<p>It comes along with an <a href="http://qiao.github.com/PathFinding.js/visual" target="_blank" rel="external">online demo</a> to show how the algorithms execute. (The pathfinding speed is slowed down in the demo)</p>
+<p>Note that this project only provides path-finding algorithms for 2D space. If you need to work in a 3D environment, then you may use <a href="https://github.com/schteppe" target="_blank" rel="external">@schteppe</a>‘s <a href="https://github.com/schteppe/PathFinding3D.js" target="_blank" rel="external">fork</a>.</p>
+<h2 id="Server">Server</h2><p>If you want to use it in Node.js, you may install it via <code>npm</code>.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install pathfinding</span><br></pre></td></tr></table></figure>
+<p>Then, in your program:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> PF = <span class="built_in">require</span>(<span class="string">'pathfinding'</span>);</span><br></pre></td></tr></table></figure>
+<p>Now skip to the <code>Basic Usage</code> section of this readme.</p>
+<h2 id="Browser">Browser</h2><p>Please refer to the <a href="https://github.com/qiao/PathFinding.js/releases" target="_blank" rel="external">Releases Page</a> to download the latest release and include it in your web page.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"./pathfinding-browser.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Basic_Usage">Basic Usage</h2><p>To build a grid-map of width 5 and height 3:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> grid = <span class="keyword">new</span> PF.Grid(<span class="number">5</span>, <span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+<p>By default, all the nodes in the grid will be able to be walked through.<br>To set whether a node at a given coordinate is walkable or not, use the <code>setWalkableAt</code> method.</p>
+<p>For example, to set the node at (0, 1) to be un-walkable, where 0 is the x coordinate (from left to right), and<br>1 is the y coordinate (from up to down):</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grid.setWalkableAt(<span class="number">0</span>, <span class="number">1</span>, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+<p>You may also pass in a matrix while instantiating the <code>PF.Grid</code> class.<br>It will initiate all the nodes in the grid with the same walkability indicated by the matrix.<br>0 for walkable while 1 for blocked.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> matrix = [</span><br><span class="line">    [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">    [<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">    [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">];</span><br><span class="line"><span class="keyword">var</span> grid = <span class="keyword">new</span> PF.Grid(<span class="number">5</span>, <span class="number">3</span>, matrix);</span><br></pre></td></tr></table></figure>
+<p>Currently there are 11 path-finders bundled in this library, namely:</p>
+<ul>
+<li><code>AStarFinder</code> *</li>
+<li><code>BreadthFirstFinder</code> *</li>
+<li><code>BestFirstFinder</code></li>
+<li><code>DijkstraFinder</code> *</li>
+<li><code>BiAStarFinder</code></li>
+<li><code>BiBestFirstFinder</code></li>
+<li><code>BiDijkstraFinder</code> *</li>
+<li><code>BiBreadthFirstFinder</code> *</li>
+<li><code>JumpPointFinder</code> *</li>
+<li><code>OrthogonalJumpPointFinder</code> *</li>
+<li><code>Trace</code></li>
+</ul>
+<p>The suffix <code>Bi</code> for the last four finders in the above list stands for the bi-directional searching strategy. </p>
+<p>Also, Note that only the finders with trailing asterisks are guaranteed to find the shortest path.</p>
+<p>To build a path-finder, say, the <code>AStarFinder</code>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> finder = <span class="keyword">new</span> PF.AStarFinder();</span><br></pre></td></tr></table></figure>
+<p>To find a path from (1, 2) to (4, 2), (Note: both the start point and end point should be walkable):</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> path = finder.findPath(<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">2</span>, grid);</span><br></pre></td></tr></table></figure>
+<p><code>path</code> will be an array of coordinates including both the start and end positions.</p>
+<p>For the <code>matrix</code> defined previously, the <code>path</code> will be:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ [ <span class="number">1</span>, <span class="number">2</span> ], [ <span class="number">1</span>, <span class="number">1</span> ], [ <span class="number">2</span>, <span class="number">1</span> ], [ <span class="number">3</span>, <span class="number">1</span> ], [ <span class="number">3</span>, <span class="number">2</span> ], [ <span class="number">4</span>, <span class="number">2</span> ] ]</span><br></pre></td></tr></table></figure>
+<p>Be aware that <code>grid</code> will be modified in each path-finding, and will not be usable afterwards. If you want to use a single grid multiple times, create a clone for it before calling <code>findPath</code>.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> gridBackup = grid.clone();</span><br></pre></td></tr></table></figure>
+<h2 id="Advanced_Usage">Advanced Usage</h2><p>When instantiating path-finders, you may pass in additional parameters to indicate which specific strategies to use.</p>
+<p>For all path-finders, you may indicate whether diagonal movement is allowed. The default value is <code>false</code>, which means that the path can only go orthogonally.</p>
+<p>In order to enable diagonal movement:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> finder = <span class="keyword">new</span> PF.AStarFinder(&#123;</span><br><span class="line">    allowDiagonal: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>When diagonal movement is enabled, you might want to prevent the path from touching the corners of the occupied grid blocks. This is usually desirable if the objects using the path have physical width and can also move between the grid cells.</p>
+<p>To enable the corner crossing prevention:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> finder = <span class="keyword">new</span> PF.AStarFinder(&#123;</span><br><span class="line">    allowDiagonal: <span class="literal">true</span>,</span><br><span class="line">    dontCrossCorners: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Note that <code>dontCrossCorners</code> only makes sense when <code>allowDiagonal</code> is also used. Currently all algorithms except <code>JumpPointFinder</code> support this feature.</p>
+<p>For <code>AStarFinder</code>, <code>BestFirstFinder</code> and all their <code>Bi</code> relatives, you may indicate which heuristic function to use.</p>
+<p>The predefined heuristics are <code>PF.Heuristic.manhattan</code>(defalut), <code>PF.Heuristic.chebyshev</code> and <code>PF.Heuristic.euclidean</code>.</p>
+<p>To use the chebyshev heuristic:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> finder = <span class="keyword">new</span> PF.AStarFinder(&#123;</span><br><span class="line">    heuristic: PF.Heuristic.chebyshev</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>To build a <code>BestFirstFinder</code> with diagonal movement allowed and a custom heuristic function:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> finder = <span class="keyword">new</span> PF.BestFirstFinder(&#123;</span><br><span class="line">    allowDiagonal: <span class="literal">true</span>,</span><br><span class="line">    heuristic: <span class="function"><span class="keyword">function</span><span class="params">(dx, dy)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Math</span>.min(dx, dy);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>To smoothen the path, you may use <code>PF.Util.smoothenPath</code>. This routine will return<br>a new path with the original one unmodified.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> newPath = PF.Util.smoothenPath(grid, path);</span><br></pre></td></tr></table></figure>
+<p>Note that the new path will be compressed as well, i.e. if the original path is<br><code>[[0, 1], [0, 2], [0, 3], [0, 4]]</code>, then the new path will be <code>[[0, 1], [0, 4]]</code>.</p>
+<p>To just compress a path without smoothing it, you may use <code>PF.Util.compressPath</code>.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> newPath = PF.Util.compressPath(path);</span><br></pre></td></tr></table></figure>
+<p>To expand the compressed path like <code>[[0, 1], [0, 4]]</code> back to <code>[[0, 1], [0, 2], [0, 3], [0, 4]]</code>,<br>you may use <code>PF.Util.expandPath</code>.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> newPath = PF.Util.expandPath(path);</span><br></pre></td></tr></table></figure>
+<h2 id="Development">Development</h2><p>Layout:</p>
+<pre><code>.
+|-- lib          <span class="comment"># browser distribution</span>
+|-- src          <span class="comment"># source code (algorithms only)</span>
+|-- <span class="built_in">test</span>         <span class="comment"># test scripts</span>
+|-- utils        <span class="comment"># build scripts</span>
+`-- visual       <span class="comment"># visualization</span>
+</code></pre><p>You will need to install <code>node.js</code> and use <code>npm</code> to install the dependencies: </p>
+<pre><code>npm install <span class="operator">-d</span> 
+</code></pre><p>To build the browser distribution<br>(It will use <a href="https://github.com/substack/node-browserify" target="_blank" rel="external">node-browserify</a> to generate a browser distribution,<br>and use <a href="https://github.com/mishoo/UglifyJS" target="_blank" rel="external">UglifyJS</a> to compress):</p>
+<pre><code><span class="built_in">make</span>
+</code></pre><p>To run the tests<br>(algorithms only, not including the visualization) with<br><a href="http://visionmedia.github.com/mocha/" target="_blank" rel="external">mocha</a> and <a href="https://github.com/visionmedia/should.js" target="_blank" rel="external">should.js</a> </p>
+<pre><code>make <span class="built_in">test</span>
+</code></pre><h2 id="License">License</h2><p><a href="http://www.opensource.org/licenses/mit-license.php" target="_blank" rel="external">MIT License</a></p>
+<p>&copy; 2011-2012 Xueqiao Xu &lt;xueqiaoxu@gmail.com&gt;</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>

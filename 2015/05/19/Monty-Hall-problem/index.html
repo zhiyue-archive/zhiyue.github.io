@@ -1,0 +1,733 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>用python验证蒙提霍尔问题 | Just Do IT.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhiyue">
+    
+
+    
+    <meta name="description" content="最初看到这个问题是初中的时候买了一本有关数学谜题的书里面概率论的一张的课后拓展就是说到三门问题，当时作为一个扩展阅读看了一下，里面说到了一个世界智商最高的女人秒杀了美国一大群的数学高材生的精彩故事（比较夸张），当时对这个问题也是似懂非懂。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用python验证蒙提霍尔问题">
+<meta property="og:url" content="http://printf.me/2015/05/19/Monty-Hall-problem/index.html">
+<meta property="og:site_name" content="Just Do IT.">
+<meta property="og:description" content="最初看到这个问题是初中的时候买了一本有关数学谜题的书里面概率论的一张的课后拓展就是说到三门问题，当时作为一个扩展阅读看了一下，里面说到了一个世界智商最高的女人秒杀了美国一大群的数学高材生的精彩故事（比较夸张），当时对这个问题也是似懂非懂。">
+<meta property="og:image" content="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/24200658-c442dec3691a4e929938ba98a52d78c5.png">
+<meta property="og:image" content="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/24200658-c442dec3691a4e929938ba98a52d78c5.png">
+<meta property="og:image" content="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/zhiyue_2015-05-09_164731.png">
+<meta property="og:image" content="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/564.jpg">
+<meta property="og:image" content="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E9%97%A8%E5%90%8E%E4%B8%8D%E6%94%B9%E5%8F%98.png">
+<meta property="og:image" content="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E9%97%A8%E5%90%8E%E6%83%85%E5%86%B5%E4%B8%8D%E6%94%B9%E5%8F%98.png">
+<meta property="og:image" content="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E6%94%B9%E5%8F%98.png">
+<meta property="og:image" content="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E6%94%AF%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E6%94%B9%E5%8F%98.png">
+<meta property="og:image" content="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/24200702-dd4e3b818eee4ae680cb357ce903d8e0.png">
+<meta property="og:image" content="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/large_num.png">
+<meta property="og:image" content="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/large_num2.png">
+<meta property="og:image" content="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E9%9A%8F%E6%9C%BA%E9%80%89%E6%8B%A9.png">
+<meta property="og:image" content="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E9%9A%8F%E6%9C%BA%E9%80%89%E6%8B%A9%E9%A2%91%E7%8E%87%E5%88%86%E5%B8%83.png">
+<meta property="og:image" content="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E4%B8%8D%E7%9F%A5%E9%81%93%E9%97%A8%E5%90%8E%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8D%E6%94%B9%E5%8F%98.png">
+<meta property="og:image" content="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E4%B8%8D%E7%9F%A5%E9%81%93%E9%97%A8%E5%90%8E%E9%9D%A2%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8D%E6%94%B9%E5%8F%98.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用python验证蒙提霍尔问题">
+<meta name="twitter:description" content="最初看到这个问题是初中的时候买了一本有关数学谜题的书里面概率论的一张的课后拓展就是说到三门问题，当时作为一个扩展阅读看了一下，里面说到了一个世界智商最高的女人秒杀了美国一大群的数学高材生的精彩故事（比较夸张），当时对这个问题也是似懂非懂。">
+<link rel="publisher" href="103838448889836434236">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Just Do IT." type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Just Do IT.">Just Do IT.</a></h1>
+				<h2 class="blog-motto">恍惚中，时光停滞，岁月静好，宛如十年前。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+						<li><a href="/Demo">Demo</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="/search/index.html" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" autocomplete="off" name="q" maxlength="20" placeholder="搜索" />
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/05/19/Monty-Hall-problem/" title="用python验证蒙提霍尔问题" itemprop="url">用python验证蒙提霍尔问题</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="https://plus.google.com/103838448889836434236?rel=author" title="zhiyue" target="_blank" itemprop="author">zhiyue</a>
+		
+  <p class="article-time">
+    <time datetime="2015-05-18T18:55:49.000Z" itemprop="datePublished"> 发表于 2015-05-19</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是蒙提霍尔问题？"><span class="toc-number">1.</span> <span class="toc-text">什么是蒙提霍尔问题？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#证明？"><span class="toc-number">2.</span> <span class="toc-text">证明？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#程序验证"><span class="toc-number">3.</span> <span class="toc-text">程序验证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#模拟1000轮，每一轮重复试验1000次"><span class="toc-number">3.1.</span> <span class="toc-text">模拟1000轮，每一轮重复试验1000次</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更加深入的讨论"><span class="toc-number">4.</span> <span class="toc-text">更加深入的讨论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#练习"><span class="toc-number">6.</span> <span class="toc-text">练习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#女孩的概率"><span class="toc-number">6.1.</span> <span class="toc-text">女孩的概率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三囚犯问题"><span class="toc-number">6.2.</span> <span class="toc-text">三囚犯问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类似的问题还有"><span class="toc-number">6.3.</span> <span class="toc-text">类似的问题还有</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考:"><span class="toc-number">7.</span> <span class="toc-text">参考:</span></a></li></ol>
+		
+		</div>
+		
+		<p><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/24200658-c442dec3691a4e929938ba98a52d78c5.png" class="img-topic"><br>最初看到这个问题是初中的时候买了一本有关数学谜题的书里面概率论的一张的课后拓展就是说到三门问题，当时作为一个扩展阅读看了一下，里面说到了一个世界智商最高的女人秒杀了美国一大群的数学高材生的精彩故事（比较夸张），当时对这个问题也是似懂非懂。</p>
+<a id="more"></a>
+<h2 id="什么是蒙提霍尔问题？">什么是蒙提霍尔问题？</h2><p><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/24200658-c442dec3691a4e929938ba98a52d78c5.png" alt="蒙提霍尔"></p>
+<blockquote>
+<p>蒙提霍尔问题，亦称为蒙特霍问题或三门问题（英文：Monty Hall problem），是一个源自博弈论的数学游戏问题，大致出自美国的电视游戏节目Let’s Make a Deal。问题的名字来自该节目的主持人蒙提·霍尔（Monty Hall）。</p>
+</blockquote>
+<p>最初的表述是：</p>
+<blockquote>
+<p>参赛者会看见三扇关闭了的门，其中一扇的后面有一辆汽车，选中后面有车的那扇门就可以赢得该汽车，而另外两扇门后面则各藏有一只山羊。当参赛者选定了一扇门，但未去开启它的时候，节目主持人开启剩下两扇门的其中一扇，露出其中一只山羊。主持人其后会问参赛者要不要换另一扇仍然关上的门。<br>问题是：换另一扇门会否增加参赛者赢得汽车的机会率？</p>
+</blockquote>
+<p>这个古老的问题一经提出就引起了剧烈的争论，有人认为换与不换最终得到车的概率都是$\frac{1}{2}$，有人认为换门之后得到车的概率更大，应该选择换门之后得到车的概率为$\frac{2}{3}$在撰写这篇文章的时候在<a href="http://www.guokr.com/post/9314/" target="_blank" rel="external">果壳上</a>还有人在为此争吵，<a href="http://www.zhihu.com/search?q=%E4%B8%89%E9%97%A8%E9%97%AE%E9%A2%98&amp;type=question" target="_blank" rel="external">知乎上</a>也有许多关于这方面的讨论，其实这些争论很多情况下都是因这个问题的模糊表述所引起的，关键点在于<strong>主持人对于门后的情况是否了解</strong>：</p>
+<ol>
+<li>如果主持人事先知道哪个门里有山羊并且他特意选择了有山羊的门打开了，那么参赛者应该换另一扇门，这可以将他胜利的概率从$\frac{1}{3}$升到$\frac{2}{3}$</li>
+<li>如果主持人事先不知道哪个门里有山羊或者他只是随机的选择了一个门，但事实发现里面恰好是山羊。这时候参赛者没有换门的必要，胜利概率总是$\frac{1}{2}$</li>
+</ol>
+<p>为了后续的讨论，这里采用<a href="http://zh.wikipedia.org/wiki/%E8%92%99%E6%8F%90%E9%9C%8D%E7%88%BE%E5%95%8F%E9%A1%8C" target="_blank" rel="external">维基百科</a>上对于这一个问题的不含糊的定义</p>
+<p>严格的表述如下：</p>
+<ul>
+<li>参赛者在三扇门中挑选一扇。他并不知道内里有什么。</li>
+<li>主持人知道每扇门后面有什么。</li>
+<li>主持人必须开启剩下的其中一扇门，并且必须提供换门的机会。</li>
+<li>主持人永远都会挑一扇有山羊的门。<ul>
+<li>如果参赛者挑了一扇有山羊的门，主持人必须挑另一扇有山羊的门。</li>
+<li>如果参赛者挑了一扇有汽车的门，主持人随机在另外两扇门中挑一扇有山羊的门。</li>
+</ul>
+</li>
+<li>参赛者会被问是否保持他的原来选择，还是转而选择剩下的那一道门。</li>
+</ul>
+<p>那么这个问题这可以很好的理解了，引用维基的一幅图片解析：<br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/zhiyue_2015-05-09_164731.png" alt="蒙提霍尔解答"></p>
+<p>有三种可能的情况，全部都有相等的可能性（$\frac{1}{3}$）：</p>
+<ul>
+<li>参赛者挑汽车，主持人挑两头羊的任何一头。转换将失败。</li>
+<li>参赛者挑A羊，主持人挑B羊。转换将赢得汽车。</li>
+<li>参赛者挑B羊，主持人挑A羊。转换将赢得汽车。</li>
+</ul>
+<p>所以玩家选择换门之后获胜的概率应为$\frac{2}{3}$</p>
+<h2 id="证明？">证明？</h2><p><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/564.jpg" alt="蒙提霍尔解答"><br><strong>定义</strong>: </p>
+<ul>
+<li><code>事件A</code>为一开始玩家选择的一扇门</li>
+<li><code>事件H</code>为最后门后的结果</li>
+</ul>
+<ul>
+<li><p>如果是选择不换门的策略<br>$P \left(H=car \right) = P \left(A=car \right) = \frac{1}{3} $<br>因为选择的是不交换的策略，所有只有一开始选中的是汽车，最后才能选中汽车。</p>
+</li>
+<li><p>选择交换门的策略<br>$P \left(H=car \right) = P \left(A=sheep \right) = \frac{2}{3} $<br>因为选择的是交换的策略，所有只有一开始选中的是羊，最后才能选中汽车。</p>
+</li>
+</ul>
+<h2 id="程序验证">程序验证</h2><p>实践是检验真理的唯一标准，在流言终结者看到他们人工重复这个实验区验证，发现这样很浪费时间。何通过计算机去去模拟这一段过程呢？<br>下面使用python程序来模拟这一段过程：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> division</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MontyHall</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""docstring for MontyHall"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, num=<span class="number">3</span>)</span>:</span></span><br><span class="line">        <span class="string">"""</span><br><span class="line">        创建一个door列表</span><br><span class="line">        0 代表关门</span><br><span class="line">        1 表示后面有车</span><br><span class="line">        -1 代表门被打开</span><br><span class="line">        """</span></span><br><span class="line">        super(MontyHall, self).__init__()</span><br><span class="line">        self.doors = [<span class="number">0</span>] * num</span><br><span class="line">        self.doors[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">        self.choice = -<span class="number">1</span></span><br><span class="line">        self.exclude_car = <span class="keyword">False</span></span><br><span class="line">        self.shuffle()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">shuffle</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""  </span><br><span class="line">        开始新游戏</span><br><span class="line">        重新分配门后的东西</span><br><span class="line">        """</span></span><br><span class="line">        <span class="keyword">if</span> self.exclude_car == <span class="keyword">True</span>:</span><br><span class="line">            self.doors[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">            self.exclude_car = <span class="keyword">False</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(len(self.doors)):</span><br><span class="line">            <span class="keyword">if</span> self.doors[i] == -<span class="number">1</span>:</span><br><span class="line">                self.doors[i] = <span class="number">0</span></span><br><span class="line">        random.shuffle(self.doors)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">make_choice</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span><br><span class="line">        player随机选择一扇门</span><br><span class="line">        """</span></span><br><span class="line">        self.choice = random.randint(<span class="number">0</span>, len(self.doors) - <span class="number">1</span>)</span><br><span class="line">        logging.info(<span class="string">"choice: %d"</span> % self.choice)</span><br><span class="line">        logging.info(<span class="string">"original: %s"</span> % self.doors)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">exclude_doors</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span><br><span class="line">        主持人知道门后的情况排除门</span><br><span class="line">        直到剩余两扇门</span><br><span class="line">        """</span></span><br><span class="line">        to_be_excluded = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(len(self.doors)):</span><br><span class="line">            <span class="keyword">if</span> self.doors[i] == <span class="number">0</span> <span class="keyword">and</span> self.choice != i:</span><br><span class="line">                to_be_excluded.append(i)  </span><br><span class="line">        random.shuffle(to_be_excluded)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(len(self.doors) - <span class="number">2</span>):</span><br><span class="line">            self.doors[to_be_excluded[i]] = -<span class="number">1</span></span><br><span class="line">        logging.info(<span class="string">"final: %s"</span> % self.doors)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">random_exclude_doors</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span><br><span class="line">        主持人并不知道门后面的情况随机的开门</span><br><span class="line">        直到剩余两扇门</span><br><span class="line">        """</span></span><br><span class="line">        to_be_excluded = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(len(self.doors)):</span><br><span class="line">            <span class="keyword">if</span> self.doors[i] != -<span class="number">1</span> <span class="keyword">and</span> i != self.choice:</span><br><span class="line">                to_be_excluded.append(i)  </span><br><span class="line">        random.shuffle(to_be_excluded)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(len(self.doors) - <span class="number">2</span>):</span><br><span class="line">            <span class="keyword">if</span> self.doors[to_be_excluded[i]] == <span class="number">1</span>:</span><br><span class="line">                self.exclude_car = <span class="keyword">True</span></span><br><span class="line">            self.doors[to_be_excluded[i]] = -<span class="number">1</span></span><br><span class="line">        logging.info(<span class="string">"final: %s"</span> % self.doors)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">change_choice</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span><br><span class="line">        player改变选择</span><br><span class="line">        """</span></span><br><span class="line">        to_change = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(len(self.doors)):</span><br><span class="line">            <span class="keyword">if</span> self.doors[i] != -<span class="number">1</span> <span class="keyword">and</span> i != self.choice:</span><br><span class="line">                to_change.append(i)</span><br><span class="line">        self.choice = random.choice(to_change)</span><br><span class="line">        logging.info(<span class="string">"choice changed: %d"</span> % self.choice)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">random_choice</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span><br><span class="line">        player 第二次随机选择门</span><br><span class="line">        """</span></span><br><span class="line">        to_select = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(len(self.doors)):</span><br><span class="line">            <span class="keyword">if</span> self.doors[i] != -<span class="number">1</span>:</span><br><span class="line">                to_select.append(i)</span><br><span class="line">        self.choice = random.choice(to_select)</span><br><span class="line">        logging.info(<span class="string">"random choice : %d"</span> % self.choice)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show_answer</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span><br><span class="line">        展示门后的情况</span><br><span class="line">        """</span></span><br><span class="line">        logging.info(self.doors)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">check_result</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span><br><span class="line">        验证结果</span><br><span class="line">        """</span></span><br><span class="line">        got_it = <span class="keyword">False</span></span><br><span class="line">        <span class="keyword">if</span> self.doors[self.choice] == <span class="number">1</span>:</span><br><span class="line">            got_it = <span class="keyword">True</span></span><br><span class="line">        <span class="keyword">return</span> got_it</span><br></pre></td></tr></table></figure></p>
+<h3 id="模拟1000轮，每一轮重复试验1000次">模拟1000轮，每一轮重复试验1000次</h3><ul>
+<li>不改变选择：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">unchange_choice_test</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    不改变初始的选择</span><br><span class="line">    """</span></span><br><span class="line">    result = &#123;&#125;</span><br><span class="line">    game = MontyHall()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(n):</span><br><span class="line">        game.shuffle()</span><br><span class="line">        game.make_choice()</span><br><span class="line">        game.exclude_doors()</span><br><span class="line">        <span class="keyword">if</span> game.check_result():</span><br><span class="line">            result[<span class="string">"yes"</span>] = result.get(<span class="string">"yes"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            result[<span class="string">"no"</span>] = result.get(<span class="string">"no"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> result:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"%s: %d"</span> % (key, result[key])</span><br><span class="line">    <span class="keyword">return</span> result[<span class="string">"yes"</span>] / n</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    logging.basicConfig(format=<span class="string">'%(levelname)s:%(message)s'</span>, level=logging.WARNING)</span><br><span class="line">    results = []</span><br><span class="line">    test_num = <span class="number">1000</span></span><br><span class="line">    round_num = <span class="number">1000</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> xrange(<span class="number">0</span>,round_num):</span><br><span class="line">        results.append(change_random_test(test_num) )</span><br><span class="line"></span><br><span class="line">    y_mean = np.mean(results)</span><br><span class="line">    y_std = np.std(results)</span><br><span class="line">    x = range(<span class="number">0</span>,round_num)</span><br><span class="line">    y = results</span><br><span class="line">    plt.figure(figsize=(<span class="number">8</span>,<span class="number">4</span>))</span><br><span class="line">    </span><br><span class="line">    plt.xlabel(<span class="string">"round"</span>)</span><br><span class="line">    plt.ylabel(<span class="string">"frequency"</span>)</span><br><span class="line">    plt.title(<span class="string">"The frequency of the success"</span>)</span><br><span class="line">    tx = round_num / <span class="number">2</span></span><br><span class="line">    ty = y_mean</span><br><span class="line">    label_var = <span class="string">"$\sigma \left( X \\right)=$%f"</span> % y_std</span><br><span class="line">    label_mean = <span class="string">"$ X =$%f"</span> % y_mean</span><br><span class="line">    p1_label = <span class="string">"%s and %s"</span> % (label_var,label_mean)</span><br><span class="line">    p1 = plt.plot(x,y,<span class="string">"-"</span>,label=p1_label,linewidth=<span class="number">2</span>)</span><br><span class="line">    plt.legend(loc=<span class="string">'upper left'</span>)</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    pl2 = plt.figure(<span class="number">2</span>)</span><br><span class="line">    plt.figure(<span class="number">2</span>)</span><br><span class="line">    plt.hist(results,<span class="number">40</span>,normed=<span class="number">1</span>,alpha=<span class="number">0.8</span>)</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>结果：<br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E9%97%A8%E5%90%8E%E4%B8%8D%E6%94%B9%E5%8F%98.png" alt="此处输入图片的描述"><br>概率分布：<br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E9%97%A8%E5%90%8E%E6%83%85%E5%86%B5%E4%B8%8D%E6%94%B9%E5%8F%98.png" alt="此处输入图片的描述"><br>成功的概率均值在 $\frac{1}{3}$ 附近</p>
+<ul>
+<li>改变选择：</li>
+</ul>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">def change_choice_test(n):</span><br><span class="line">    <span class="string">"""</span><br><span class="line">    交换选择的门</span><br><span class="line">    """</span></span><br><span class="line">    <span class="literal">result</span> = &#123;&#125;</span><br><span class="line">    game = <span class="type">MontyHall</span>()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(n):</span><br><span class="line">        game.shuffle()</span><br><span class="line">        game.make_choice()</span><br><span class="line">        game.exclude_doors()</span><br><span class="line">        game.change_choice()</span><br><span class="line">        <span class="keyword">if</span> game.check_result():</span><br><span class="line">            <span class="literal">result</span>[<span class="string">"yes"</span>] = <span class="literal">result</span>.get(<span class="string">"yes"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="literal">result</span>[<span class="string">"no"</span>] = <span class="literal">result</span>.get(<span class="string">"no"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> <span class="literal">result</span>:</span><br><span class="line">        print <span class="string">"%s: %d"</span> % (key, <span class="literal">result</span>[key])</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">result</span>[<span class="string">"yes"</span>] / n</span><br></pre></td></tr></table></figure>
+<p>同样的方法绘图得到结果：<br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E6%94%B9%E5%8F%98.png" alt="此处输入图片的描述"><br>概率分布:<br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E6%94%AF%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E6%94%B9%E5%8F%98.png" alt="此处输入图片的描述"><br>成功的概率均值在 $\frac{2}{3}$ 附近</p>
+<blockquote>
+<p>通过上面的分析与模拟可知最佳的策略当然就是换门。</p>
+</blockquote>
+<h2 id="更加深入的讨论">更加深入的讨论</h2><ul>
+<li><strong>如果门的数量不止是3个，如果是50扇门呢？</strong></li>
+</ul>
+<p><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/24200702-dd4e3b818eee4ae680cb357ce903d8e0.png" alt="此处输入图片的描述"><br>这种情况下，主持人打开48扇都是羊的门后，再给你选择，很多人这个时候应该就不会固守那$\frac{1}{2}$，而会选择换门<br>把门的数据增大到100,1000，这种情况会更加明显。<br>还是通过一段程序模拟说明：<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">def change_choice_test_large(n,m):</span><br><span class="line">    <span class="string">"""</span><br><span class="line">    交换选择的门</span><br><span class="line">    """</span></span><br><span class="line">    <span class="literal">result</span> = &#123;&#125;</span><br><span class="line">    game = <span class="type">MontyHall</span>(m)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(n):</span><br><span class="line">        game.shuffle()</span><br><span class="line">        game.make_choice()</span><br><span class="line">        game.exclude_doors()</span><br><span class="line">        game.change_choice()</span><br><span class="line">        <span class="keyword">if</span> game.check_result():</span><br><span class="line">            <span class="literal">result</span>[<span class="string">"yes"</span>] = <span class="literal">result</span>.get(<span class="string">"yes"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="literal">result</span>[<span class="string">"no"</span>] = <span class="literal">result</span>.get(<span class="string">"no"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> <span class="literal">result</span>:</span><br><span class="line">        print <span class="string">"%s: %d"</span> % (key, <span class="literal">result</span>[key])</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">result</span>[<span class="string">"yes"</span>] / n</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> __name__ == '__main__':</span><br><span class="line">    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.<span class="type">WARNING</span>)</span><br><span class="line">    results = []</span><br><span class="line">    test_num = <span class="number">1000</span></span><br><span class="line">    round_num = <span class="number">1000</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> xrange(<span class="number">0</span>,round_num):</span><br><span class="line">        results.append(change_choice_test_large(test_num,<span class="number">50</span>) )</span><br></pre></td></tr></table></figure></p>
+<p>结果：<br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/large_num.png" alt="此处输入图片的描述"><br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/large_num2.png" alt="此处输入图片的描述"></p>
+<p>这时候就要选择<strong>交换门</strong>。</p>
+<ul>
+<li><strong>遇到这种情况我很困惑，我决定抛硬币决定，这个时候成功的概率？</strong></li>
+</ul>
+<p>这是第3种策略，成功的概率和硬币有关，也就是$\frac1 2$,这种情况就是从剩下的门中随机选择一扇，这个策略从上面分析来看不是最好的，但是比不改变的策略要好。<br>程序的模拟结果：<br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E9%9A%8F%E6%9C%BA%E9%80%89%E6%8B%A9.png" alt="此处输入图片的描述"><br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E9%9A%8F%E6%9C%BA%E9%80%89%E6%8B%A9%E9%A2%91%E7%8E%87%E5%88%86%E5%B8%83.png" alt="此处输入图片的描述"></p>
+<ul>
+<li>比如门意外打开的情况呢，也就是上面描述的第二种情况（主持在不知门后的情况下打开门呢）？</li>
+</ul>
+<p>这种情况下其实就是一个条件概率，事件A是玩家最后开到的是车，事件B是主持人打开的门是羊。<br>$$<br>P(A|B) = \dfrac{P(B|A) \cdot P(A) }{P(B)}<br>$$<br>因为只有主持人开到是羊的情况下，玩家才有可能开到车所以 $P(B|A) = 1$<br>设玩家第一次选择的门为<code>事件C</code>则</p>
+<ul>
+<li>不交换策略下的条件概率是：<br>$$<br>P(B) = P(C=’汽车’) + P(C=’羊’) \times \frac {1}{2}<br>\Rightarrow P(B)= \frac{1}{3} + \frac{1}{3} = \frac{2}{3}<br>$$</li>
+</ul>
+<p>$$<br>P(A) = P(C=’汽车’) = \frac{1}{3}<br>$$</p>
+<p>$$<br>P(A|B) = \dfrac{P(A) }{P(B) } = \dfrac{\frac{1}{3}}{\frac{2}{3}}= \frac{1}{2}<br>$$</p>
+<ul>
+<li>交换策略下的条件概率是：<br>$$<br>P(B) = P(C=’汽车’) + P(C=’羊’) \times \frac {1}{2}<br>\Rightarrow P(B)= \frac{1}{3} + \frac{1}{3} = \frac{2}{3}<br>$$</li>
+</ul>
+<p>$$<br>P(A) = P(C=’羊’) \times \frac{1}{2} = \frac{1}{3}<br>$$</p>
+<p>$$<br>P(A|B) = \dfrac{P(A) }{P(B) } = \dfrac{\frac{1}{3}}{\frac{2}{3}}= \frac{1}{2}<br>$$<br>因此在主持人不知道门后的情况下打开一扇，然后发现门后是羊的情况下，换门与不换门最终的概率都是$\frac{1}{2}$<br>还是可以通过程序进行模拟：<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">def unknown_doors_choice_test(n):</span><br><span class="line">    <span class="string">"""</span><br><span class="line">    主持人并不知道门后面的情况随机的开门</span><br><span class="line">    交换选择的门</span><br><span class="line">    """</span></span><br><span class="line">    <span class="literal">result</span> = &#123;&#125;</span><br><span class="line">    game = <span class="type">MontyHall</span>()</span><br><span class="line">    continue_count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(n):</span><br><span class="line">        game.shuffle()</span><br><span class="line">        game.make_choice()</span><br><span class="line">        game.random_exclude_doors()</span><br><span class="line">        game.change_choice()</span><br><span class="line">        <span class="keyword">if</span> game.exclude_car == <span class="type">False</span>:</span><br><span class="line">            continue_count += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> game.check_result():</span><br><span class="line">            <span class="literal">result</span>[<span class="string">"yes"</span>] = <span class="literal">result</span>.get(<span class="string">"yes"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="literal">result</span>[<span class="string">"no"</span>] = <span class="literal">result</span>.get(<span class="string">"no"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">    <span class="comment">#for key in result:</span></span><br><span class="line">    <span class="comment">#    print "%s: %d" % (key, result[key])</span></span><br><span class="line">    logging.info(<span class="string">"continue_count: %d"</span> % continue_count)</span><br><span class="line">    <span class="keyword">if</span> continue_count == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>.<span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">result</span>[<span class="string">"yes"</span>] / continue_count</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E4%B8%8D%E7%9F%A5%E9%81%93%E9%97%A8%E5%90%8E%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8D%E6%94%B9%E5%8F%98.png" alt="此处输入图片的描述"><br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E4%B8%8D%E7%9F%A5%E9%81%93%E9%97%A8%E5%90%8E%E9%9D%A2%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8D%E6%94%B9%E5%8F%98.png" alt="此处输入图片的描述"><br>在这种情况下交换门也没有提升成功的概率</p>
+<hr>
+<h2 id="总结">总结</h2><p>今天写的这篇东西也算是了解我童年的一个遗憾，人的直觉有时候是很不可靠，要摆脱个人局限的认知才能拥抱更大的世界。<br>什么？看完这些解析，你还觉得不满意那么你还可以从下面的参考中寻找更好的解析，本文撰写过程有部分的图片引用自一下的参考，如果你还有疑问欢迎你联系我进一步的讨论。</p>
+<h2 id="练习">练习</h2><p>下面是三门问题的两个翻版，引用自<a href="http://zhiqiang.org/blog/science/three-doors-related-problems.html" target="_blank" rel="external">三门问题及相关</a>：</p>
+<h3 id="女孩的概率">女孩的概率</h3><ul>
+<li><p>你结交一位新朋友，问她是否有孩子。她说有，有两个。你问，有女孩吗？她说有。那么，两个都是女孩的概率是多少？</p>
+<blockquote>
+<p>答：三分之一。因为生两个孩子的可能性有四种等可能：BB、GG、BG、GB（即男男、女女、男女、女男）。 因为我们已知至少有一个女儿，所以BB是不可能的。因此GG是可能出现的三个等可能的结果之一，所以两个孩子都是女儿的概率为三分之一。这对应了三门问题的第一种情况。</p>
+</blockquote>
+</li>
+<li><p>你结交一位新朋友，问她是否有孩子。她说有，有两个。你问，有女孩吗？她说有。第二天，你看见她带了一个小女孩。你问她，这是你女儿吗？她说，是。她的两个孩子都是女孩的概率是多少？</p>
+<blockquote>
+<p>这个概率和生女孩的概率相同，二分之一。这似乎非常奇怪，因为我们所拥有的信息看起来并不比第一种情况时多，但概率却不同。但是这里的问题其实是，那个你没&gt;见过的孩子是女孩的概率是多少？这个概率和生女孩的概率相同，二分之一。<br>这对应了三门问题的第二种情况。当然这里也有语言问题，必须假定这位母亲不是特定带出一个小女孩来给你看的。也就是说你只是碰巧发现了它是位小女孩。这取决于是判断选择 或q 随机选择。如果是被你碰巧撞见这是属于随机选择。这就对应了三门问题的第二种情况。这其实是增加了信息的。否则如果她主动带一个小女孩过来给你，则属于判断选择。<br>你得到的答案依赖于所讲的故事；它依赖于你是如何得知至少一个孩子是女孩的。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="三囚犯问题">三囚犯问题</h3><ul>
+<li>亚当、比尔和查尔斯被关在一个监狱里，只有监狱看守知道谁会被判死刑，另外两位将会获释。有1／3的概率会被处死刑的亚当，给他母亲写了一封信，想要获释的比尔或查尔斯帮忙代寄。当亚当问看守他应当把他的信交给比尔还是查尔斯时，这位富有同情心的看守很为难。他认为如果他把将要获释的人的名字告诉亚当，那么亚当就会有1／2的概率被判死刑，因为剩下的人和亚当这两人中一定有一个人被处死。如果他隐瞒这信息，亚当被处死的概率是1／3。既然亚当知道其他两人中必有一人会获释，那么亚当自己被处死的概率怎么可能会因为看守告诉他其他两人中被获释者的姓名后而改变呢？ <blockquote>
+<p>正确的答案是：看守不用当心，因为即使把获释人的姓名告诉亚当，亚当被处死的概率仍然是1／3，没有改变。但是，剩下的那位没被点名的人就有2／3的概率被处死（被处死的可能性升高了）。如果这个问题换一种说法，就是看守无意间说出了查尔斯不会死。那么概率就会发生改变。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="类似的问题还有">类似的问题还有</h3><ul>
+<li>抛两枚硬币其中有一枚硬币是正面，问两枚硬币都是正面的概率是？</li>
+<li>抛两枚硬币其中第一枚硬币是正面，问两枚硬币都是正面的概率是？</li>
+</ul>
+<p>the end.</p>
+<hr>
+<h2 id="参考:">参考:</h2><ol>
+<li><p><a href="http://zh.wikipedia.org/wiki/%E8%92%99%E6%8F%90%E9%9C%8D%E7%88%BE%E5%95%8F%E9%A1%8C" target="_blank" rel="external">蒙提霍尔问题 - 维基百科，自由的百科全书</a></p>
+</li>
+<li><p><a href="http://www.zreading.cn/archives/711.html" target="_blank" rel="external">三扇门问题 | 左岸读书</a></p>
+</li>
+<li><p><a href="http://www.zhihu.com/question/26709273?rf=22113980" target="_blank" rel="external">蒙提霍尔问题（又称三门问题、山羊汽车问题）的正解是什么？</a></p>
+</li>
+<li><p><a href="http://www.cnblogs.com/twocats/p/3440398.html" target="_blank" rel="external">趣味编程：三门问题</a></p>
+</li>
+<li><p><a href="http://zhiqiang.org/blog/science/three-doors-related-problems.html" target="_blank" rel="external">三门问题及相关</a></p>
+</li>
+</ol>
+<ol>
+<li><p><a href="http://www.guokr.com/post/9314/" target="_blank" rel="external">换还是不换？争议从未停止过的三门问题</a></p>
+</li>
+<li><p><a href="http://www.zhihu.com/question/19825086" target="_blank" rel="external">在「三门问题」中，参与者应该选择「换」还是「不换」？主持人是否知道门后情形对结论有何影响？</a></p>
+</li>
+<li><a href="http://www.letsmakeadeal.com/problem.htm" target="_blank" rel="external">THE MONTY HALL PROBLEM</a></li>
+<li><a href="http://www.bilibili.tv/video/av267091/index_21.html" target="_blank" rel="external">流言终结者第九季</a></li>
+<li><a href="http://www.zhihu.com/question/27534611" target="_blank" rel="external">某个家庭中有 2 个小孩，已知其中一个是女孩，则另一个是男孩的概率是多少？-知乎</a></li>
+</ol>
+<hr>
+<p>2015-05-09 第一次撰写</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Python/">Python</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Python/">Python</a><a href="/tags/三门问题/">三门问题</a><a href="/tags/概率论/">概率论</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://printf.me/2015/05/19/Monty-Hall-problem/" data-title="用python验证蒙提霍尔问题 | Just Do IT." data-tsina="2372807992" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/02/11/《红领巾与王小明》/"  title="《红领巾与王小明》">
+ <strong>下一篇：</strong><br/> 
+ <span>《红领巾与王小明》
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2015/05/19/Monty-Hall-problem/" data-title="用python验证蒙提霍尔问题" data-url="http://printf.me/2015/05/19/Monty-Hall-problem/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是蒙提霍尔问题？"><span class="toc-number">1.</span> <span class="toc-text">什么是蒙提霍尔问题？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#证明？"><span class="toc-number">2.</span> <span class="toc-text">证明？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#程序验证"><span class="toc-number">3.</span> <span class="toc-text">程序验证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#模拟1000轮，每一轮重复试验1000次"><span class="toc-number">3.1.</span> <span class="toc-text">模拟1000轮，每一轮重复试验1000次</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更加深入的讨论"><span class="toc-number">4.</span> <span class="toc-text">更加深入的讨论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#练习"><span class="toc-number">6.</span> <span class="toc-text">练习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#女孩的概率"><span class="toc-number">6.1.</span> <span class="toc-text">女孩的概率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三囚犯问题"><span class="toc-number">6.2.</span> <span class="toc-text">三囚犯问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类似的问题还有"><span class="toc-number">6.3.</span> <span class="toc-text">类似的问题还有</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考:"><span class="toc-number">7.</span> <span class="toc-text">参考:</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Python/" title="Python">Python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Vedio/" title="Vedio">Vedio<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/杂货/" title="杂货">杂货<sup>1</sup></a></li>
+		  
+		
+		  
+		
+		  
+			<li><a href="/categories/翻译/" title="翻译">翻译<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/音频开发/" title="音频开发">音频开发<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/教程/" title="教程">教程<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/视频/" title="视频">视频<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/青春/" title="青春">青春<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/社交/" title="社交">社交<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/标签/" title="标签">标签<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/备忘/" title="备忘">备忘<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/翻译/" title="翻译">翻译<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/工具/" title="工具">工具<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/音频/" title="音频">音频<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/音频开发/" title="音频开发">音频开发<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/概率论/" title="概率论">概率论<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/三门问题/" title="三门问题">三门问题<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2372807992&verifier=91f284c4&dpc=1"></iframe>
+</div>
+
+
+  
+
+<div class="doubanshow">
+<p class="asidetitle">豆瓣秀</p>
+<div>
+<script type="text/javascript" src="http://www.douban.com/service/badge/47771675/?show=collection&amp;n=12&amp;columns=3&amp;hidelogo=yes&amp;hideself=yes&amp;cat=book"></script>
+</div>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Someone wait for god. <br/>
+			Sometime wait for someone.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2372807992" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/zhiyue" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		<a href="https://www.douban.com/people/47771675" target="_blank" class="icon-douban" title="豆瓣"></a>
+		
+		
+		
+		<a href="https://plus.google.com/103838448889836434236?rel=author" target="_blank" class="icon-google_plus" title="Google+"></a>
+		
+		
+		<a href="mailto:cszhiyue@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="/about" target="_blank" title="zhiyue">zhiyue</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"zhiyue"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-51245326-1', 'printf.me');  
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

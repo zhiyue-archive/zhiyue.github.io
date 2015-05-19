@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title><![CDATA[Just Do IT.]]></title>
+  <subtitle><![CDATA[恍惚中，时光停滞，岁月静好，宛如十年前。]]></subtitle>
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://printf.me/"/>
+  <updated>2015-05-19T03:16:47.223Z</updated>
+  <id>http://printf.me/</id>
+  
+  <author>
+    <name><![CDATA[zhiyue]]></name>
+    <email><![CDATA[cszhiyue@gmail.com]]></email>
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[用python验证蒙提霍尔问题]]></title>
+    <link href="http://printf.me/2015/05/19/Monty-Hall-problem/"/>
+    <id>http://printf.me/2015/05/19/Monty-Hall-problem/</id>
+    <published>2015-05-18T18:55:49.000Z</published>
+    <updated>2015-05-19T03:16:47.223Z</updated>
+    <content type="html"><![CDATA[<p><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/24200658-c442dec3691a4e929938ba98a52d78c5.png" class="img-topic"><br>最初看到这个问题是初中的时候买了一本有关数学谜题的书里面概率论的一张的课后拓展就是说到三门问题，当时作为一个扩展阅读看了一下，里面说到了一个世界智商最高的女人秒杀了美国一大群的数学高材生的精彩故事（比较夸张），当时对这个问题也是似懂非懂。</p>
+<a id="more"></a>
+<h2 id="什么是蒙提霍尔问题？">什么是蒙提霍尔问题？</h2><p><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/24200658-c442dec3691a4e929938ba98a52d78c5.png" alt="蒙提霍尔"></p>
+<blockquote>
+<p>蒙提霍尔问题，亦称为蒙特霍问题或三门问题（英文：Monty Hall problem），是一个源自博弈论的数学游戏问题，大致出自美国的电视游戏节目Let’s Make a Deal。问题的名字来自该节目的主持人蒙提·霍尔（Monty Hall）。</p>
+</blockquote>
+<p>最初的表述是：</p>
+<blockquote>
+<p>参赛者会看见三扇关闭了的门，其中一扇的后面有一辆汽车，选中后面有车的那扇门就可以赢得该汽车，而另外两扇门后面则各藏有一只山羊。当参赛者选定了一扇门，但未去开启它的时候，节目主持人开启剩下两扇门的其中一扇，露出其中一只山羊。主持人其后会问参赛者要不要换另一扇仍然关上的门。<br>问题是：换另一扇门会否增加参赛者赢得汽车的机会率？</p>
+</blockquote>
+<p>这个古老的问题一经提出就引起了剧烈的争论，有人认为换与不换最终得到车的概率都是$\frac{1}{2}$，有人认为换门之后得到车的概率更大，应该选择换门之后得到车的概率为$\frac{2}{3}$在撰写这篇文章的时候在<a href="http://www.guokr.com/post/9314/" target="_blank" rel="external">果壳上</a>还有人在为此争吵，<a href="http://www.zhihu.com/search?q=%E4%B8%89%E9%97%A8%E9%97%AE%E9%A2%98&amp;type=question" target="_blank" rel="external">知乎上</a>也有许多关于这方面的讨论，其实这些争论很多情况下都是因这个问题的模糊表述所引起的，关键点在于<strong>主持人对于门后的情况是否了解</strong>：</p>
+<ol>
+<li>如果主持人事先知道哪个门里有山羊并且他特意选择了有山羊的门打开了，那么参赛者应该换另一扇门，这可以将他胜利的概率从$\frac{1}{3}$升到$\frac{2}{3}$</li>
+<li>如果主持人事先不知道哪个门里有山羊或者他只是随机的选择了一个门，但事实发现里面恰好是山羊。这时候参赛者没有换门的必要，胜利概率总是$\frac{1}{2}$</li>
+</ol>
+<p>为了后续的讨论，这里采用<a href="http://zh.wikipedia.org/wiki/%E8%92%99%E6%8F%90%E9%9C%8D%E7%88%BE%E5%95%8F%E9%A1%8C" target="_blank" rel="external">维基百科</a>上对于这一个问题的不含糊的定义</p>
+<p>严格的表述如下：</p>
+<ul>
+<li>参赛者在三扇门中挑选一扇。他并不知道内里有什么。</li>
+<li>主持人知道每扇门后面有什么。</li>
+<li>主持人必须开启剩下的其中一扇门，并且必须提供换门的机会。</li>
+<li>主持人永远都会挑一扇有山羊的门。<ul>
+<li>如果参赛者挑了一扇有山羊的门，主持人必须挑另一扇有山羊的门。</li>
+<li>如果参赛者挑了一扇有汽车的门，主持人随机在另外两扇门中挑一扇有山羊的门。</li>
+</ul>
+</li>
+<li>参赛者会被问是否保持他的原来选择，还是转而选择剩下的那一道门。</li>
+</ul>
+<p>那么这个问题这可以很好的理解了，引用维基的一幅图片解析：<br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/zhiyue_2015-05-09_164731.png" alt="蒙提霍尔解答"></p>
+<p>有三种可能的情况，全部都有相等的可能性（$\frac{1}{3}$）：</p>
+<ul>
+<li>参赛者挑汽车，主持人挑两头羊的任何一头。转换将失败。</li>
+<li>参赛者挑A羊，主持人挑B羊。转换将赢得汽车。</li>
+<li>参赛者挑B羊，主持人挑A羊。转换将赢得汽车。</li>
+</ul>
+<p>所以玩家选择换门之后获胜的概率应为$\frac{2}{3}$</p>
+<h2 id="证明？">证明？</h2><p><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/564.jpg" alt="蒙提霍尔解答"><br><strong>定义</strong>: </p>
+<ul>
+<li><code>事件A</code>为一开始玩家选择的一扇门</li>
+<li><code>事件H</code>为最后门后的结果</li>
+</ul>
+<ul>
+<li><p>如果是选择不换门的策略<br>$P \left(H=car \right) = P \left(A=car \right) = \frac{1}{3} $<br>因为选择的是不交换的策略，所有只有一开始选中的是汽车，最后才能选中汽车。</p>
+</li>
+<li><p>选择交换门的策略<br>$P \left(H=car \right) = P \left(A=sheep \right) = \frac{2}{3} $<br>因为选择的是交换的策略，所有只有一开始选中的是羊，最后才能选中汽车。</p>
+</li>
+</ul>
+<h2 id="程序验证">程序验证</h2><p>实践是检验真理的唯一标准，在流言终结者看到他们人工重复这个实验区验证，发现这样很浪费时间。何通过计算机去去模拟这一段过程呢？<br>下面使用python程序来模拟这一段过程：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> division</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MontyHall</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""docstring for MontyHall"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, num=<span class="number">3</span>)</span>:</span></span><br><span class="line">        <span class="string">"""</span><br><span class="line">        创建一个door列表</span><br><span class="line">        0 代表关门</span><br><span class="line">        1 表示后面有车</span><br><span class="line">        -1 代表门被打开</span><br><span class="line">        """</span></span><br><span class="line">        super(MontyHall, self).__init__()</span><br><span class="line">        self.doors = [<span class="number">0</span>] * num</span><br><span class="line">        self.doors[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">        self.choice = -<span class="number">1</span></span><br><span class="line">        self.exclude_car = <span class="keyword">False</span></span><br><span class="line">        self.shuffle()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">shuffle</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""  </span><br><span class="line">        开始新游戏</span><br><span class="line">        重新分配门后的东西</span><br><span class="line">        """</span></span><br><span class="line">        <span class="keyword">if</span> self.exclude_car == <span class="keyword">True</span>:</span><br><span class="line">            self.doors[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">            self.exclude_car = <span class="keyword">False</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(len(self.doors)):</span><br><span class="line">            <span class="keyword">if</span> self.doors[i] == -<span class="number">1</span>:</span><br><span class="line">                self.doors[i] = <span class="number">0</span></span><br><span class="line">        random.shuffle(self.doors)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">make_choice</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span><br><span class="line">        player随机选择一扇门</span><br><span class="line">        """</span></span><br><span class="line">        self.choice = random.randint(<span class="number">0</span>, len(self.doors) - <span class="number">1</span>)</span><br><span class="line">        logging.info(<span class="string">"choice: %d"</span> % self.choice)</span><br><span class="line">        logging.info(<span class="string">"original: %s"</span> % self.doors)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">exclude_doors</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span><br><span class="line">        主持人知道门后的情况排除门</span><br><span class="line">        直到剩余两扇门</span><br><span class="line">        """</span></span><br><span class="line">        to_be_excluded = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(len(self.doors)):</span><br><span class="line">            <span class="keyword">if</span> self.doors[i] == <span class="number">0</span> <span class="keyword">and</span> self.choice != i:</span><br><span class="line">                to_be_excluded.append(i)  </span><br><span class="line">        random.shuffle(to_be_excluded)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(len(self.doors) - <span class="number">2</span>):</span><br><span class="line">            self.doors[to_be_excluded[i]] = -<span class="number">1</span></span><br><span class="line">        logging.info(<span class="string">"final: %s"</span> % self.doors)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">random_exclude_doors</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span><br><span class="line">        主持人并不知道门后面的情况随机的开门</span><br><span class="line">        直到剩余两扇门</span><br><span class="line">        """</span></span><br><span class="line">        to_be_excluded = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(len(self.doors)):</span><br><span class="line">            <span class="keyword">if</span> self.doors[i] != -<span class="number">1</span> <span class="keyword">and</span> i != self.choice:</span><br><span class="line">                to_be_excluded.append(i)  </span><br><span class="line">        random.shuffle(to_be_excluded)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(len(self.doors) - <span class="number">2</span>):</span><br><span class="line">            <span class="keyword">if</span> self.doors[to_be_excluded[i]] == <span class="number">1</span>:</span><br><span class="line">                self.exclude_car = <span class="keyword">True</span></span><br><span class="line">            self.doors[to_be_excluded[i]] = -<span class="number">1</span></span><br><span class="line">        logging.info(<span class="string">"final: %s"</span> % self.doors)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">change_choice</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span><br><span class="line">        player改变选择</span><br><span class="line">        """</span></span><br><span class="line">        to_change = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(len(self.doors)):</span><br><span class="line">            <span class="keyword">if</span> self.doors[i] != -<span class="number">1</span> <span class="keyword">and</span> i != self.choice:</span><br><span class="line">                to_change.append(i)</span><br><span class="line">        self.choice = random.choice(to_change)</span><br><span class="line">        logging.info(<span class="string">"choice changed: %d"</span> % self.choice)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">random_choice</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span><br><span class="line">        player 第二次随机选择门</span><br><span class="line">        """</span></span><br><span class="line">        to_select = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(len(self.doors)):</span><br><span class="line">            <span class="keyword">if</span> self.doors[i] != -<span class="number">1</span>:</span><br><span class="line">                to_select.append(i)</span><br><span class="line">        self.choice = random.choice(to_select)</span><br><span class="line">        logging.info(<span class="string">"random choice : %d"</span> % self.choice)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show_answer</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span><br><span class="line">        展示门后的情况</span><br><span class="line">        """</span></span><br><span class="line">        logging.info(self.doors)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">check_result</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span><br><span class="line">        验证结果</span><br><span class="line">        """</span></span><br><span class="line">        got_it = <span class="keyword">False</span></span><br><span class="line">        <span class="keyword">if</span> self.doors[self.choice] == <span class="number">1</span>:</span><br><span class="line">            got_it = <span class="keyword">True</span></span><br><span class="line">        <span class="keyword">return</span> got_it</span><br></pre></td></tr></table></figure></p>
+<h3 id="模拟1000轮，每一轮重复试验1000次">模拟1000轮，每一轮重复试验1000次</h3><ul>
+<li>不改变选择：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">unchange_choice_test</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    不改变初始的选择</span><br><span class="line">    """</span></span><br><span class="line">    result = &#123;&#125;</span><br><span class="line">    game = MontyHall()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(n):</span><br><span class="line">        game.shuffle()</span><br><span class="line">        game.make_choice()</span><br><span class="line">        game.exclude_doors()</span><br><span class="line">        <span class="keyword">if</span> game.check_result():</span><br><span class="line">            result[<span class="string">"yes"</span>] = result.get(<span class="string">"yes"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            result[<span class="string">"no"</span>] = result.get(<span class="string">"no"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> result:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"%s: %d"</span> % (key, result[key])</span><br><span class="line">    <span class="keyword">return</span> result[<span class="string">"yes"</span>] / n</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    logging.basicConfig(format=<span class="string">'%(levelname)s:%(message)s'</span>, level=logging.WARNING)</span><br><span class="line">    results = []</span><br><span class="line">    test_num = <span class="number">1000</span></span><br><span class="line">    round_num = <span class="number">1000</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> xrange(<span class="number">0</span>,round_num):</span><br><span class="line">        results.append(change_random_test(test_num) )</span><br><span class="line"></span><br><span class="line">    y_mean = np.mean(results)</span><br><span class="line">    y_std = np.std(results)</span><br><span class="line">    x = range(<span class="number">0</span>,round_num)</span><br><span class="line">    y = results</span><br><span class="line">    plt.figure(figsize=(<span class="number">8</span>,<span class="number">4</span>))</span><br><span class="line">    </span><br><span class="line">    plt.xlabel(<span class="string">"round"</span>)</span><br><span class="line">    plt.ylabel(<span class="string">"frequency"</span>)</span><br><span class="line">    plt.title(<span class="string">"The frequency of the success"</span>)</span><br><span class="line">    tx = round_num / <span class="number">2</span></span><br><span class="line">    ty = y_mean</span><br><span class="line">    label_var = <span class="string">"$\sigma \left( X \\right)=$%f"</span> % y_std</span><br><span class="line">    label_mean = <span class="string">"$ X =$%f"</span> % y_mean</span><br><span class="line">    p1_label = <span class="string">"%s and %s"</span> % (label_var,label_mean)</span><br><span class="line">    p1 = plt.plot(x,y,<span class="string">"-"</span>,label=p1_label,linewidth=<span class="number">2</span>)</span><br><span class="line">    plt.legend(loc=<span class="string">'upper left'</span>)</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    pl2 = plt.figure(<span class="number">2</span>)</span><br><span class="line">    plt.figure(<span class="number">2</span>)</span><br><span class="line">    plt.hist(results,<span class="number">40</span>,normed=<span class="number">1</span>,alpha=<span class="number">0.8</span>)</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>结果：<br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E9%97%A8%E5%90%8E%E4%B8%8D%E6%94%B9%E5%8F%98.png" alt="此处输入图片的描述"><br>概率分布：<br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E9%97%A8%E5%90%8E%E6%83%85%E5%86%B5%E4%B8%8D%E6%94%B9%E5%8F%98.png" alt="此处输入图片的描述"><br>成功的概率均值在 $\frac{1}{3}$ 附近</p>
+<ul>
+<li>改变选择：</li>
+</ul>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">def change_choice_test(n):</span><br><span class="line">    <span class="string">"""</span><br><span class="line">    交换选择的门</span><br><span class="line">    """</span></span><br><span class="line">    <span class="literal">result</span> = &#123;&#125;</span><br><span class="line">    game = <span class="type">MontyHall</span>()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(n):</span><br><span class="line">        game.shuffle()</span><br><span class="line">        game.make_choice()</span><br><span class="line">        game.exclude_doors()</span><br><span class="line">        game.change_choice()</span><br><span class="line">        <span class="keyword">if</span> game.check_result():</span><br><span class="line">            <span class="literal">result</span>[<span class="string">"yes"</span>] = <span class="literal">result</span>.get(<span class="string">"yes"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="literal">result</span>[<span class="string">"no"</span>] = <span class="literal">result</span>.get(<span class="string">"no"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> <span class="literal">result</span>:</span><br><span class="line">        print <span class="string">"%s: %d"</span> % (key, <span class="literal">result</span>[key])</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">result</span>[<span class="string">"yes"</span>] / n</span><br></pre></td></tr></table></figure>
+<p>同样的方法绘图得到结果：<br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E6%94%B9%E5%8F%98.png" alt="此处输入图片的描述"><br>概率分布:<br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E6%94%AF%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E6%94%B9%E5%8F%98.png" alt="此处输入图片的描述"><br>成功的概率均值在 $\frac{2}{3}$ 附近</p>
+<blockquote>
+<p>通过上面的分析与模拟可知最佳的策略当然就是换门。</p>
+</blockquote>
+<h2 id="更加深入的讨论">更加深入的讨论</h2><ul>
+<li><strong>如果门的数量不止是3个，如果是50扇门呢？</strong></li>
+</ul>
+<p><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/24200702-dd4e3b818eee4ae680cb357ce903d8e0.png" alt="此处输入图片的描述"><br>这种情况下，主持人打开48扇都是羊的门后，再给你选择，很多人这个时候应该就不会固守那$\frac{1}{2}$，而会选择换门<br>把门的数据增大到100,1000，这种情况会更加明显。<br>还是通过一段程序模拟说明：<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">def change_choice_test_large(n,m):</span><br><span class="line">    <span class="string">"""</span><br><span class="line">    交换选择的门</span><br><span class="line">    """</span></span><br><span class="line">    <span class="literal">result</span> = &#123;&#125;</span><br><span class="line">    game = <span class="type">MontyHall</span>(m)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(n):</span><br><span class="line">        game.shuffle()</span><br><span class="line">        game.make_choice()</span><br><span class="line">        game.exclude_doors()</span><br><span class="line">        game.change_choice()</span><br><span class="line">        <span class="keyword">if</span> game.check_result():</span><br><span class="line">            <span class="literal">result</span>[<span class="string">"yes"</span>] = <span class="literal">result</span>.get(<span class="string">"yes"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="literal">result</span>[<span class="string">"no"</span>] = <span class="literal">result</span>.get(<span class="string">"no"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> <span class="literal">result</span>:</span><br><span class="line">        print <span class="string">"%s: %d"</span> % (key, <span class="literal">result</span>[key])</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">result</span>[<span class="string">"yes"</span>] / n</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> __name__ == '__main__':</span><br><span class="line">    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.<span class="type">WARNING</span>)</span><br><span class="line">    results = []</span><br><span class="line">    test_num = <span class="number">1000</span></span><br><span class="line">    round_num = <span class="number">1000</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> xrange(<span class="number">0</span>,round_num):</span><br><span class="line">        results.append(change_choice_test_large(test_num,<span class="number">50</span>) )</span><br></pre></td></tr></table></figure></p>
+<p>结果：<br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/large_num.png" alt="此处输入图片的描述"><br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/large_num2.png" alt="此处输入图片的描述"></p>
+<p>这时候就要选择<strong>交换门</strong>。</p>
+<ul>
+<li><strong>遇到这种情况我很困惑，我决定抛硬币决定，这个时候成功的概率？</strong></li>
+</ul>
+<p>这是第3种策略，成功的概率和硬币有关，也就是$\frac1 2$,这种情况就是从剩下的门中随机选择一扇，这个策略从上面分析来看不是最好的，但是比不改变的策略要好。<br>程序的模拟结果：<br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E9%9A%8F%E6%9C%BA%E9%80%89%E6%8B%A9.png" alt="此处输入图片的描述"><br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E9%9A%8F%E6%9C%BA%E9%80%89%E6%8B%A9%E9%A2%91%E7%8E%87%E5%88%86%E5%B8%83.png" alt="此处输入图片的描述"></p>
+<ul>
+<li>比如门意外打开的情况呢，也就是上面描述的第二种情况（主持在不知门后的情况下打开门呢）？</li>
+</ul>
+<p>这种情况下其实就是一个条件概率，事件A是玩家最后开到的是车，事件B是主持人打开的门是羊。<br>$$<br>P(A|B) = \dfrac{P(B|A) \cdot P(A) }{P(B)}<br>$$<br>因为只有主持人开到是羊的情况下，玩家才有可能开到车所以 $P(B|A) = 1$<br>设玩家第一次选择的门为<code>事件C</code>则</p>
+<ul>
+<li>不交换策略下的条件概率是：<br>$$<br>P(B) = P(C=’汽车’) + P(C=’羊’) \times \frac {1}{2}<br>\Rightarrow P(B)= \frac{1}{3} + \frac{1}{3} = \frac{2}{3}<br>$$</li>
+</ul>
+<p>$$<br>P(A) = P(C=’汽车’) = \frac{1}{3}<br>$$</p>
+<p>$$<br>P(A|B) = \dfrac{P(A) }{P(B) } = \dfrac{\frac{1}{3}}{\frac{2}{3}}= \frac{1}{2}<br>$$</p>
+<ul>
+<li>交换策略下的条件概率是：<br>$$<br>P(B) = P(C=’汽车’) + P(C=’羊’) \times \frac {1}{2}<br>\Rightarrow P(B)= \frac{1}{3} + \frac{1}{3} = \frac{2}{3}<br>$$</li>
+</ul>
+<p>$$<br>P(A) = P(C=’羊’) \times \frac{1}{2} = \frac{1}{3}<br>$$</p>
+<p>$$<br>P(A|B) = \dfrac{P(A) }{P(B) } = \dfrac{\frac{1}{3}}{\frac{2}{3}}= \frac{1}{2}<br>$$<br>因此在主持人不知道门后的情况下打开一扇，然后发现门后是羊的情况下，换门与不换门最终的概率都是$\frac{1}{2}$<br>还是可以通过程序进行模拟：<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">def unknown_doors_choice_test(n):</span><br><span class="line">    <span class="string">"""</span><br><span class="line">    主持人并不知道门后面的情况随机的开门</span><br><span class="line">    交换选择的门</span><br><span class="line">    """</span></span><br><span class="line">    <span class="literal">result</span> = &#123;&#125;</span><br><span class="line">    game = <span class="type">MontyHall</span>()</span><br><span class="line">    continue_count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(n):</span><br><span class="line">        game.shuffle()</span><br><span class="line">        game.make_choice()</span><br><span class="line">        game.random_exclude_doors()</span><br><span class="line">        game.change_choice()</span><br><span class="line">        <span class="keyword">if</span> game.exclude_car == <span class="type">False</span>:</span><br><span class="line">            continue_count += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> game.check_result():</span><br><span class="line">            <span class="literal">result</span>[<span class="string">"yes"</span>] = <span class="literal">result</span>.get(<span class="string">"yes"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="literal">result</span>[<span class="string">"no"</span>] = <span class="literal">result</span>.get(<span class="string">"no"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">    <span class="comment">#for key in result:</span></span><br><span class="line">    <span class="comment">#    print "%s: %d" % (key, result[key])</span></span><br><span class="line">    logging.info(<span class="string">"continue_count: %d"</span> % continue_count)</span><br><span class="line">    <span class="keyword">if</span> continue_count == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>.<span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">result</span>[<span class="string">"yes"</span>] / continue_count</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E4%B8%8D%E7%9F%A5%E9%81%93%E9%97%A8%E5%90%8E%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8D%E6%94%B9%E5%8F%98.png" alt="此处输入图片的描述"><br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E4%B8%8D%E7%9F%A5%E9%81%93%E9%97%A8%E5%90%8E%E9%9D%A2%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8D%E6%94%B9%E5%8F%98.png" alt="此处输入图片的描述"><br>在这种情况下交换门也没有提升成功的概率</p>
+<hr>
+<h2 id="总结">总结</h2><p>今天写的这篇东西也算是了解我童年的一个遗憾，人的直觉有时候是很不可靠，要摆脱个人局限的认知才能拥抱更大的世界。<br>什么？看完这些解析，你还觉得不满意那么你还可以从下面的参考中寻找更好的解析，本文撰写过程有部分的图片引用自一下的参考，如果你还有疑问欢迎你联系我进一步的讨论。</p>
+<h2 id="练习">练习</h2><p>下面是三门问题的两个翻版，引用自<a href="http://zhiqiang.org/blog/science/three-doors-related-problems.html" target="_blank" rel="external">三门问题及相关</a>：</p>
+<h3 id="女孩的概率">女孩的概率</h3><ul>
+<li><p>你结交一位新朋友，问她是否有孩子。她说有，有两个。你问，有女孩吗？她说有。那么，两个都是女孩的概率是多少？</p>
+<blockquote>
+<p>答：三分之一。因为生两个孩子的可能性有四种等可能：BB、GG、BG、GB（即男男、女女、男女、女男）。 因为我们已知至少有一个女儿，所以BB是不可能的。因此GG是可能出现的三个等可能的结果之一，所以两个孩子都是女儿的概率为三分之一。这对应了三门问题的第一种情况。</p>
+</blockquote>
+</li>
+<li><p>你结交一位新朋友，问她是否有孩子。她说有，有两个。你问，有女孩吗？她说有。第二天，你看见她带了一个小女孩。你问她，这是你女儿吗？她说，是。她的两个孩子都是女孩的概率是多少？</p>
+<blockquote>
+<p>这个概率和生女孩的概率相同，二分之一。这似乎非常奇怪，因为我们所拥有的信息看起来并不比第一种情况时多，但概率却不同。但是这里的问题其实是，那个你没&gt;见过的孩子是女孩的概率是多少？这个概率和生女孩的概率相同，二分之一。<br>这对应了三门问题的第二种情况。当然这里也有语言问题，必须假定这位母亲不是特定带出一个小女孩来给你看的。也就是说你只是碰巧发现了它是位小女孩。这取决于是判断选择 或q 随机选择。如果是被你碰巧撞见这是属于随机选择。这就对应了三门问题的第二种情况。这其实是增加了信息的。否则如果她主动带一个小女孩过来给你，则属于判断选择。<br>你得到的答案依赖于所讲的故事；它依赖于你是如何得知至少一个孩子是女孩的。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="三囚犯问题">三囚犯问题</h3><ul>
+<li>亚当、比尔和查尔斯被关在一个监狱里，只有监狱看守知道谁会被判死刑，另外两位将会获释。有1／3的概率会被处死刑的亚当，给他母亲写了一封信，想要获释的比尔或查尔斯帮忙代寄。当亚当问看守他应当把他的信交给比尔还是查尔斯时，这位富有同情心的看守很为难。他认为如果他把将要获释的人的名字告诉亚当，那么亚当就会有1／2的概率被判死刑，因为剩下的人和亚当这两人中一定有一个人被处死。如果他隐瞒这信息，亚当被处死的概率是1／3。既然亚当知道其他两人中必有一人会获释，那么亚当自己被处死的概率怎么可能会因为看守告诉他其他两人中被获释者的姓名后而改变呢？ <blockquote>
+<p>正确的答案是：看守不用当心，因为即使把获释人的姓名告诉亚当，亚当被处死的概率仍然是1／3，没有改变。但是，剩下的那位没被点名的人就有2／3的概率被处死（被处死的可能性升高了）。如果这个问题换一种说法，就是看守无意间说出了查尔斯不会死。那么概率就会发生改变。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="类似的问题还有">类似的问题还有</h3><ul>
+<li>抛两枚硬币其中有一枚硬币是正面，问两枚硬币都是正面的概率是？</li>
+<li>抛两枚硬币其中第一枚硬币是正面，问两枚硬币都是正面的概率是？</li>
+</ul>
+<p>the end.</p>
+<hr>
+<h2 id="参考:">参考:</h2><ol>
+<li><p><a href="http://zh.wikipedia.org/wiki/%E8%92%99%E6%8F%90%E9%9C%8D%E7%88%BE%E5%95%8F%E9%A1%8C" target="_blank" rel="external">蒙提霍尔问题 - 维基百科，自由的百科全书</a></p>
+</li>
+<li><p><a href="http://www.zreading.cn/archives/711.html" target="_blank" rel="external">三扇门问题 | 左岸读书</a></p>
+</li>
+<li><p><a href="http://www.zhihu.com/question/26709273?rf=22113980" target="_blank" rel="external">蒙提霍尔问题（又称三门问题、山羊汽车问题）的正解是什么？</a></p>
+</li>
+<li><p><a href="http://www.cnblogs.com/twocats/p/3440398.html" target="_blank" rel="external">趣味编程：三门问题</a></p>
+</li>
+<li><p><a href="http://zhiqiang.org/blog/science/three-doors-related-problems.html" target="_blank" rel="external">三门问题及相关</a></p>
+</li>
+</ol>
+<ol>
+<li><p><a href="http://www.guokr.com/post/9314/" target="_blank" rel="external">换还是不换？争议从未停止过的三门问题</a></p>
+</li>
+<li><p><a href="http://www.zhihu.com/question/19825086" target="_blank" rel="external">在「三门问题」中，参与者应该选择「换」还是「不换」？主持人是否知道门后情形对结论有何影响？</a></p>
+</li>
+<li><a href="http://www.letsmakeadeal.com/problem.htm" target="_blank" rel="external">THE MONTY HALL PROBLEM</a></li>
+<li><a href="http://www.bilibili.tv/video/av267091/index_21.html" target="_blank" rel="external">流言终结者第九季</a></li>
+<li><a href="http://www.zhihu.com/question/27534611" target="_blank" rel="external">某个家庭中有 2 个小孩，已知其中一个是女孩，则另一个是男孩的概率是多少？-知乎</a></li>
+</ol>
+<hr>
+<p>2015-05-09 第一次撰写</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/24200658-c442dec3691a4e929938ba98a52d78c5.png" class="img-topic" /><br>最初看到这个问题是初中的时候买了一本有关数学谜题的书里面概率论的一张的课后拓展就是说到三门问题，当时作为一个扩展阅读看了一下，里面说到了一个世界智商最高的女人秒杀了美国一大群的数学高材生的精彩故事（比较夸张），当时对这个问题也是似懂非懂。</p>]]>
+    
+    </summary>
+    
+      <category term="Python" scheme="http://printf.me/tags/Python/"/>
+    
+      <category term="三门问题" scheme="http://printf.me/tags/%E4%B8%89%E9%97%A8%E9%97%AE%E9%A2%98/"/>
+    
+      <category term="概率论" scheme="http://printf.me/tags/%E6%A6%82%E7%8E%87%E8%AE%BA/"/>
+    
+      <category term="Python" scheme="http://printf.me/categories/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[《红领巾与王小明》]]></title>
+    <link href="http://printf.me/2015/02/11/%E3%80%8A%E7%BA%A2%E9%A2%86%E5%B7%BE%E4%B8%8E%E7%8E%8B%E5%B0%8F%E6%98%8E%E3%80%8B/"/>
+    <id>http://printf.me/2015/02/11/《红领巾与王小明》/</id>
+    <published>2015-02-10T16:32:04.000Z</published>
+    <updated>2015-05-19T03:20:21.043Z</updated>
+    <content type="html"><![CDATA[<p><img src="http://printf.qiniudn.com/honglingjin.jpe" class="img-topic"></p>
+<p>有一种混搭的感觉的国产动漫，画面比较复古，笑笑就好。</p>
+<a id="more"></a>
+<embed src="http://player.youku.com/player.php/sid/XODU3MTU5NzIw/v.swf" allowfullscreen="true" quality="high" width="480" height="400" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash">]]></content>
+    <summary type="html">
+    <![CDATA[<p><img src="http://printf.qiniudn.com/honglingjin.jpe" class="img-topic" /></p>
+<p>有一种混搭的感觉的国产动漫，画面比较复古，笑笑就好。</p>]]>
+    
+    </summary>
+    
+      <category term="视频" scheme="http://printf.me/tags/%E8%A7%86%E9%A2%91/"/>
+    
+      <category term="青春" scheme="http://printf.me/tags/%E9%9D%92%E6%98%A5/"/>
+    
+      <category term="Vedio" scheme="http://printf.me/categories/Vedio/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[LookUp]]></title>
+    <link href="http://printf.me/2015/02/11/vedio%E4%B9%8BLookUp/"/>
+    <id>http://printf.me/2015/02/11/vedio之LookUp/</id>
+    <published>2015-02-10T16:25:52.000Z</published>
+    <updated>2015-05-19T03:20:34.671Z</updated>
+    <content type="html"><![CDATA[<p>这个是今天看的一个小视频，分享给大家。</p>
+<blockquote>
+<p>如今互联网的出现颠覆了很多东西，给我们带来了很多的方便，但是我们渐渐发现，我们似乎也正在失去一些很珍贵的东西。<br><img src="http://printf.qiniudn.com/lookup.jpe" class="img-topic"></p>
+</blockquote>
+<a id="more"></a>
+<embed src="http://player.youku.com/player.php/sid/XNzEyNzQyNTY4/v.swf" allowfullscreen="true" quality="high" width="480" height="400" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash">
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>这个是今天看的一个小视频，分享给大家。</p>
+<blockquote>
+<p>如今互联网的出现颠覆了很多东西，给我们带来了很多的方便，但是我们渐渐发现，我们似乎也正在失去一些很珍贵的东西。<br><img src="http://printf.qiniudn.com/lookup.jpe" class="img-topic" /></p>
+</blockquote>]]>
+    
+    </summary>
+    
+      <category term="社交" scheme="http://printf.me/tags/%E7%A4%BE%E4%BA%A4/"/>
+    
+      <category term="视频" scheme="http://printf.me/tags/%E8%A7%86%E9%A2%91/"/>
+    
+      <category term="Vedio" scheme="http://printf.me/categories/Vedio/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[hexo 多标签]]></title>
+    <link href="http://printf.me/2014/06/09/hexo-%E5%A4%9A%E6%A0%87%E7%AD%BE/"/>
+    <id>http://printf.me/2014/06/09/hexo-多标签/</id>
+    <published>2014-06-09T08:21:56.000Z</published>
+    <updated>2014-06-09T08:28:11.531Z</updated>
+    <content type="html"><![CDATA[<p>刚开始使用hexo记录一下使用过程遇到的问题.<br><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">使用多标签要在括号内<span class="keyword">*</span><span class="keyword">*</span>[,]<span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line"></span><br><span class="line">在括号内用逗号分隔开.</span><br></pre></td></tr></table></figure></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>刚开始使用hexo记录一下使用过程遇到的问题.<br><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span clas]]>
+    </summary>
+    
+      <category term="hexo" scheme="http://printf.me/tags/hexo/"/>
+    
+      <category term="备忘" scheme="http://printf.me/tags/%E5%A4%87%E5%BF%98/"/>
+    
+      <category term="标签" scheme="http://printf.me/tags/%E6%A0%87%E7%AD%BE/"/>
+    
+      <category term="hexo" scheme="http://printf.me/categories/hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[FFmpeg的使用]]></title>
+    <link href="http://printf.me/2014/06/09/ffmpeg%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
+    <id>http://printf.me/2014/06/09/ffmpeg的使用/</id>
+    <published>2014-06-09T08:21:56.000Z</published>
+    <updated>2015-05-19T03:16:47.226Z</updated>
+    <content type="html"><![CDATA[<p><img src="http://printf.qiniudn.com/20140616102021781.png" class="img-topic"></p>
+<p><img src="http://printf.qiniudn.com/20140616102021781.png" alt=""></p>
+<p>最近因为要音频处理的研究,音频开发，但是有一个难题就是怎么解析与提取音频的数据,于是就找到了<code>FFmpeg</code>。基本上只要做视频音频开发都离不开<code>ffmpeg</code></p>
+<a id="more"></a>
+<h2 id="1-什么是ffmpeg">1.什么是ffmpeg</h2><p>引用<a href="http://zh.wikipedia.org/wiki/FFmpeg" target="_blank" rel="external">wiki百科</a>的解析.</p>
+<blockquote>
+<p>FFmpeg是一个自由软件，可以运行音频和视频多种格式的录影、转换、流功能<a href="http://ffmpeg.org/ffmpeg.html" target="_blank" rel="external">1</a>，包含了libavcodec ─这是一个用于多个项目中音频和视频的解码器库，以及libavformat——一个音频与视频格式转换库。</p>
+</blockquote>
+<ul>
+<li><code>ffmpeg</code>的官网地址是:<a href="https://www.ffmpeg.org/" target="_blank" rel="external">https://www.ffmpeg.org/</a></li>
+<li><p><code>ffmpeg</code>的Github项目地址是:<a href="https://github.com/FFmpeg/FFmpeg" target="_blank" rel="external">https://github.com/FFmpeg/FFmpeg</a></p>
+<h3 id="1-1_组件">1.1 组件</h3><p><code>FFmpeg</code>项目由以下几部分组成：</p>
+</li>
+<li><p><code>FFmpeg</code>视频文件转换命令行工具,也支持经过实时电视卡抓取和编码成视频文件；</p>
+</li>
+<li><code>ffserver</code>基于<code>HTTP</code>、<code>RTSP</code>用于实时广播的多媒体服务器.也支持时间平移；</li>
+<li><code>ffplay</code>用 <code>SDL</code>和<code>FFmpeg</code>库开发的一个简单的媒体播放器；</li>
+<li><code>libavcodec</code>一个包含了所有<code>FFmpeg</code>音视频编解码器的库。为了保证最优性能和高可复用性，大多数编解码器从头开发的；</li>
+<li><code>libavformat</code>一个包含了所有的普通音视格式的解析器和产生器的库。<h3 id="1-2_谁在使用ffmpeg">1.2 谁在使用<code>ffmpeg</code></h3></li>
+<li>使用FFMPEG作为内核视频播放器：<code>Mplayer</code>，<code>ffplay</code>，<code>射手播放器</code>，<code>暴风影音</code>，<code>KMPlayer</code>，<code>QQ影音</code>…</li>
+<li>使用FFMPEG作为内核的Directshow Filter：<code>ffdshow</code>，<code>lav filters</code>…</li>
+<li>使用FFMPEG作为内核的转码工具：<code>ffmpeg</code>，<code>格式工厂</code>…<h2 id="2-如何安装">2.如何安装</h2><code>FFmpeg</code>可以在Windows、Linux还有Mac OS等多种操作系统中进行安装和使用。</li>
+</ul>
+<p>这篇文章主要介绍其在Windows下面的安装：</p>
+<ul>
+<li>下载编译好的Windows版本：<a href="http://ffmpeg.zeranoe.com/builds/（与官网同步）" target="_blank" rel="external">http://ffmpeg.zeranoe.com/builds/（与官网同步）</a><br><img src="http://printf.qiniudn.com/20140730113852.png" alt=""></li>
+<li>FFmpeg分为3个版本：<code>Static</code>、  <code>Shared</code>、 <code>Dev</code></li>
+<li>前两个版本可以直接在命令行中使用。包含了三个<code>exe</code>:<code>ffmpeg.exe</code>，<code>ffplay.exe</code>，<code>ffprobe.exe</code></li>
+<li><code>Static</code>版本中的<code>exe</code>体积较大,那是因为相关的<code>Dll</code>都已经编译进<code>exe</code>里面去了。</li>
+<li><code>Shared</code>版本中<code>exe</code>的体积相对小很多,是因为它们运行的时候还需要到相关的dll中调用相应的功能</li>
+<li><code>Dev</code>版本用于开发,里面包含了库文件<code>xxx.lib</code>以及头文件<code>xxx.h</code></li>
+</ul>
+<h2 id="3-怎么使用">3.怎么使用</h2><h3 id="3-1_命令行工具的使用">3.1 命令行工具的使用</h3><h4 id="3-11_ffmpeg-exe">3.11 <code>ffmpeg.exe</code></h4><p>用于转码的应用程序:</p>
+<blockquote>
+<p>一个简单的转码命令 将input.avi转码成output.ts，并设置视频的码率为640kbps<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -<span class="tag">i</span> <span class="tag">input</span><span class="class">.avi</span> -<span class="tag">b</span>:v <span class="number">640</span>k output.ts</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>具体用法参考:   <a href="http://blog.csdn.net/leixiaohua1020/article/details/12751349" target="_blank" rel="external">ffmpeg参数中文详细解释</a><br>详细的使用说明（英文）：<a href="http://ffmpeg.org/ffmpeg.html" target="_blank" rel="external">http://ffmpeg.org/ffmpeg.html</a></p>
+<h4 id="3-12_ffplay-exe">3.12 <code>ffplay.exe</code></h4><p>主要用于播放的应用程序</p>
+<blockquote>
+<p>播放test.avi</p>
+</blockquote>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">ffplay</span> test.avi</span><br></pre></td></tr></table></figure>
+<p>具体的使用方法可以参考：<a href="http://blog.csdn.net/leixiaohua1020/article/details/15186441" target="_blank" rel="external">ffplay的快捷键以及选项</a><br>详细的使用说明（英文）：<a href="http://ffmpeg.org/ffplay.html" target="_blank" rel="external">http://ffmpeg.org/ffplay.html</a></p>
+<h4 id="3-13_ffprobe-exe">3.13 <code>ffprobe.exe</code></h4><p>ffprobe是用于查看文件格式的应用程序。<br>详细的使用说明（英文）：<a href="http://ffmpeg.org/ffprobe.html" target="_blank" rel="external">http://ffmpeg.org/ffprobe.html</a></p>
+<h3 id="3-2_使用ffmpeg库进行开发">3.2 使用ffmpeg库进行开发</h3><h2 id="To_Be_Continue…"><strong>To Be Continue…</strong></h2><p><strong>参考资料</strong> :</p>
+<ul>
+<li><a href="http://blog.csdn.net/leixiaohua1020/article/details/15811977" target="_blank" rel="external">FFMPEG视音频编解码零基础学习方法</a></li>
+<li><a href="http://yuanhuan.blog.51cto.com/3367116/1246370" target="_blank" rel="external">FFmpeg使用小记</a></li>
+<li><a href="http://ffmpeg.org/documentation.html" target="_blank" rel="external">FFmpeg官方文档</a></li>
+<li><a href="http://zh.wikihow.com/%E5%9C%A8Windows%E4%B8%8A%E5%AE%89%E8%A3%85FFmpeg%E7%A8%8B%E5%BA%8F" target="_blank" rel="external">如何在Windows上安装FFmpeg程序</a></li>
+<li><a href="http://alleni123.iteye.com/blog/2028433" target="_blank" rel="external">ffmpeg教程 (一) 基本安装</a></li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><img src="http://printf.qiniudn.com/20140616102021781.png" class="img-topic" /></p>
+<p><img src="http://printf.qiniudn.com/20140616102021781.png" alt=""></p>
+<p>最近因为要音频处理的研究,音频开发，但是有一个难题就是怎么解析与提取音频的数据,于是就找到了<code>FFmpeg</code>。基本上只要做视频音频开发都离不开<code>ffmpeg</code></p>]]>
+    
+    </summary>
+    
+      <category term="工具" scheme="http://printf.me/tags/%E5%B7%A5%E5%85%B7/"/>
+    
+      <category term="教程" scheme="http://printf.me/tags/%E6%95%99%E7%A8%8B/"/>
+    
+      <category term="音频" scheme="http://printf.me/tags/%E9%9F%B3%E9%A2%91/"/>
+    
+      <category term="音频开发" scheme="http://printf.me/tags/%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91/"/>
+    
+      <category term="音频开发" scheme="http://printf.me/categories/%E9%9F%B3%E9%A2%91%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[快速求幂算法]]></title>
+    <link href="http://printf.me/2014/06/04/%E5%BF%AB%E9%80%9F%E6%B1%82%E5%B9%82%E7%AE%97%E6%B3%95/"/>
+    <id>http://printf.me/2014/06/04/快速求幂算法/</id>
+    <published>2014-06-04T08:21:56.000Z</published>
+    <updated>2015-05-19T03:31:19.052Z</updated>
+    <content type="html"><![CDATA[<h2 id="1-快速求幂算法">1.快速求幂算法</h2><p>在这篇文章我会展示怎样通过求一个数的幂的基本思路来引导我们发现一些抽象的东西比如半群和含幺半群。</p>
+<p>有一个很有名的对一个数求幂的算法,也就是说,求一个数x的n次方或者这样简单表示：<code>x^n</code>。<a href="http://en.wikipedia.org/wiki/Donald_Knuth" target="_blank" rel="external">Donald Knuth</a>在<a href="http://www-cs-faculty.stanford.edu/~uno/taocp.html" target="_blank" rel="external">TAOCP</a>的<code>4.63节 求幂值</code>中提出这个算法。</p>
+<p>这个算法很简单的实现就是x乘以自己n次，但是在这里当然会提供一种比这种方式更快的算法。正在谈论的算法通常被称作<code>二进制法(binary method)</code>、<code>梯度求幂(the powering ladder)</code>或者<code>反复平方法(repeated-squaring algorithm)</code></p>
+<p>假设我们想计算<code>2^23</code>,在这里<code>x = 2</code>,<code>n = 23</code>，这个算法首先把23表示成<code>二进制</code>的形式<code>10111</code>.扫描这个<strong>二进制数(10111)</strong>每当遇到<code>0</code>或<code>1</code>,则相应的<code>求x的平方</code>或者<code>乘以x</code></p>
+<p>这个方法有一个问题就是它扫描二进制表示的数是从左到右进行的,但是对于计算机通常以相反的方向能够更容易实现,因此<strong>Knuth</strong>提出一个替代的算法。</p>
+<a id="more"></a>
+<p>一个出自<a href="http://www-cs-faculty.stanford.edu/~uno/taocp.html" target="_blank" rel="external">TAOCP</a>的<code>4.63节</code>的<code>算法A</code>的简单实现如下:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">power1</span><span class="params">(<span class="variable">$x</span>, <span class="variable">$n</span>)</span> </span>&#123;</span><br><span class="line">    <span class="variable">$y</span> = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">        <span class="variable">$t</span> = <span class="variable">$n</span> % <span class="number">2</span>;</span><br><span class="line">        <span class="variable">$n</span> = floor(<span class="variable">$n</span>/<span class="number">2</span>);</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$t</span> == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="variable">$y</span> = <span class="variable">$y</span> * <span class="variable">$x</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$n</span> == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$x</span> = <span class="variable">$x</span> * <span class="variable">$x</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$y</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数需要两个整数,<code>$x</code>和<code>$n</code>然后返回<code>$x</code>的<code>$n</code>次幂作为结果。</p>
+<p>首先创建一个辅助变量<code>$y</code>并且初始化为<code>1</code>,把它作为乘法的主体。</p>
+<p>然后函数在每次循环迭代的时候扫描<code>$n</code>的二进制表示的数。如果遇到<code>1</code>则<code>$y</code>乘上<code>$x</code>,然后赋值回<code>$y</code>。每次循环都会计算<code>$x</code>的平方,并且把它赋值回<code>$x</code>。</p>
+<p>遇到<code>1</code>意味着当前<code>$n</code>的值不能被<code>2</code>整除，换句话说就是，<code>$n % 2 == 1</code>。</p>
+<p>同样的每次循环<code>$n</code>都会折半,然后向下取整得到结果。当<code>$n</code>等于<code>0</code>的时候,我们结束循环并且返回<code>$y</code>的值。</p>
+<p>函数<code>power</code>能够这样被调用:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1024</span> == power1(<span class="number">2</span>, <span class="number">10</span>);</span><br><span class="line">=&gt; <span class="keyword">true</span></span><br></pre></td></tr></table></figure></p>
+<p>我能想象你现在就像这个gif中的男孩。<br><img src="http://videlalvaro.github.io/images/csb.gif" alt=" gif"><br>尽管这个算法看起来像一个 “呵呵,真有意思” <strong>(无语了，你别说了，我根本不关心)</strong>的故事,实际上当它用来计算非常的大数时时十分高效的。例如有很多的素数测试算法都是依赖这个算法的不同变式。</p>
+<h2 id="2-增加一些抽象">2.增加一些抽象</h2><p>到目前为止还没有什么意想不到的事情发生,但是如果我们注意到求一个数的幂实际上和一个数<code>自乘</code>多次是等价的,我们也可以看到乘法实际上等价于<code>自加</code>多次。举个例子<code>2 * 5</code>能够像这样被计算<code>2 + 2 + 2 + 2 + 2</code>。</p>
+<p>我们能把这个算法转换成一种更普遍的形式使它能同样应用在乘法还有加法上吗?当然可以,我们仅仅需要改变几样东西。</p>
+<p>在当前实现中,我们创建<code>$y</code>作为乘法的主体,并设置为<code>1</code>。如果我们想把算法用在加法上,我们需要把<code>$y</code>设置为<code>0</code>。因此我们仅需要改变函数的单位元素的值。</p>
+<p>第二步要提供一个函数给我们的算法，它能够作乘法或者加法。为了实现这个目的我们会传递一个担当<code>二元运算</code>的函数。例如：一个需要两个参数的函数。这个函数需要遵循以下的规则。必须满足：<code>a·（ b · c ） = (a · b ) · c</code>。还要求返回结果的类型必须和两个输入参数的类型一致。  </p>
+<p>幸运的是<code>加法</code>和<code>乘法</code>都满足<a href="http://zh.wikipedia.org/zh/%E7%BB%93%E5%90%88%E5%BE%8B" target="_blank" rel="external">结合律</a>,因此我们能够仅在一个函数中包含他们然后把它传递给我们的<code>power</code>算法。</p>
+<p>这里是这个算法新的实现：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">power2</span><span class="params">(<span class="variable">$x</span>, <span class="variable">$n</span>, <span class="variable">$id</span>, <span class="variable">$f</span>)</span> </span>&#123;</span><br><span class="line">    <span class="variable">$y</span> = <span class="variable">$id</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">        <span class="variable">$t</span> = <span class="variable">$n</span> % <span class="number">2</span>;</span><br><span class="line">        <span class="variable">$n</span> = floor(<span class="variable">$n</span>/<span class="number">2</span>);</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$t</span> == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="variable">$y</span> = <span class="variable">$f</span>(<span class="variable">$y</span>, <span class="variable">$x</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$n</span> == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$x</span> = <span class="variable">$f</span>(<span class="variable">$x</span>, <span class="variable">$x</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$y</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们能够像这样调用它:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1024</span> == power2(<span class="number">2</span>, <span class="number">10</span>, <span class="number">1</span>, <span class="function"><span class="keyword">function</span> <span class="params">(<span class="variable">$a</span>, <span class="variable">$b</span>)</span> </span>&#123; <span class="keyword">return</span> <span class="variable">$a</span> * <span class="variable">$b</span>; &#125;);</span><br><span class="line">=&gt; <span class="keyword">true</span></span><br></pre></td></tr></table></figure></p>
+<p>记住传递进我们算法的运算必须是可结合的,举个例子,减法不能被用在这里由于<code>10 - ( 5 - 3) = 8</code>但是<code>(10 - 5 ) - 3 = 2</code>。</p>
+<h2 id="3-附加更抽象的概念">3.附加更抽象的概念</h2><p>从数学的角度说这个算法能够在任何满足结合律的代数结构中有效(在这个案例中就是整数的乘法和加法)，换言之，它能够用在<code>半群</code>中,引用一本关于<a href="http://zh.wikipedia.org/wiki/%E7%BE%A4%E8%AE%BA" target="_blank" rel="external">群论</a>的书。</p>
+<blockquote>
+<p>一个半群的集合S含有一个可结合的运算<code>·</code>；<br>也就是说,x • (y • z) = (x • y) • z 对于所有的x, y, z ∈ S都成立。</p>
+</blockquote>
+<p>同样，这个集合必须有一个<code>单位元素</code>使得它有一个<code>独异点</code>:</p>
+<blockquote>
+<p>一个独异点是一个集合M含有一个可结合运算·；伴有一个单位元素e∈ M满足e·x = x· e =  x对于所有x∈ M都成立。</p>
+</blockquote>
+<p>在这个预设条件下，有什么我们经常用在编程上的结构能使用这个算法的呢？如果你是一个web开发者，你不需要费大力气去获取strings。对于字符串（strings），使用<code>string append</code>作为二元操作而且<code>空字符串(empty string)</code>作为单位元素同样会带来类似的结果。如果一个字符串想重复<code>n</code>次,我们创建下面的函数:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">repeat</span><span class="params">(<span class="variable">$s</span>, <span class="variable">$n</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> power2(<span class="variable">$s</span>, <span class="variable">$n</span>, <span class="string">""</span>, <span class="function"><span class="keyword">function</span> <span class="params">(<span class="variable">$a</span>, <span class="variable">$b</span>)</span> </span>&#123;</span><br><span class="line">               <span class="keyword">return</span> <span class="variable">$a</span> . <span class="variable">$b</span>;</span><br><span class="line">           &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>测试:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"aaaaaaaaaa"</span> == repeat(<span class="string">"a"</span>, <span class="number">10</span>);</span><br><span class="line">=&gt; <span class="keyword">true</span></span><br></pre></td></tr></table></figure></p>
+<p>现在考虑一下<code>数组(arrays)</code>(或者其它语言称为<code>列表(lists)</code>)。我们想把一个数组复制n次。在这里空数组是单位元素，对PHP来说<code>array_merge</code>会用来作为二元操作。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">repeat_el</span><span class="params">(<span class="variable">$el</span>, <span class="variable">$n</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> power2(<span class="keyword">array</span>(<span class="variable">$el</span>), <span class="variable">$n</span>, <span class="keyword">array</span>(), <span class="function"><span class="keyword">function</span> <span class="params">(<span class="variable">$a</span>, <span class="variable">$b</span>)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> array_merge(<span class="variable">$a</span>, <span class="variable">$b</span>);</span><br><span class="line">           &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>结果:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$arr</span> = repeat_el(<span class="string">"a"</span>, <span class="number">10</span>);</span><br><span class="line"><span class="number">10</span> == count(<span class="variable">$arr</span>);</span><br><span class="line">=&gt; <span class="keyword">true</span></span><br></pre></td></tr></table></figure></p>
+<p>从上不难看出,像求一个数幂运算的这样简单事情给我们带来一个优雅的算法,它能被运用一些事情上,像重复的东西还有数组里的元素。</p>
+<h2 id="4-延伸阅读">4.延伸阅读</h2><ul>
+<li><p>这里的快速求幂算法是基于<a href="http://www-cs-faculty.stanford.edu/~uno/taocp.html" target="_blank" rel="external">TAOCP</a>中,<code>卷二</code>的<code>4.63节</code>。</p>
+</li>
+<li><p>所有的关于工作原理的解答都可以在<code>TAOCP</code>或者在这本书<a href="http://shoup.net/ntb/" target="_blank" rel="external">《A Computational Introduction to Number Theory and Algebra》</a>上找到,这本书的PDF版本在作者的主页上可以免费下载。浏览章节：<code>“Computing with large integers - The repeated squaring algorithm”</code></p>
+</li>
+<li><p>如果你想学习这个算法的一些用法或者想知道更多这个算法背后的理论,请查阅这本叫做<a href="http://www.amazon.com/Elements-Programming-Alexander-Stepanov/dp/032163537X" target="_blank" rel="external">《Elements of Programming》</a>的书。这本书非常了不起，它定义了不同类型的函数和使用类型系统确定函数是否是可结合的，二元的等等。作者是<code>C++STL</code>的设计者,所以这本书的内容可能会比较<code>理论化</code>,然后它能够直接应用在面向对象编程(OOP)。</p>
+</li>
+<li><p><code>半群</code> 和 <code>含幺半群</code>的引用来自于<a href="http://www.amazon.com/Handbook-Computational-Discrete-Mathematics-Applications/dp/1584883723/" target="_blank" rel="external">《Handbook of Computational Group Theory.》</a>。一本非常有趣的书，如果你对<code>计算群论</code>有兴趣的话。</p>
+</li>
+<li><p>如果你想学习更多有关<code>幺半群</code>还有它们的实现。<a href="http://learnyouahaskell.com/" target="_blank" rel="external">《Learn You a Haskell》</a>里的有个<code>章节</code>非常有趣的介绍它:<a href="http://learnyouahaskell.com/functors-applicative-functors-and-monoids#monoids" target="_blank" rel="external">Functors, Applicative Functors and Monoids</a></p>
+</li>
+<li><p>这是一个十分有趣的练习,通过实现这些概念使用PHP和OOP,对于不喜欢使用PHP无爱的人,也可以选择其它你喜欢的语言。</p>
+<h2 id="5-你是想说Haskell?">5.你是想说Haskell?</h2><p>既然我已经提及一本<code>Haskell</code>的书,这里有一个Haskell实现的求幂算法,使用的递归算法来自于这本书<a href="http://www.amazon.com/Prime-Numbers-Computational-Richard-Crandall/dp/0387252827/" target="_blank" rel="external">《Prime Numbers: A Computational Perspective》</a></p>
+</li>
+</ul>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">power</span> :: (<span class="type">Eq</span> a, <span class="type">Integral</span> b) =&gt; (a -&gt; a -&gt; a) -&gt; a -&gt; b -&gt; a</span><br><span class="line"><span class="title">power</span> f a n</span><br><span class="line">  | n == <span class="number">1</span> = a</span><br><span class="line">  | even n = square a (n `div` <span class="number">2</span>)</span><br><span class="line">  | otherwise = f a (square a ((n-<span class="number">1</span>) `div` <span class="number">2</span>))</span><br><span class="line">  <span class="keyword">where</span></span><br><span class="line">    square a' n' = f (power f a' n') (power f a' n')</span><br></pre></td></tr></table></figure>
+<p>几个函数调用的结果：<br><figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">*<span class="type">Main</span>&gt; :load pow.hs</span><br><span class="line">[<span class="number">1</span> <span class="keyword">of</span> <span class="number">1</span>] <span class="type">Compiling</span> <span class="type">Main</span>             ( pow.hs, interpreted )</span><br><span class="line"><span class="type">Ok</span>, modules loaded: <span class="type">Main</span>.</span><br><span class="line">*<span class="type">Main</span>&gt; power (*) <span class="number">2</span> <span class="number">10</span></span><br><span class="line"><span class="number">1024</span></span><br><span class="line">*<span class="type">Main</span>&gt; power (+) <span class="number">2</span> <span class="number">10</span></span><br><span class="line"><span class="number">20</span></span><br><span class="line">*<span class="type">Main</span>&gt; power (++) <span class="string">"a"</span> <span class="number">10</span></span><br><span class="line"><span class="string">"aaaaaaaaaa"</span></span><br></pre></td></tr></table></figure></p>
+<p>正如你所看到的,这个函数调用一个function<code>(a-&gt;a-&gt;a)</code>,例子中,对于<code>integers</code>使用<code>*</code>或者<code>+</code>,对于<code>lists</code>使用<code>++</code>。</p>
+<p>我希望你会觉得这边文章有趣或者激起你学习与编程有关的数学的欲望。因为我认为我们掌握得越多数学方面的知识，我们就能更好的使用抽象的东西。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="1-快速求幂算法">1.快速求幂算法</h2><p>在这篇文章我会展示怎样通过求一个数的幂的基本思路来引导我们发现一些抽象的东西比如半群和含幺半群。</p>
+<p>有一个很有名的对一个数求幂的算法,也就是说,求一个数x的n次方或者这样简单表示：<code>x^n</code>。<a href="http://en.wikipedia.org/wiki/Donald_Knuth">Donald Knuth</a>在<a href="http://www-cs-faculty.stanford.edu/~uno/taocp.html">TAOCP</a>的<code>4.63节 求幂值</code>中提出这个算法。</p>
+<p>这个算法很简单的实现就是x乘以自己n次，但是在这里当然会提供一种比这种方式更快的算法。正在谈论的算法通常被称作<code>二进制法(binary method)</code>、<code>梯度求幂(the powering ladder)</code>或者<code>反复平方法(repeated-squaring algorithm)</code></p>
+<p>假设我们想计算<code>2^23</code>,在这里<code>x = 2</code>,<code>n = 23</code>，这个算法首先把23表示成<code>二进制</code>的形式<code>10111</code>.扫描这个<strong>二进制数(10111)</strong>每当遇到<code>0</code>或<code>1</code>,则相应的<code>求x的平方</code>或者<code>乘以x</code></p>
+<p>这个方法有一个问题就是它扫描二进制表示的数是从左到右进行的,但是对于计算机通常以相反的方向能够更容易实现,因此<strong>Knuth</strong>提出一个替代的算法。</p>]]>
+    
+    </summary>
+    
+      <category term="算法" scheme="http://printf.me/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="翻译" scheme="http://printf.me/tags/%E7%BF%BB%E8%AF%91/"/>
+    
+      <category term="翻译" scheme="http://printf.me/categories/%E7%BF%BB%E8%AF%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Hello World]]></title>
+    <link href="http://printf.me/2014/05/09/hello-world/"/>
+    <id>http://printf.me/2014/05/09/hello-world/</id>
+    <published>2014-05-09T08:21:56.000Z</published>
+    <updated>2015-05-19T03:40:17.897Z</updated>
+    <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/tommy351/hexo/issues" target="_blank" rel="external">GitHub</a>.<br><a id="more"></a></p>
+<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Welcome to <a href="http://hexo.io/">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html">trobuleshooting</a> or you can ask me on <a href="https://github.com/tommy351/hexo/issues">GitHub</a>.<br>]]>
+    
+    </summary>
+    
+      <category term="教程" scheme="http://printf.me/tags/%E6%95%99%E7%A8%8B/"/>
+    
+      <category term="杂货" scheme="http://printf.me/categories/%E6%9D%82%E8%B4%A7/"/>
+    
+  </entry>
+  
+</feed>
