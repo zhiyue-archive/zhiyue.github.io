@@ -1,6 +1,3 @@
 [submodule "themes/jacman"]
 	path = themes/jacman
 	url = https://github.com/zhiyue/jacman
-[submodule "source/Demo/PathFinding.js"]
-	path = source/Demo/PathFinding.js
-	url = https://github.com/zhiyue/PathFinding.js.git
