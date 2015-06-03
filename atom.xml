@@ -4,7 +4,7 @@
   <subtitle><![CDATA[恍惚中，时光停滞，岁月静好，宛如十年前。]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://printf.me/"/>
-  <updated>2015-06-03T11:18:40.352Z</updated>
+  <updated>2015-06-03T11:23:51.635Z</updated>
   <id>http://printf.me/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://printf.me/2015/05/19/Monty-Hall-problem/"/>
     <id>http://printf.me/2015/05/19/Monty-Hall-problem/</id>
     <published>2015-05-19T02:55:49.000Z</published>
-    <updated>2015-06-03T11:18:40.352Z</updated>
+    <updated>2015-06-03T11:23:51.635Z</updated>
     <content type="html"><![CDATA[<p>最初看到这个问题是初中的时候买了一本有关数学谜题的书里面概率论的一张的课后拓展就是说到三门问题，当时作为一个扩展阅读看了一下，里面说到了一个世界智商最高的女人秒杀了美国一大群的数学高材生的精彩故事（比较夸张），当时对这个问题也是似懂非懂。</p>
 <h2 id="什么是蒙提霍尔问题？">什么是蒙提霍尔问题？</h2><p><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/24200658-c442dec3691a4e929938ba98a52d78c5.png" alt="蒙提霍尔"></p>
 <blockquote>
@@ -106,7 +106,7 @@
 </ul>
 <p>$$<br>P(A) = P(C=’羊’) \times \frac{1}{2} = \frac{1}{3}<br>$$</p>
 <p>$$<br>P(A|B) = \dfrac{P(A) }{P(B) } = \dfrac{\frac{1}{3}}{\frac{2}{3}}= \frac{1}{2}<br>$$<br>因此在主持人不知道门后的情况下打开一扇，然后发现门后是羊的情况下，换门与不换门最终的概率都是$\frac{1}{2}$<br>还是可以通过程序进行模拟：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def unknown_doors_choice_test(n):&#10;    &#34;&#34;&#34;&#10;    &#20027;&#25345;&#20154;&#24182;&#19981;&#30693;&#36947;&#38376;&#21518;&#38754;&#30340;&#24773;&#20917;&#38543;&#26426;&#30340;&#24320;&#38376;&#10;    &#20132;&#25442;&#36873;&#25321;&#30340;&#38376;&#10;    &#34;&#34;&#34;&#10;    result = &#123;&#125;&#10;    game = MontyHall()&#10;    continue_count = 0&#10;    for i in xrange(n):&#10;        game.shuffle()&#10;        game.make_choice()&#10;        game.random_exclude_doors()&#10;        game.change_choice()&#10;        if game.exclude_car == False:&#10;            continue_count += 1&#10;        if game.check_result():&#10;            result[&#34;yes&#34;] = result.get(&#34;yes&#34;, 0) + 1&#10;        else:&#10;            result[&#34;no&#34;] = result.get(&#34;no&#34;, 0) + 1&#10;    #for key in result:&#10;    #    print &#34;%s: %d&#34; % (key, result[key])&#10;    logging.info(&#34;continue_count: %d&#34; % continue_count)&#10;    if continue_count == 0:&#10;        return 0.0&#10;    return result[&#34;yes&#34;] / continue_count</span><br></pre></td></tr></table></figure>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">def unknown_doors_choice_test(n):</span><br><span class="line">    <span class="string">"""</span><br><span class="line">    主持人并不知道门后面的情况随机的开门</span><br><span class="line">    交换选择的门</span><br><span class="line">    """</span></span><br><span class="line">    <span class="literal">result</span> = &#123;&#125;</span><br><span class="line">    game = <span class="type">MontyHall</span>()</span><br><span class="line">    continue_count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(n):</span><br><span class="line">        game.shuffle()</span><br><span class="line">        game.make_choice()</span><br><span class="line">        game.random_exclude_doors()</span><br><span class="line">        game.change_choice()</span><br><span class="line">        <span class="keyword">if</span> game.exclude_car == <span class="type">False</span>:</span><br><span class="line">            continue_count += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> game.check_result():</span><br><span class="line">            <span class="literal">result</span>[<span class="string">"yes"</span>] = <span class="literal">result</span>.get(<span class="string">"yes"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="literal">result</span>[<span class="string">"no"</span>] = <span class="literal">result</span>.get(<span class="string">"no"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">    <span class="comment">#for key in result:</span></span><br><span class="line">    <span class="comment">#    print "%s: %d" % (key, result[key])</span></span><br><span class="line">    logging.info(<span class="string">"continue_count: %d"</span> % continue_count)</span><br><span class="line">    <span class="keyword">if</span> continue_count == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>.<span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">result</span>[<span class="string">"yes"</span>] / continue_count</span><br></pre></td></tr></table></figure>
 <p><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E4%B8%8D%E7%9F%A5%E9%81%93%E9%97%A8%E5%90%8E%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8D%E6%94%B9%E5%8F%98.png" alt="此处输入图片的描述"><br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E4%B8%8D%E7%9F%A5%E9%81%93%E9%97%A8%E5%90%8E%E9%9D%A2%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8D%E6%94%B9%E5%8F%98.png" alt="此处输入图片的描述"><br>在这种情况下交换门也没有提升成功的概率</p>
 <hr>
 <h2 id="总结">总结</h2><p>今天写的这篇东西也算是了解我童年的一个遗憾，人的直觉有时候是很不可靠，要摆脱个人局限的认知才能拥抱更大的世界。<br>什么？看完这些解析，你还觉得不满意那么你还可以从下面的参考中寻找更好的解析，本文撰写过程有部分的图片引用自一下的参考，如果你还有疑问欢迎你联系我进一步的讨论。</p>
@@ -193,7 +193,7 @@
     <link href="http://printf.me/2015/02/11/%E3%80%8A%E7%BA%A2%E9%A2%86%E5%B7%BE%E4%B8%8E%E7%8E%8B%E5%B0%8F%E6%98%8E%E3%80%8B/"/>
     <id>http://printf.me/2015/02/11/《红领巾与王小明》/</id>
     <published>2015-02-11T00:32:04.000Z</published>
-    <updated>2015-06-03T11:18:40.352Z</updated>
+    <updated>2015-06-03T11:23:51.635Z</updated>
     <content type="html"><![CDATA[<p><img src="http://printf.qiniudn.com/honglingjin.jpe" class="img-topic"></p>
 <p>有一种混搭的感觉的国产动漫，画面比较复古，笑笑就好。</p>
 <a id="more"></a>
@@ -217,7 +217,7 @@
     <link href="http://printf.me/2015/02/11/vedio%E4%B9%8BLookUp/"/>
     <id>http://printf.me/2015/02/11/vedio之LookUp/</id>
     <published>2015-02-11T00:25:52.000Z</published>
-    <updated>2015-06-03T11:18:40.352Z</updated>
+    <updated>2015-06-03T11:23:51.635Z</updated>
     <content type="html"><![CDATA[<p>这个是今天看的一个小视频，分享给大家。</p>
 <blockquote>
 <p>如今互联网的出现颠覆了很多东西，给我们带来了很多的方便，但是我们渐渐发现，我们似乎也正在失去一些很珍贵的东西。<br><img src="http://printf.qiniudn.com/lookup.jpe" class="img-topic"></p>
@@ -246,11 +246,11 @@
     <link href="http://printf.me/2014/06/09/hexo-%E5%A4%9A%E6%A0%87%E7%AD%BE/"/>
     <id>http://printf.me/2014/06/09/hexo-多标签/</id>
     <published>2014-06-09T16:21:56.000Z</published>
-    <updated>2015-06-03T11:18:40.352Z</updated>
-    <content type="html"><![CDATA[<p>刚开始使用hexo记录一下使用过程遇到的问题.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#20351;&#29992;&#22810;&#26631;&#31614;&#35201;&#22312;&#25324;&#21495;&#20869;**[,]**&#10;&#10;&#22312;&#25324;&#21495;&#20869;&#29992;&#36887;&#21495;&#20998;&#38548;&#24320;.</span><br></pre></td></tr></table></figure></p>
+    <updated>2015-06-03T11:23:51.635Z</updated>
+    <content type="html"><![CDATA[<p>刚开始使用hexo记录一下使用过程遇到的问题.<br><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">使用多标签要在括号内<span class="keyword">*</span><span class="keyword">*</span>[,]<span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line"></span><br><span class="line">在括号内用逗号分隔开.</span><br></pre></td></tr></table></figure></p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>刚开始使用hexo记录一下使用过程遇到的问题.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><]]>
+    <![CDATA[<p>刚开始使用hexo记录一下使用过程遇到的问题.<br><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span clas]]>
     </summary>
     
       <category term="hexo" scheme="http://printf.me/tags/hexo/"/>
@@ -268,7 +268,7 @@
     <link href="http://printf.me/2014/06/09/ffmpeg%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
     <id>http://printf.me/2014/06/09/ffmpeg的使用/</id>
     <published>2014-06-09T16:21:56.000Z</published>
-    <updated>2015-06-03T11:18:40.352Z</updated>
+    <updated>2015-06-03T11:23:51.635Z</updated>
     <content type="html"><![CDATA[<p><img src="http://printf.qiniudn.com/20140616102021781.png" class="img-topic"></p>
 <p><img src="http://printf.qiniudn.com/20140616102021781.png" alt=""></p>
 <p>最近因为要音频处理的研究,音频开发，但是有一个难题就是怎么解析与提取音频的数据,于是就找到了<code>FFmpeg</code>。基本上只要做视频音频开发都离不开<code>ffmpeg</code></p>
@@ -303,14 +303,14 @@
 </ul>
 <h2 id="3-怎么使用">3.怎么使用</h2><h3 id="3-1_命令行工具的使用">3.1 命令行工具的使用</h3><h4 id="3-11_ffmpeg-exe">3.11 <code>ffmpeg.exe</code></h4><p>用于转码的应用程序:</p>
 <blockquote>
-<p>一个简单的转码命令 将input.avi转码成output.ts，并设置视频的码率为640kbps<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i input.avi -b:v 640k output.ts</span><br></pre></td></tr></table></figure></p>
+<p>一个简单的转码命令 将input.avi转码成output.ts，并设置视频的码率为640kbps<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -<span class="tag">i</span> <span class="tag">input</span><span class="class">.avi</span> -<span class="tag">b</span>:v <span class="number">640</span>k output.ts</span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <p>具体用法参考:   <a href="http://blog.csdn.net/leixiaohua1020/article/details/12751349" target="_blank" rel="external">ffmpeg参数中文详细解释</a><br>详细的使用说明（英文）：<a href="http://ffmpeg.org/ffmpeg.html" target="_blank" rel="external">http://ffmpeg.org/ffmpeg.html</a></p>
 <h4 id="3-12_ffplay-exe">3.12 <code>ffplay.exe</code></h4><p>主要用于播放的应用程序</p>
 <blockquote>
 <p>播放test.avi</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffplay test.avi</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">ffplay</span> <span class="tag">test</span><span class="class">.avi</span></span><br></pre></td></tr></table></figure>
 <p>具体的使用方法可以参考：<a href="http://blog.csdn.net/leixiaohua1020/article/details/15186441" target="_blank" rel="external">ffplay的快捷键以及选项</a><br>详细的使用说明（英文）：<a href="http://ffmpeg.org/ffplay.html" target="_blank" rel="external">http://ffmpeg.org/ffplay.html</a></p>
 <h4 id="3-13_ffprobe-exe">3.13 <code>ffprobe.exe</code></h4><p>ffprobe是用于查看文件格式的应用程序。<br>详细的使用说明（英文）：<a href="http://ffmpeg.org/ffprobe.html" target="_blank" rel="external">http://ffmpeg.org/ffprobe.html</a></p>
 <h3 id="3-2_使用ffmpeg库进行开发">3.2 使用ffmpeg库进行开发</h3><h2 id="To_Be_Continue…"><strong>To Be Continue…</strong></h2><p><strong>参考资料</strong> :</p>
@@ -346,7 +346,7 @@
     <link href="http://printf.me/2014/06/04/%E5%BF%AB%E9%80%9F%E6%B1%82%E5%B9%82%E7%AE%97%E6%B3%95/"/>
     <id>http://printf.me/2014/06/04/快速求幂算法/</id>
     <published>2014-06-04T16:21:56.000Z</published>
-    <updated>2015-06-03T11:18:40.352Z</updated>
+    <updated>2015-06-03T11:23:51.635Z</updated>
     <content type="html"><![CDATA[<h2 id="1-快速求幂算法">1.快速求幂算法</h2><p>在这篇文章我会展示怎样通过求一个数的幂的基本思路来引导我们发现一些抽象的东西比如半群和含幺半群。</p>
 <p>有一个很有名的对一个数求幂的算法,也就是说,求一个数x的n次方或者这样简单表示：<code>x^n</code>。<a href="http://en.wikipedia.org/wiki/Donald_Knuth" target="_blank" rel="external">Donald Knuth</a>在<a href="http://www-cs-faculty.stanford.edu/~uno/taocp.html" target="_blank" rel="external">TAOCP</a>的<code>4.63节 求幂值</code>中提出这个算法。</p>
 <p>这个算法很简单的实现就是x乘以自己n次，但是在这里当然会提供一种比这种方式更快的算法。正在谈论的算法通常被称作<code>二进制法(binary method)</code>、<code>梯度求幂(the powering ladder)</code>或者<code>反复平方法(repeated-squaring algorithm)</code></p>
@@ -367,7 +367,7 @@
 <p>在当前实现中,我们创建<code>$y</code>作为乘法的主体,并设置为<code>1</code>。如果我们想把算法用在加法上,我们需要把<code>$y</code>设置为<code>0</code>。因此我们仅需要改变函数的单位元素的值。</p>
 <p>第二步要提供一个函数给我们的算法，它能够作乘法或者加法。为了实现这个目的我们会传递一个担当<code>二元运算</code>的函数。例如：一个需要两个参数的函数。这个函数需要遵循以下的规则。必须满足：<code>a·（ b · c ） = (a · b ) · c</code>。还要求返回结果的类型必须和两个输入参数的类型一致。  </p>
 <p>幸运的是<code>加法</code>和<code>乘法</code>都满足<a href="http://zh.wikipedia.org/zh/%E7%BB%93%E5%90%88%E5%BE%8B" target="_blank" rel="external">结合律</a>,因此我们能够仅在一个函数中包含他们然后把它传递给我们的<code>power</code>算法。</p>
-<p>这里是这个算法新的实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function power2($x, $n, $id, $f) &#123;&#10;    $y = $id;&#10;    while (true) &#123;&#10;        $t = $n % 2;&#10;        $n = floor($n/2);&#10;        if ($t == 1) &#123;&#10;            $y = $f($y, $x);&#10;        &#125;&#10;        if ($n == 0) &#123;&#10;            break;&#10;        &#125;&#10;        $x = $f($x, $x);&#10;    &#125;&#10;    return $y;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里是这个算法新的实现：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">power2</span><span class="params">(<span class="variable">$x</span>, <span class="variable">$n</span>, <span class="variable">$id</span>, <span class="variable">$f</span>)</span> </span>&#123;</span><br><span class="line">    <span class="variable">$y</span> = <span class="variable">$id</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">        <span class="variable">$t</span> = <span class="variable">$n</span> % <span class="number">2</span>;</span><br><span class="line">        <span class="variable">$n</span> = floor(<span class="variable">$n</span>/<span class="number">2</span>);</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$t</span> == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="variable">$y</span> = <span class="variable">$f</span>(<span class="variable">$y</span>, <span class="variable">$x</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$n</span> == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$x</span> = <span class="variable">$f</span>(<span class="variable">$x</span>, <span class="variable">$x</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$y</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>我们能够像这样调用它:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1024</span> == power2(<span class="number">2</span>, <span class="number">10</span>, <span class="number">1</span>, <span class="function"><span class="keyword">function</span> <span class="params">(<span class="variable">$a</span>, <span class="variable">$b</span>)</span> </span>&#123; <span class="keyword">return</span> <span class="variable">$a</span> * <span class="variable">$b</span>; &#125;);</span><br><span class="line">=&gt; <span class="keyword">true</span></span><br></pre></td></tr></table></figure></p>
 <p>记住传递进我们算法的运算必须是可结合的,举个例子,减法不能被用在这里由于<code>10 - ( 5 - 3) = 8</code>但是<code>(10 - 5 ) - 3 = 2</code>。</p>
 <h2 id="3-附加更抽象的概念">3.附加更抽象的概念</h2><p>从数学的角度说这个算法能够在任何满足结合律的代数结构中有效(在这个案例中就是整数的乘法和加法)，换言之，它能够用在<code>半群</code>中,引用一本关于<a href="http://zh.wikipedia.org/wiki/%E7%BE%A4%E8%AE%BA" target="_blank" rel="external">群论</a>的书。</p>
@@ -425,7 +425,7 @@
     <link href="http://printf.me/2014/05/09/hello-world/"/>
     <id>http://printf.me/2014/05/09/hello-world/</id>
     <published>2014-05-09T16:21:56.000Z</published>
-    <updated>2015-06-03T11:18:40.352Z</updated>
+    <updated>2015-06-03T11:23:51.635Z</updated>
     <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/tommy351/hexo/issues" target="_blank" rel="external">GitHub</a>.<br><a id="more"></a></p>
 <h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
 <p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>

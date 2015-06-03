@@ -20,7 +20,7 @@
 <meta property="og:image" content="http://printf.qiniudn.com/20140616102021781.png">
 <meta property="og:image" content="http://printf.qiniudn.com/20140616102021781.png">
 <meta property="og:image" content="http://printf.qiniudn.com/20140730113852.png">
-<meta property="og:updated_time" content="2015-06-03T11:18:40.352Z">
+<meta property="og:updated_time" content="2015-06-03T11:23:51.635Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="FFmpeg的使用">
 <meta name="twitter:description" content="最近因为要音频处理的研究,音频开发，但是有一个难题就是怎么解析与提取音频的数据,于是就找到了FFmpeg。基本上只要做视频音频开发都离不开ffmpeg">
@@ -135,14 +135,14 @@
 </ul>
 <h2 id="3-怎么使用">3.怎么使用</h2><h3 id="3-1_命令行工具的使用">3.1 命令行工具的使用</h3><h4 id="3-11_ffmpeg-exe">3.11 <code>ffmpeg.exe</code></h4><p>用于转码的应用程序:</p>
 <blockquote>
-<p>一个简单的转码命令 将input.avi转码成output.ts，并设置视频的码率为640kbps<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i input.avi -b:v 640k output.ts</span><br></pre></td></tr></table></figure></p>
+<p>一个简单的转码命令 将input.avi转码成output.ts，并设置视频的码率为640kbps<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -<span class="tag">i</span> <span class="tag">input</span><span class="class">.avi</span> -<span class="tag">b</span>:v <span class="number">640</span>k output.ts</span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <p>具体用法参考:   <a href="http://blog.csdn.net/leixiaohua1020/article/details/12751349" target="_blank" rel="external">ffmpeg参数中文详细解释</a><br>详细的使用说明（英文）：<a href="http://ffmpeg.org/ffmpeg.html" target="_blank" rel="external">http://ffmpeg.org/ffmpeg.html</a></p>
 <h4 id="3-12_ffplay-exe">3.12 <code>ffplay.exe</code></h4><p>主要用于播放的应用程序</p>
 <blockquote>
 <p>播放test.avi</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffplay test.avi</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">ffplay</span> <span class="tag">test</span><span class="class">.avi</span></span><br></pre></td></tr></table></figure>
 <p>具体的使用方法可以参考：<a href="http://blog.csdn.net/leixiaohua1020/article/details/15186441" target="_blank" rel="external">ffplay的快捷键以及选项</a><br>详细的使用说明（英文）：<a href="http://ffmpeg.org/ffplay.html" target="_blank" rel="external">http://ffmpeg.org/ffplay.html</a></p>
 <h4 id="3-13_ffprobe-exe">3.13 <code>ffprobe.exe</code></h4><p>ffprobe是用于查看文件格式的应用程序。<br>详细的使用说明（英文）：<a href="http://ffmpeg.org/ffprobe.html" target="_blank" rel="external">http://ffmpeg.org/ffprobe.html</a></p>
 <h3 id="3-2_使用ffmpeg库进行开发">3.2 使用ffmpeg库进行开发</h3><h2 id="To_Be_Continue…"><strong>To Be Continue…</strong></h2><p><strong>参考资料</strong> :</p>
