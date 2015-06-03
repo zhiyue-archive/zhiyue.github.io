@@ -242,7 +242,7 @@ if __name__ == '__main__':
 
 - 改变选择：
 
-```
+``` python
 def change_choice_test(n):
     """
     交换选择的门
@@ -280,7 +280,7 @@ def change_choice_test(n):
 把门的数据增大到100,1000，这种情况会更加明显。
 还是通过一段程序模拟说明：
 
-```
+``` python
 def change_choice_test_large(n,m):
     """
     交换选择的门
@@ -361,7 +361,7 @@ $$
 因此在主持人不知道门后的情况下打开一扇，然后发现门后是羊的情况下，换门与不换门最终的概率都是$\frac{1}{2}$
 还是可以通过程序进行模拟：
 
-```
+``` 
 def unknown_doors_choice_test(n):
     """
     主持人并不知道门后面的情况随机的开门
