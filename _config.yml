@@ -42,6 +42,7 @@ highlight:
   enable: true
   line_number: true
   tab_replace: true
+  auto_detect: true
 
 # Category & Tag
 default_category: uncategorized
