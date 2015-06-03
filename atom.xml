@@ -4,7 +4,7 @@
   <subtitle><![CDATA[恍惚中，时光停滞，岁月静好，宛如十年前。]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://printf.me/"/>
-  <updated>2015-06-02T13:50:36.134Z</updated>
+  <updated>2015-06-03T11:15:19.319Z</updated>
   <id>http://printf.me/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://printf.me/2015/05/19/Monty-Hall-problem/"/>
     <id>http://printf.me/2015/05/19/Monty-Hall-problem/</id>
     <published>2015-05-19T02:55:49.000Z</published>
-    <updated>2015-06-02T13:50:36.134Z</updated>
+    <updated>2015-06-03T11:15:19.319Z</updated>
     <content type="html"><![CDATA[<p>最初看到这个问题是初中的时候买了一本有关数学谜题的书里面概率论的一张的课后拓展就是说到三门问题，当时作为一个扩展阅读看了一下，里面说到了一个世界智商最高的女人秒杀了美国一大群的数学高材生的精彩故事（比较夸张），当时对这个问题也是似懂非懂。</p>
 <h2 id="什么是蒙提霍尔问题？">什么是蒙提霍尔问题？</h2><p><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/24200658-c442dec3691a4e929938ba98a52d78c5.png" alt="蒙提霍尔"></p>
 <blockquote>
@@ -76,7 +76,7 @@
 <ul>
 <li>改变选择：</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def change_choice_test(n):&#10;    &#34;&#34;&#34;&#10;    &#20132;&#25442;&#36873;&#25321;&#30340;&#38376;&#10;    &#34;&#34;&#34;&#10;    result = &#123;&#125;&#10;    game = MontyHall()&#10;    for i in xrange(n):&#10;        game.shuffle()&#10;        game.make_choice()&#10;        game.exclude_doors()&#10;        game.change_choice()&#10;        if game.check_result():&#10;            result[&#34;yes&#34;] = result.get(&#34;yes&#34;, 0) + 1&#10;        else:&#10;            result[&#34;no&#34;] = result.get(&#34;no&#34;, 0) + 1&#10;    for key in result:&#10;        print &#34;%s: %d&#34; % (key, result[key])&#10;    return result[&#34;yes&#34;] / n</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">change_choice_test</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    交换选择的门</span><br><span class="line">    """</span></span><br><span class="line">    result = &#123;&#125;</span><br><span class="line">    game = MontyHall()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(n):</span><br><span class="line">        game.shuffle()</span><br><span class="line">        game.make_choice()</span><br><span class="line">        game.exclude_doors()</span><br><span class="line">        game.change_choice()</span><br><span class="line">        <span class="keyword">if</span> game.check_result():</span><br><span class="line">            result[<span class="string">"yes"</span>] = result.get(<span class="string">"yes"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            result[<span class="string">"no"</span>] = result.get(<span class="string">"no"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> result:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"%s: %d"</span> % (key, result[key])</span><br><span class="line">    <span class="keyword">return</span> result[<span class="string">"yes"</span>] / n</span><br></pre></td></tr></table></figure>
 <p>同样的方法绘图得到结果：<br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E6%94%B9%E5%8F%98.png" alt="此处输入图片的描述"><br>概率分布:<br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E6%94%AF%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E6%94%B9%E5%8F%98.png" alt="此处输入图片的描述"><br>成功的概率均值在 $\frac{2}{3}$ 附近</p>
 <blockquote>
 <p>通过上面的分析与模拟可知最佳的策略当然就是换门。</p>
@@ -85,7 +85,7 @@
 <li><strong>如果门的数量不止是3个，如果是50扇门呢？</strong></li>
 </ul>
 <p><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/24200702-dd4e3b818eee4ae680cb357ce903d8e0.png" alt="此处输入图片的描述"><br>这种情况下，主持人打开48扇都是羊的门后，再给你选择，很多人这个时候应该就不会固守那$\frac{1}{2}$，而会选择换门<br>把门的数据增大到100,1000，这种情况会更加明显。<br>还是通过一段程序模拟说明：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def change_choice_test_large(n,m):&#10;    &#34;&#34;&#34;&#10;    &#20132;&#25442;&#36873;&#25321;&#30340;&#38376;&#10;    &#34;&#34;&#34;&#10;    result = &#123;&#125;&#10;    game = MontyHall(m)&#10;    for i in xrange(n):&#10;        game.shuffle()&#10;        game.make_choice()&#10;        game.exclude_doors()&#10;        game.change_choice()&#10;        if game.check_result():&#10;            result[&#34;yes&#34;] = result.get(&#34;yes&#34;, 0) + 1&#10;        else:&#10;            result[&#34;no&#34;] = result.get(&#34;no&#34;, 0) + 1&#10;    for key in result:&#10;        print &#34;%s: %d&#34; % (key, result[key])&#10;    return result[&#34;yes&#34;] / n&#10;    &#10;    &#10;if __name__ == &#39;__main__&#39;:&#10;    logging.basicConfig(format=&#39;%(levelname)s:%(message)s&#39;, level=logging.WARNING)&#10;    results = []&#10;    test_num = 1000&#10;    round_num = 1000&#10;    for x in xrange(0,round_num):&#10;        results.append(change_choice_test_large(test_num,50) )</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">change_choice_test_large</span><span class="params">(n,m)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    交换选择的门</span><br><span class="line">    """</span></span><br><span class="line">    result = &#123;&#125;</span><br><span class="line">    game = MontyHall(m)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(n):</span><br><span class="line">        game.shuffle()</span><br><span class="line">        game.make_choice()</span><br><span class="line">        game.exclude_doors()</span><br><span class="line">        game.change_choice()</span><br><span class="line">        <span class="keyword">if</span> game.check_result():</span><br><span class="line">            result[<span class="string">"yes"</span>] = result.get(<span class="string">"yes"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            result[<span class="string">"no"</span>] = result.get(<span class="string">"no"</span>, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> result:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"%s: %d"</span> % (key, result[key])</span><br><span class="line">    <span class="keyword">return</span> result[<span class="string">"yes"</span>] / n</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    logging.basicConfig(format=<span class="string">'%(levelname)s:%(message)s'</span>, level=logging.WARNING)</span><br><span class="line">    results = []</span><br><span class="line">    test_num = <span class="number">1000</span></span><br><span class="line">    round_num = <span class="number">1000</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> xrange(<span class="number">0</span>,round_num):</span><br><span class="line">        results.append(change_choice_test_large(test_num,<span class="number">50</span>) )</span><br></pre></td></tr></table></figure>
 <p>结果：<br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/large_num.png" alt="此处输入图片的描述"><br><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/large_num2.png" alt="此处输入图片的描述"></p>
 <p>这时候就要选择<strong>交换门</strong>。</p>
 <ul>
@@ -193,7 +193,7 @@
     <link href="http://printf.me/2015/02/11/%E3%80%8A%E7%BA%A2%E9%A2%86%E5%B7%BE%E4%B8%8E%E7%8E%8B%E5%B0%8F%E6%98%8E%E3%80%8B/"/>
     <id>http://printf.me/2015/02/11/《红领巾与王小明》/</id>
     <published>2015-02-11T00:32:04.000Z</published>
-    <updated>2015-06-02T13:50:36.134Z</updated>
+    <updated>2015-06-03T11:15:19.319Z</updated>
     <content type="html"><![CDATA[<p><img src="http://printf.qiniudn.com/honglingjin.jpe" class="img-topic"></p>
 <p>有一种混搭的感觉的国产动漫，画面比较复古，笑笑就好。</p>
 <a id="more"></a>
@@ -217,7 +217,7 @@
     <link href="http://printf.me/2015/02/11/vedio%E4%B9%8BLookUp/"/>
     <id>http://printf.me/2015/02/11/vedio之LookUp/</id>
     <published>2015-02-11T00:25:52.000Z</published>
-    <updated>2015-06-02T13:50:36.134Z</updated>
+    <updated>2015-06-03T11:15:19.319Z</updated>
     <content type="html"><![CDATA[<p>这个是今天看的一个小视频，分享给大家。</p>
 <blockquote>
 <p>如今互联网的出现颠覆了很多东西，给我们带来了很多的方便，但是我们渐渐发现，我们似乎也正在失去一些很珍贵的东西。<br><img src="http://printf.qiniudn.com/lookup.jpe" class="img-topic"></p>
@@ -246,7 +246,7 @@
     <link href="http://printf.me/2014/06/09/hexo-%E5%A4%9A%E6%A0%87%E7%AD%BE/"/>
     <id>http://printf.me/2014/06/09/hexo-多标签/</id>
     <published>2014-06-09T16:21:56.000Z</published>
-    <updated>2015-06-02T13:50:36.134Z</updated>
+    <updated>2015-06-03T11:15:19.319Z</updated>
     <content type="html"><![CDATA[<p>刚开始使用hexo记录一下使用过程遇到的问题.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#20351;&#29992;&#22810;&#26631;&#31614;&#35201;&#22312;&#25324;&#21495;&#20869;**[,]**&#10;&#10;&#22312;&#25324;&#21495;&#20869;&#29992;&#36887;&#21495;&#20998;&#38548;&#24320;.</span><br></pre></td></tr></table></figure></p>
 ]]></content>
     <summary type="html">
@@ -268,7 +268,7 @@
     <link href="http://printf.me/2014/06/09/ffmpeg%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
     <id>http://printf.me/2014/06/09/ffmpeg的使用/</id>
     <published>2014-06-09T16:21:56.000Z</published>
-    <updated>2015-06-02T13:50:36.134Z</updated>
+    <updated>2015-06-03T11:15:19.319Z</updated>
     <content type="html"><![CDATA[<p><img src="http://printf.qiniudn.com/20140616102021781.png" class="img-topic"></p>
 <p><img src="http://printf.qiniudn.com/20140616102021781.png" alt=""></p>
 <p>最近因为要音频处理的研究,音频开发，但是有一个难题就是怎么解析与提取音频的数据,于是就找到了<code>FFmpeg</code>。基本上只要做视频音频开发都离不开<code>ffmpeg</code></p>
@@ -346,7 +346,7 @@
     <link href="http://printf.me/2014/06/04/%E5%BF%AB%E9%80%9F%E6%B1%82%E5%B9%82%E7%AE%97%E6%B3%95/"/>
     <id>http://printf.me/2014/06/04/快速求幂算法/</id>
     <published>2014-06-04T16:21:56.000Z</published>
-    <updated>2015-06-02T13:50:36.134Z</updated>
+    <updated>2015-06-03T11:15:19.319Z</updated>
     <content type="html"><![CDATA[<h2 id="1-快速求幂算法">1.快速求幂算法</h2><p>在这篇文章我会展示怎样通过求一个数的幂的基本思路来引导我们发现一些抽象的东西比如半群和含幺半群。</p>
 <p>有一个很有名的对一个数求幂的算法,也就是说,求一个数x的n次方或者这样简单表示：<code>x^n</code>。<a href="http://en.wikipedia.org/wiki/Donald_Knuth" target="_blank" rel="external">Donald Knuth</a>在<a href="http://www-cs-faculty.stanford.edu/~uno/taocp.html" target="_blank" rel="external">TAOCP</a>的<code>4.63节 求幂值</code>中提出这个算法。</p>
 <p>这个算法很简单的实现就是x乘以自己n次，但是在这里当然会提供一种比这种方式更快的算法。正在谈论的算法通常被称作<code>二进制法(binary method)</code>、<code>梯度求幂(the powering ladder)</code>或者<code>反复平方法(repeated-squaring algorithm)</code></p>
@@ -425,7 +425,7 @@
     <link href="http://printf.me/2014/05/09/hello-world/"/>
     <id>http://printf.me/2014/05/09/hello-world/</id>
     <published>2014-05-09T16:21:56.000Z</published>
-    <updated>2015-06-02T13:50:36.134Z</updated>
+    <updated>2015-06-03T11:15:19.319Z</updated>
     <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/tommy351/hexo/issues" target="_blank" rel="external">GitHub</a>.<br><a id="more"></a></p>
 <h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
 <p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
