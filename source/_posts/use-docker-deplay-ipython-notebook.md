@@ -20,6 +20,8 @@ categories:
 
 本文主要记录使用Docker 在服务器部署IPython Note 应用的过程。比传统的部署方案果然简单轻松不少。
 
+<!--more-->
+
 #### 知识点
 
 1. Docker 的基本概念
