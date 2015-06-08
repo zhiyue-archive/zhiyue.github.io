@@ -1,6 +1,6 @@
 title: 使用Docker部署IPython
 date: 2015-06-08 16:21:56
-tags: [Docker,IPyhton,nginx，Python]
+tags: [Docker,IPyhton,nginx,Python]
 categories:  
 - 系统运维
 ---
