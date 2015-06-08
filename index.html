@@ -79,6 +79,152 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2015/06/08/use-docker-deplay-ipython-notebook/" title="使用Docker部署IPython" itemprop="url">使用Docker部署IPython</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="https://plus.google.com/103838448889836434236?rel=author" title="zhiyue" target="_blank" itemprop="author">zhiyue</a>
+		
+  <p class="article-time">
+    <time datetime="2015-06-08T16:21:56.000Z" itemprop="datePublished"> 发表于 2015-06-08</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><img src="http://zhiyue.qiniudn.com/15-6-8/78469439.jpg" class="img-topic"></p>
+<p><img src="http://zhiyue.qiniudn.com/15-6-8/63734849.jpg" alt="docker"></p>
+<blockquote>
+<p>本文的部署环境是Ubuntu 14.04 </p>
+</blockquote>
+<ul>
+<li><p>Docker</p>
+<blockquote>
+<p>Docker 详细概念可以去search，简单来说就是把应用打包到一个容器里的轻量级系统虚拟化服务</p>
+</blockquote>
+</li>
+<li><p>IPython Notebook</p>
+<blockquote>
+<p>IPython Notebook 既是一个交互计算平台，又是一个记录计算过程的「笔记本」。它由服务端和客户端两部分组成，其中服务端负责代码的解释与计算，而客户端负责与用户进行交互。 服务端可以运行在本机也可以运行在远程服务器，包含负责运算的 IPython kernel (与 QT Console 的 kernel 相同) 以及一个 HTTP/S 服务器 (Tornado)。 而客户端则是一个指向服务端地址的浏览器页面，负责接受用户的输入并负责渲染输出。</p>
+</blockquote>
+</li>
+</ul>
+<p>本文主要记录使用Docker 在服务器部署IPython Note 应用的过程。比传统的部署方案果然简单轻松不少。</p>
+<h4 id="知识点">知识点</h4><ol>
+<li>Docker 的基本概念</li>
+<li>部署IPython 容器</li>
+<li>使用Nginx 容器反向代理IPython </li>
+</ol>
+<h3 id="Docker_的基本概念">Docker 的基本概念</h3><p>下文的操作主要涉及Docker的一下几个知识点：</p>
+<ul>
+<li>Docker 的镜像(image)、容器(container)、仓库(registerie)</li>
+<li>Docker 的安装</li>
+<li>Docker 的基础用法</li>
+<li>Docker的端口映射</li>
+<li>Docker 数据卷</li>
+<li>链接容器</li>
+</ul>
+<p>详细的信息可以自行搜索</p>
+<h3 id="部署IPython">部署IPython</h3><h4 id="下载IPython_的镜像">下载IPython 的镜像</h4><p>官方Docker镜像<a href="https://registry.hub.docker.com/repos/ipython/" target="_blank" rel="external">地址</a>，里面包含5个镜像:</p>
+<ul>
+<li>notebook</li>
+<li>ipython</li>
+<li>scipyserver</li>
+<li>scipystack</li>
+<li>nbvierer</li>
+</ul>
+<p>简单说一下这几个镜像的区别 <code>ipython</code> 是以上几个镜像的共同的根镜像。<code>notebook</code> 提供了一个web的前端。<code>scipystack</code>在<code>ipython</code>的基础上安装了许多科学计算的包(cython,h5py,matplotlib,numpy,pandas,patsy,scikit-learn,scipy,seaborn,sympy,yt)，而<code>scipyserver</code>则在<code>scipystack</code>的基础上提供了web的前端。<code>nbviewer</code>则是<a href="nbviewer.ipython.org">nbviewer.ipython.org</a>的实现<br>更多详细信息请到GitHub上的<a href="https://github.com/ipython/docker-notebook" target="_blank" rel="external">docker-notebook</a> 查看<br>选择<code>scipystack</code>镜像最省事，但是需要下载的东西也越多。下文选择的也是<code>scipystack</code><br><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>sudo docker pull ipython/scipyserver</span><br></pre></td></tr></table></figure></p>
+<h4 id="运行IPython_容器">运行IPython 容器</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -d --name IPythonApp -p <span class="number">8888</span>:<span class="number">8888</span> -e <span class="string">"PASSWORD=your password"</span> -e <span class="string">"USE_HTTP=1"</span> -v <span class="regexp">/home/</span>zhiyue<span class="regexp">/repos/</span>ipython-<span class="string">notebook:</span><span class="regexp">/notebooks ipython/</span>scipyserver</span><br></pre></td></tr></table></figure>
+<p>解析一下参数<code>-d</code> 是以后台的方式运行，<code>--name</code> 是容器的别名，<code>-p</code> 是端口映射，<code>-e</code> 是设置环境变量，这里的环境变量<code>PASSWORD</code>设置成你自己的密码就可以了，<code>USE_HTTP=1</code> 意思是使用http，<code>-v</code> 是设置数据卷，把宿主机的目录挂载到容器里，即使容器被删除，数据也可以保留下来</p>
+<h3 id="Nginx_反向代理_IPython">Nginx 反向代理 IPython</h3><p>有两种方式，一种是使用官方的Nginx，另一种是使用<a href="https://registry.hub.docker.com/u/jwilder/nginx-proxy/" target="_blank" rel="external">jwilder / nginx-proxy</a>，后一种方法更加简单和方便</p>
+<h4 id="方式1：nginx">方式1：nginx</h4><ul>
+<li><p>使用Nginx的官方镜像<a href="https://registry.hub.docker.com/_/nginx/" target="_blank" rel="external">nginx</a></p>
+</li>
+<li><p>Nginx 配置文件<br><code>ipython-server.conf</code></p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> map <span class="variable">$http_upgrade</span> <span class="variable">$connection_upgrade</span> &#123;</span><br><span class="line">        default upgrade;</span><br><span class="line">        <span class="string">''</span>      close;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">server&#123;</span><br><span class="line">        listen <span class="number">80</span>;</span><br><span class="line">        server_name note.everforget.com;</span><br><span class="line">        location / &#123;</span><br><span class="line">                proxy_pass http://ipython:<span class="number">8888</span>;</span><br><span class="line">                proxy_http_version <span class="number">1.1</span>;</span><br><span class="line">                proxy_<span class="built_in">set</span>_header Upgrade <span class="variable">$http_upgrade</span>;</span><br><span class="line">                proxy_<span class="built_in">set</span>_header Connection <span class="string">"upgrade"</span>;</span><br><span class="line">true            proxy_<span class="built_in">set</span>_header X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">true            proxy_<span class="built_in">set</span>_header Host <span class="variable">$host</span>;</span><br><span class="line">true            proxy_<span class="built_in">set</span>_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里面要注意一点是，ipython要使用websock因此要配置websocket，之前在这个问题查了好久。<br><code>proxy_pass http://ipython:8888;</code> <code>ipython</code>和后面容器连接时的别名有关。</p>
+<ul>
+<li>运行Nginx容器<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker <span class="keyword">run</span> -<span class="keyword">d</span> -p 80:80 --name nginx --link IPythonApp:ipython  -v `<span class="keyword">pwd</span>`/config:/etc/nginx/<span class="keyword">conf</span>.<span class="keyword">d</span>  -v `<span class="keyword">pwd</span>`/logs:/<span class="keyword">var</span>/<span class="keyword">log</span>/nginx nginx</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="方式2：nginx-proxy">方式2：nginx-proxy</h4><ul>
+<li><p><a href="https://registry.hub.docker.com/u/jwilder/nginx-proxy/" target="_blank" rel="external">jwilder / nginx-proxy</a></p>
+</li>
+<li><p>运行nginx-proxy 容器</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -<span class="tag">p</span> <span class="number">80</span>:<span class="number">80</span> -v /var/run/docker<span class="class">.sock</span>:/tmp/docker<span class="class">.sock</span>:ro jwilder/nginx-proxy</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行ipython 容器</p>
+</li>
+</ul>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker <span class="keyword">run</span> -<span class="keyword">d</span> -<span class="keyword">e</span> <span class="string">"VIRTUAL_HOST=ipython.everforget.com"</span> --name IPython -p 8888:8888 -<span class="keyword">e</span> <span class="string">"PASSWORD=xxxxxx"</span> -<span class="keyword">e</span> <span class="string">"USE_HTTP=1"</span> -v /home/zhiyue/repos/ipython-notebook:/notebooks ipython/scipyserver</span><br></pre></td></tr></table></figure>
+<p>最后放一张图：</p>
+<p><img src="http://zhiyue.qiniudn.com/15-6-8/23580903.jpg" alt=""></p>
+<p>这样就可以随时通过web来使用python了。</p>
+<h3 id="参考">参考</h3><ul>
+<li><p><a href="http://blog.opskumu.com/docker.html" target="_blank" rel="external">Docker 笔记 By 枯木</a></p>
+</li>
+<li><p><a href="http://godleon.github.io/blog/2014/11/23/use-docker-to-rapidly-create-ipython-notebook-environments/" target="_blank" rel="external">[Docker] 快速建立 IPython Notebook 環境</a></p>
+</li>
+<li><a href="http://blog.shiqichan.com/Deploying-Nginx-with-Docker/" target="_blank" rel="external">在Docker下部署Nginx</a></li>
+<li><a href="http://mindonmind.github.io/2013/02/08/ipython-notebook-interactive-computing-new-era/" target="_blank" rel="external">IPython Notebook: 交互计算新时代</a></li>
+</ul>
+<hr>
+<p>更新日志：</p>
+<ul>
+<li>2015-6-8 添加配图</li>
+<li>2015-6-6 第一次撰写</li>
+</ul>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/系统运维/">系统运维</a>►<a class="article-category-link" href="/categories/系统运维/Python/">Python</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Docker/">Docker</a><a href="/tags/IPyhton/">IPyhton</a><a href="/tags/nginx/">nginx</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2015/06/08/use-docker-deplay-ipython-notebook/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/06/08/use-docker-deplay-ipython-notebook/" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2015/05/19/Monty-Hall-problem/" title="用python验证蒙提霍尔问题" itemprop="url">用python验证蒙提霍尔问题</a>
   </h1>
   <p class="article-author">By
@@ -694,6 +840,10 @@
 		<ul>
 		
 		  
+			<li><a href="/categories/系统运维/Python/" title="Python">Python<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/Python/" title="Python">Python<sup>1</sup></a></li>
 		  
 		
@@ -709,6 +859,10 @@
 			<li><a href="/categories/杂货/" title="杂货">杂货<sup>1</sup></a></li>
 		  
 		
+		  
+		
+		  
+			<li><a href="/categories/系统运维/" title="系统运维">系统运维<sup>1</sup></a></li>
 		  
 		
 		  
@@ -729,15 +883,15 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/教程/" title="教程">教程<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/视频/" title="视频">视频<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/算法/" title="算法">算法<sup>1</sup></a></li>
+				<li><a href="/tags/教程/" title="教程">教程<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hexo/" title="hexo">hexo<sup>1</sup></a></li>
 			
 		
 			
@@ -749,11 +903,23 @@
 			
 		
 			
+				<li><a href="/tags/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/IPyhton/" title="IPyhton">IPyhton<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/标签/" title="标签">标签<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+				<li><a href="/tags/翻译/" title="翻译">翻译<sup>1</sup></a></li>
 			
 		
 			
@@ -761,7 +927,7 @@
 			
 		
 			
-				<li><a href="/tags/翻译/" title="翻译">翻译<sup>1</sup></a></li>
+				<li><a href="/tags/算法/" title="算法">算法<sup>1</sup></a></li>
 			
 		
 			

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
+  
   <title><![CDATA[Just Do IT.]]></title>
   <subtitle><![CDATA[恍惚中，时光停滞，岁月静好，宛如十年前。]]></subtitle>
   <link href="/atom.xml" rel="self"/>
-  <link href="http://printf.me/"/>
-  <updated>2015-06-03T11:23:51.635Z</updated>
-  <id>http://printf.me/</id>
+  <link href="http://printf.me//"/>
+  <updated>2015-06-08T07:33:28.784Z</updated>
+  <id>http://printf.me//</id>
   
   <author>
     <name><![CDATA[zhiyue]]></name>
@@ -15,11 +16,119 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[使用Docker部署IPython]]></title>
+    <link href="http://printf.me/2015/06/08/use-docker-deplay-ipython-notebook/"/>
+    <id>http://printf.me/2015/06/08/use-docker-deplay-ipython-notebook/</id>
+    <published>2015-06-08T16:21:56.000Z</published>
+    <updated>2015-06-08T07:33:28.784Z</updated>
+    <content type="html"><![CDATA[<p><img src="http://zhiyue.qiniudn.com/15-6-8/78469439.jpg" class="img-topic"></p>
+<p><img src="http://zhiyue.qiniudn.com/15-6-8/63734849.jpg" alt="docker"></p>
+<blockquote>
+<p>本文的部署环境是Ubuntu 14.04 </p>
+</blockquote>
+<ul>
+<li><p>Docker</p>
+<blockquote>
+<p>Docker 详细概念可以去search，简单来说就是把应用打包到一个容器里的轻量级系统虚拟化服务</p>
+</blockquote>
+</li>
+<li><p>IPython Notebook</p>
+<blockquote>
+<p>IPython Notebook 既是一个交互计算平台，又是一个记录计算过程的「笔记本」。它由服务端和客户端两部分组成，其中服务端负责代码的解释与计算，而客户端负责与用户进行交互。 服务端可以运行在本机也可以运行在远程服务器，包含负责运算的 IPython kernel (与 QT Console 的 kernel 相同) 以及一个 HTTP/S 服务器 (Tornado)。 而客户端则是一个指向服务端地址的浏览器页面，负责接受用户的输入并负责渲染输出。</p>
+</blockquote>
+</li>
+</ul>
+<p>本文主要记录使用Docker 在服务器部署IPython Note 应用的过程。比传统的部署方案果然简单轻松不少。</p>
+<h4 id="知识点">知识点</h4><ol>
+<li>Docker 的基本概念</li>
+<li>部署IPython 容器</li>
+<li>使用Nginx 容器反向代理IPython </li>
+</ol>
+<h3 id="Docker_的基本概念">Docker 的基本概念</h3><p>下文的操作主要涉及Docker的一下几个知识点：</p>
+<ul>
+<li>Docker 的镜像(image)、容器(container)、仓库(registerie)</li>
+<li>Docker 的安装</li>
+<li>Docker 的基础用法</li>
+<li>Docker的端口映射</li>
+<li>Docker 数据卷</li>
+<li>链接容器</li>
+</ul>
+<p>详细的信息可以自行搜索</p>
+<h3 id="部署IPython">部署IPython</h3><h4 id="下载IPython_的镜像">下载IPython 的镜像</h4><p>官方Docker镜像<a href="https://registry.hub.docker.com/repos/ipython/" target="_blank" rel="external">地址</a>，里面包含5个镜像:</p>
+<ul>
+<li>notebook</li>
+<li>ipython</li>
+<li>scipyserver</li>
+<li>scipystack</li>
+<li>nbvierer</li>
+</ul>
+<p>简单说一下这几个镜像的区别 <code>ipython</code> 是以上几个镜像的共同的根镜像。<code>notebook</code> 提供了一个web的前端。<code>scipystack</code>在<code>ipython</code>的基础上安装了许多科学计算的包(cython,h5py,matplotlib,numpy,pandas,patsy,scikit-learn,scipy,seaborn,sympy,yt)，而<code>scipyserver</code>则在<code>scipystack</code>的基础上提供了web的前端。<code>nbviewer</code>则是<a href="nbviewer.ipython.org">nbviewer.ipython.org</a>的实现<br>更多详细信息请到GitHub上的<a href="https://github.com/ipython/docker-notebook" target="_blank" rel="external">docker-notebook</a> 查看<br>选择<code>scipystack</code>镜像最省事，但是需要下载的东西也越多。下文选择的也是<code>scipystack</code><br><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>sudo docker pull ipython/scipyserver</span><br></pre></td></tr></table></figure></p>
+<h4 id="运行IPython_容器">运行IPython 容器</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -d --name IPythonApp -p <span class="number">8888</span>:<span class="number">8888</span> -e <span class="string">"PASSWORD=your password"</span> -e <span class="string">"USE_HTTP=1"</span> -v <span class="regexp">/home/</span>zhiyue<span class="regexp">/repos/</span>ipython-<span class="string">notebook:</span><span class="regexp">/notebooks ipython/</span>scipyserver</span><br></pre></td></tr></table></figure>
+<p>解析一下参数<code>-d</code> 是以后台的方式运行，<code>--name</code> 是容器的别名，<code>-p</code> 是端口映射，<code>-e</code> 是设置环境变量，这里的环境变量<code>PASSWORD</code>设置成你自己的密码就可以了，<code>USE_HTTP=1</code> 意思是使用http，<code>-v</code> 是设置数据卷，把宿主机的目录挂载到容器里，即使容器被删除，数据也可以保留下来</p>
+<h3 id="Nginx_反向代理_IPython">Nginx 反向代理 IPython</h3><p>有两种方式，一种是使用官方的Nginx，另一种是使用<a href="https://registry.hub.docker.com/u/jwilder/nginx-proxy/" target="_blank" rel="external">jwilder / nginx-proxy</a>，后一种方法更加简单和方便</p>
+<h4 id="方式1：nginx">方式1：nginx</h4><ul>
+<li><p>使用Nginx的官方镜像<a href="https://registry.hub.docker.com/_/nginx/" target="_blank" rel="external">nginx</a></p>
+</li>
+<li><p>Nginx 配置文件<br><code>ipython-server.conf</code></p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> map <span class="variable">$http_upgrade</span> <span class="variable">$connection_upgrade</span> &#123;</span><br><span class="line">        default upgrade;</span><br><span class="line">        <span class="string">''</span>      close;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">server&#123;</span><br><span class="line">        listen <span class="number">80</span>;</span><br><span class="line">        server_name note.everforget.com;</span><br><span class="line">        location / &#123;</span><br><span class="line">                proxy_pass http://ipython:<span class="number">8888</span>;</span><br><span class="line">                proxy_http_version <span class="number">1.1</span>;</span><br><span class="line">                proxy_<span class="built_in">set</span>_header Upgrade <span class="variable">$http_upgrade</span>;</span><br><span class="line">                proxy_<span class="built_in">set</span>_header Connection <span class="string">"upgrade"</span>;</span><br><span class="line">true            proxy_<span class="built_in">set</span>_header X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">true            proxy_<span class="built_in">set</span>_header Host <span class="variable">$host</span>;</span><br><span class="line">true            proxy_<span class="built_in">set</span>_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里面要注意一点是，ipython要使用websock因此要配置websocket，之前在这个问题查了好久。<br><code>proxy_pass http://ipython:8888;</code> <code>ipython</code>和后面容器连接时的别名有关。</p>
+<ul>
+<li>运行Nginx容器<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker <span class="keyword">run</span> -<span class="keyword">d</span> -p 80:80 --name nginx --link IPythonApp:ipython  -v `<span class="keyword">pwd</span>`/config:/etc/nginx/<span class="keyword">conf</span>.<span class="keyword">d</span>  -v `<span class="keyword">pwd</span>`/logs:/<span class="keyword">var</span>/<span class="keyword">log</span>/nginx nginx</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="方式2：nginx-proxy">方式2：nginx-proxy</h4><ul>
+<li><p><a href="https://registry.hub.docker.com/u/jwilder/nginx-proxy/" target="_blank" rel="external">jwilder / nginx-proxy</a></p>
+</li>
+<li><p>运行nginx-proxy 容器</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -<span class="tag">p</span> <span class="number">80</span>:<span class="number">80</span> -v /var/run/docker<span class="class">.sock</span>:/tmp/docker<span class="class">.sock</span>:ro jwilder/nginx-proxy</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行ipython 容器</p>
+</li>
+</ul>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker <span class="keyword">run</span> -<span class="keyword">d</span> -<span class="keyword">e</span> <span class="string">"VIRTUAL_HOST=ipython.everforget.com"</span> --name IPython -p 8888:8888 -<span class="keyword">e</span> <span class="string">"PASSWORD=xxxxxx"</span> -<span class="keyword">e</span> <span class="string">"USE_HTTP=1"</span> -v /home/zhiyue/repos/ipython-notebook:/notebooks ipython/scipyserver</span><br></pre></td></tr></table></figure>
+<p>最后放一张图：</p>
+<p><img src="http://zhiyue.qiniudn.com/15-6-8/23580903.jpg" alt=""></p>
+<p>这样就可以随时通过web来使用python了。</p>
+<h3 id="参考">参考</h3><ul>
+<li><p><a href="http://blog.opskumu.com/docker.html" target="_blank" rel="external">Docker 笔记 By 枯木</a></p>
+</li>
+<li><p><a href="http://godleon.github.io/blog/2014/11/23/use-docker-to-rapidly-create-ipython-notebook-environments/" target="_blank" rel="external">[Docker] 快速建立 IPython Notebook 環境</a></p>
+</li>
+<li><a href="http://blog.shiqichan.com/Deploying-Nginx-with-Docker/" target="_blank" rel="external">在Docker下部署Nginx</a></li>
+<li><a href="http://mindonmind.github.io/2013/02/08/ipython-notebook-interactive-computing-new-era/" target="_blank" rel="external">IPython Notebook: 交互计算新时代</a></li>
+</ul>
+<hr>
+<p>更新日志：</p>
+<ul>
+<li>2015-6-8 添加配图</li>
+<li>2015-6-6 第一次撰写</li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><img src="http://zhiyue.qiniudn.com/15-6-8/78469439.jpg" class="img-topic"></p>
+<p><img src="http://zhiyue.qiniudn.com/15-6-8/63734849.jp]]>
+    </summary>
+    
+      <category term="Docker" scheme="http://printf.me/tags/Docker/"/>
+    
+      <category term="IPyhton" scheme="http://printf.me/tags/IPyhton/"/>
+    
+      <category term="nginx" scheme="http://printf.me/tags/nginx/"/>
+    
+      <category term="系统运维" scheme="http://printf.me/categories/%E7%B3%BB%E7%BB%9F%E8%BF%90%E7%BB%B4/"/>
+    
+      <category term="Python" scheme="http://printf.me/categories/%E7%B3%BB%E7%BB%9F%E8%BF%90%E7%BB%B4/Python/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[用python验证蒙提霍尔问题]]></title>
     <link href="http://printf.me/2015/05/19/Monty-Hall-problem/"/>
     <id>http://printf.me/2015/05/19/Monty-Hall-problem/</id>
     <published>2015-05-19T02:55:49.000Z</published>
-    <updated>2015-06-03T11:23:51.635Z</updated>
+    <updated>2015-06-08T07:33:28.784Z</updated>
     <content type="html"><![CDATA[<p>最初看到这个问题是初中的时候买了一本有关数学谜题的书里面概率论的一张的课后拓展就是说到三门问题，当时作为一个扩展阅读看了一下，里面说到了一个世界智商最高的女人秒杀了美国一大群的数学高材生的精彩故事（比较夸张），当时对这个问题也是似懂非懂。</p>
 <h2 id="什么是蒙提霍尔问题？">什么是蒙提霍尔问题？</h2><p><img src="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/24200658-c442dec3691a4e929938ba98a52d78c5.png" alt="蒙提霍尔"></p>
 <blockquote>
@@ -193,7 +302,7 @@
     <link href="http://printf.me/2015/02/11/%E3%80%8A%E7%BA%A2%E9%A2%86%E5%B7%BE%E4%B8%8E%E7%8E%8B%E5%B0%8F%E6%98%8E%E3%80%8B/"/>
     <id>http://printf.me/2015/02/11/《红领巾与王小明》/</id>
     <published>2015-02-11T00:32:04.000Z</published>
-    <updated>2015-06-03T11:23:51.635Z</updated>
+    <updated>2015-06-08T07:33:28.784Z</updated>
     <content type="html"><![CDATA[<p><img src="http://printf.qiniudn.com/honglingjin.jpe" class="img-topic"></p>
 <p>有一种混搭的感觉的国产动漫，画面比较复古，笑笑就好。</p>
 <a id="more"></a>
@@ -217,7 +326,7 @@
     <link href="http://printf.me/2015/02/11/vedio%E4%B9%8BLookUp/"/>
     <id>http://printf.me/2015/02/11/vedio之LookUp/</id>
     <published>2015-02-11T00:25:52.000Z</published>
-    <updated>2015-06-03T11:23:51.635Z</updated>
+    <updated>2015-06-08T07:33:28.784Z</updated>
     <content type="html"><![CDATA[<p>这个是今天看的一个小视频，分享给大家。</p>
 <blockquote>
 <p>如今互联网的出现颠覆了很多东西，给我们带来了很多的方便，但是我们渐渐发现，我们似乎也正在失去一些很珍贵的东西。<br><img src="http://printf.qiniudn.com/lookup.jpe" class="img-topic"></p>
@@ -246,7 +355,7 @@
     <link href="http://printf.me/2014/06/09/hexo-%E5%A4%9A%E6%A0%87%E7%AD%BE/"/>
     <id>http://printf.me/2014/06/09/hexo-多标签/</id>
     <published>2014-06-09T16:21:56.000Z</published>
-    <updated>2015-06-03T11:23:51.635Z</updated>
+    <updated>2015-06-08T07:33:28.784Z</updated>
     <content type="html"><![CDATA[<p>刚开始使用hexo记录一下使用过程遇到的问题.<br><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">使用多标签要在括号内<span class="keyword">*</span><span class="keyword">*</span>[,]<span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line"></span><br><span class="line">在括号内用逗号分隔开.</span><br></pre></td></tr></table></figure></p>
 ]]></content>
     <summary type="html">
@@ -268,7 +377,7 @@
     <link href="http://printf.me/2014/06/09/ffmpeg%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
     <id>http://printf.me/2014/06/09/ffmpeg的使用/</id>
     <published>2014-06-09T16:21:56.000Z</published>
-    <updated>2015-06-03T11:23:51.635Z</updated>
+    <updated>2015-06-08T07:33:28.784Z</updated>
     <content type="html"><![CDATA[<p><img src="http://printf.qiniudn.com/20140616102021781.png" class="img-topic"></p>
 <p><img src="http://printf.qiniudn.com/20140616102021781.png" alt=""></p>
 <p>最近因为要音频处理的研究,音频开发，但是有一个难题就是怎么解析与提取音频的数据,于是就找到了<code>FFmpeg</code>。基本上只要做视频音频开发都离不开<code>ffmpeg</code></p>
@@ -346,7 +455,7 @@
     <link href="http://printf.me/2014/06/04/%E5%BF%AB%E9%80%9F%E6%B1%82%E5%B9%82%E7%AE%97%E6%B3%95/"/>
     <id>http://printf.me/2014/06/04/快速求幂算法/</id>
     <published>2014-06-04T16:21:56.000Z</published>
-    <updated>2015-06-03T11:23:51.635Z</updated>
+    <updated>2015-06-08T07:33:28.784Z</updated>
     <content type="html"><![CDATA[<h2 id="1-快速求幂算法">1.快速求幂算法</h2><p>在这篇文章我会展示怎样通过求一个数的幂的基本思路来引导我们发现一些抽象的东西比如半群和含幺半群。</p>
 <p>有一个很有名的对一个数求幂的算法,也就是说,求一个数x的n次方或者这样简单表示：<code>x^n</code>。<a href="http://en.wikipedia.org/wiki/Donald_Knuth" target="_blank" rel="external">Donald Knuth</a>在<a href="http://www-cs-faculty.stanford.edu/~uno/taocp.html" target="_blank" rel="external">TAOCP</a>的<code>4.63节 求幂值</code>中提出这个算法。</p>
 <p>这个算法很简单的实现就是x乘以自己n次，但是在这里当然会提供一种比这种方式更快的算法。正在谈论的算法通常被称作<code>二进制法(binary method)</code>、<code>梯度求幂(the powering ladder)</code>或者<code>反复平方法(repeated-squaring algorithm)</code></p>
@@ -425,7 +534,7 @@
     <link href="http://printf.me/2014/05/09/hello-world/"/>
     <id>http://printf.me/2014/05/09/hello-world/</id>
     <published>2014-05-09T16:21:56.000Z</published>
-    <updated>2015-06-03T11:23:51.635Z</updated>
+    <updated>2015-06-08T07:33:28.784Z</updated>
     <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/tommy351/hexo/issues" target="_blank" rel="external">GitHub</a>.<br><a id="more"></a></p>
 <h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
 <p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
