@@ -1,15 +1,12 @@
 title: 使用Docker部署IPython
 date: 2015-06-08 16:21:56
-tags: [Docker,IPyhton,nginx]
+tags: [Docker,IPyhton,nginx，Python]
 categories:  
 - 系统运维
-- Python
-
 ---
 
-<img src="http://zhiyue.qiniudn.com/15-6-8/78469439.jpg" class="img-topic" />
-
 ![docker](http://zhiyue.qiniudn.com/15-6-8/63734849.jpg)
+<!--more-->
 > 本文的部署环境是Ubuntu 14.04 
 
 - Docker
@@ -20,7 +17,7 @@ categories:
 
 本文主要记录使用Docker 在服务器部署IPython Note 应用的过程。比传统的部署方案果然简单轻松不少。
 
-<!--more-->
+
 
 #### 知识点
 
