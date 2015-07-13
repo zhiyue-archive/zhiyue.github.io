@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E7%9F%A5%E9%81%93%E9%9A%8F%E6%9C%BA%E9%80%89%E6%8B%A9%E9%A2%91%E7%8E%87%E5%88%86%E5%B8%83.png">
 <meta property="og:image" content="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E4%B8%8D%E7%9F%A5%E9%81%93%E9%97%A8%E5%90%8E%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8D%E6%94%B9%E5%8F%98.png">
 <meta property="og:image" content="http://7xilqm.com1.z0.glb.clouddn.com/Monty%20Hall%20problem/%E4%B8%BB%E6%8C%81%E4%BA%BA%E4%B8%8D%E7%9F%A5%E9%81%93%E9%97%A8%E5%90%8E%E9%9D%A2%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8D%E6%94%B9%E5%8F%98.png">
-<meta property="og:updated_time" content="2015-06-08T07:52:03.273Z">
+<meta property="og:updated_time" content="2015-07-13T08:38:52.743Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用python验证蒙提霍尔问题">
 <meta name="twitter:description" content="最初看到这个问题是初中的时候买了一本有关数学谜题的书里面概率论的一张的课后拓展就是说到三门问题，当时作为一个扩展阅读看了一下，里面说到了一个世界智商最高的女人秒杀了美国一大群的数学高材生的精彩故事（比较夸张），当时对这个问题也是似懂非懂。">
@@ -553,6 +553,7 @@
     <script src="/js/jquery-2.0.3.min.js"></script>
 <script src="/js/jquery.imagesloaded.min.js"></script>
 <script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function(){ 
@@ -642,8 +643,8 @@ $(document).ready(function(){
       tsina = $this.attr('data-tsina'),
       description = $this.attr('description');
   var html = [
-  '<a href="#" class="overlay" id="qrcode"></a>',
-  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
   '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
   '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
   '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
@@ -652,14 +653,34 @@ $(document).ready(function(){
   '<span title="Share to"></span>'
   ].join('');
   $this.append(html);
-  $('.article-share-qrcode').click(function(){
-    var imgSrc = $('#qrcode-pic').attr('data-src');
-    $('#qrcode-pic').attr('src', imgSrc);
-    $('#qrcode-pic').load(function(){
-        $('.qrcode strong').text(' ');
-    });
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
   });
-});     
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
 </script>
 
 
